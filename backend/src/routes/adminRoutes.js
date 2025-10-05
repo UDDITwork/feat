@@ -147,7 +147,7 @@ router.put('/submission/:id/edit', validateSubmissionEdit, async (req, res) => {
       });
     }
 
-    // Get old value using dot notation for nested fields
+    // Get old value using dot notation for nested fields (supports arrays)
     const getNestedValue = (obj, path) => {
       return path.split('.').reduce((current, key) => current?.[key], obj);
     };
@@ -156,10 +156,36 @@ router.put('/submission/:id/edit', validateSubmissionEdit, async (req, res) => {
       const keys = path.split('.');
       const lastKey = keys.pop();
       const target = keys.reduce((current, key) => {
-        if (!current[key]) current[key] = {};
-        return current[key];
+        // Check if key is a number (array index)
+        const isArrayIndex = /^\d+$/.test(key);
+
+        if (isArrayIndex) {
+          const index = parseInt(key, 10);
+          if (!Array.isArray(current)) {
+            throw new Error(`Expected array at path but found ${typeof current}`);
+          }
+          if (!current[index]) {
+            current[index] = {};
+          }
+          return current[index];
+        } else {
+          if (!current[key]) {
+            // Check if next key is a number to decide if we need an array or object
+            const nextKeyIndex = keys.indexOf(key) + 1;
+            const nextKey = keys[nextKeyIndex];
+            current[key] = /^\d+$/.test(nextKey) ? [] : {};
+          }
+          return current[key];
+        }
       }, obj);
-      target[lastKey] = value;
+
+      // Set the final value (handle array index in lastKey)
+      if (/^\d+$/.test(lastKey)) {
+        const index = parseInt(lastKey, 10);
+        target[index] = value;
+      } else {
+        target[lastKey] = value;
+      }
     };
 
     const oldValue = getNestedValue(submission.formData, field);
@@ -223,7 +249,7 @@ router.put('/submissions/bulk-edit', async (req, res) => {
           continue;
         }
 
-        // Get old value
+        // Get old value (supports arrays)
         const getNestedValue = (obj, path) => {
           return path.split('.').reduce((current, key) => current?.[key], obj);
         };
@@ -232,10 +258,25 @@ router.put('/submissions/bulk-edit', async (req, res) => {
           const keys = path.split('.');
           const lastKey = keys.pop();
           const target = keys.reduce((current, key) => {
-            if (!current[key]) current[key] = {};
-            return current[key];
+            const isArrayIndex = /^\d+$/.test(key);
+            if (isArrayIndex) {
+              const index = parseInt(key, 10);
+              if (!Array.isArray(current)) return current;
+              if (!current[index]) current[index] = {};
+              return current[index];
+            } else {
+              const nextKeyIndex = keys.indexOf(key) + 1;
+              const nextKey = keys[nextKeyIndex];
+              if (!current[key]) current[key] = /^\d+$/.test(nextKey) ? [] : {};
+              return current[key];
+            }
           }, obj);
-          target[lastKey] = value;
+
+          if (/^\d+$/.test(lastKey)) {
+            target[parseInt(lastKey, 10)] = value;
+          } else {
+            target[lastKey] = value;
+          }
         };
 
         const oldValue = getNestedValue(submission.formData, field);
@@ -438,6 +479,48 @@ router.delete('/submission/:id', async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Failed to delete submission',
+      error: error.message
+    });
+  }
+});
+
+// Export submission as JSON (uses authentication middleware)
+router.get('/submission/:id/export', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const submission = await FormSubmission.findById(id);
+
+    if (!submission) {
+      return res.status(404).json({
+        success: false,
+        message: 'Submission not found'
+      });
+    }
+
+    const exportData = {
+      submissionId: submission._id,
+      email: submission.email,
+      status: submission.status,
+      submittedAt: submission.submittedAt,
+      createdAt: submission.createdAt,
+      updatedAt: submission.updatedAt,
+      formData: submission.formData,
+      adminEdits: submission.adminEdits
+    };
+
+    // Set headers for file download
+    const filename = `submission_${submission.email.replace('@', '_at_')}_${Date.now()}.json`;
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+
+    res.status(200).send(JSON.stringify(exportData, null, 2));
+
+  } catch (error) {
+    console.error('Error exporting submission:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to export submission',
       error: error.message
     });
   }

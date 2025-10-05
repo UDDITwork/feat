@@ -2,41 +2,36 @@ import React from 'react'
 import { useForm } from '../../contexts/FormContext'
 import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline'
 
-const ApplicantDetails = ({ 
-  formData, 
-  setFieldValue, 
-  setNestedFieldValue, 
-  setArrayFieldValue, 
-  addArrayItem, 
-  removeArrayItem 
+const ApplicantDetails = ({
+  formData,
+  setFieldValue,
+  setNestedFieldValue,
+  setArrayFieldValue,
+  addArrayItem,
+  removeArrayItem
 }) => {
   const { errors } = useForm()
 
   const countries = [
-    'India', 'United States', 'United Kingdom', 'Germany', 'France', 'Japan', 'China', 'Canada', 'Australia', 'Others'
+    'India', 'United States', 'United Kingdom', 'Germany', 'France', 'Japan', 'China', 'Canada', 'Australia',
+    'Brazil', 'South Africa', 'Russia', 'South Korea', 'Singapore', 'Malaysia', 'Others'
   ]
 
   const indianStates = [
     'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa', 'Gujarat', 'Haryana',
     'Himachal Pradesh', 'Jharkhand', 'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Manipur',
     'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu',
-    'Telangana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal', 'Delhi', 'Others'
+    'Telangana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal', 'Delhi', 'Puducherry',
+    'Jammu and Kashmir', 'Ladakh', 'Chandigarh', 'Dadra and Nagar Haveli', 'Daman and Diu', 'Lakshadweep',
+    'Andaman and Nicobar Islands', 'Others'
   ]
 
-  const categories = [
-    'Natural Person',
-    'Other than Natural Person',
-    'Educational Institution',
-    'Small Entity',
-    'Startup',
-    'Others'
-  ]
-
-  const genders = [
-    'Male',
-    'Female',
-    'Others',
-    'Prefer not to disclose'
+  const applicantCategories = [
+    { value: 'natural_person', label: 'Natural Person' },
+    { value: 'small_entity', label: 'Small Entity (Other than Natural Person)' },
+    { value: 'startup', label: 'Startup (Other than Natural Person)' },
+    { value: 'educational_institute', label: 'Educational Institute (Other than Natural Person)' },
+    { value: 'others', label: 'Others (Other than Natural Person)' }
   ]
 
   const applicants = formData.applicants || [{}]
@@ -48,7 +43,7 @@ const ApplicantDetails = ({
   const handleNestedChange = (index, section, field, value) => {
     const currentApplicant = applicants[index] || {}
     const currentSection = currentApplicant[section] || {}
-    
+
     setArrayFieldValue('applicants', index, section, {
       ...currentSection,
       [field]: value
@@ -57,21 +52,21 @@ const ApplicantDetails = ({
 
   const addApplicant = () => {
     addArrayItem('applicants', {
-      name: '',
-      gender: '',
+      name_full: '',
       nationality: '',
-      countryOfResidence: '',
-      age: '',
+      country_of_residence: '',
       address: {
-        houseNo: '',
+        house_no: '',
+        village: '',
+        post_office: '',
         street: '',
         city: '',
         state: '',
         country: '',
-        pinCode: '',
-        email: '',
-        contactNumber: ''
+        pin_code: ''
       },
+      email: '',
+      contact_no: '',
       category: ''
     })
   }
@@ -84,10 +79,11 @@ const ApplicantDetails = ({
 
   return (
     <div className="space-y-6">
+      {/* Section 3A: Applicant(s) Details */}
       <div className="form-section">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="form-section-title">Applicant Details</h3>
-          {applicants.length < 5 && (
+          <h3 className="form-section-title">Section 3A: Applicant(s) Details</h3>
+          {applicants.length < 10 && (
             <button
               type="button"
               onClick={addApplicant}
@@ -99,8 +95,12 @@ const ApplicantDetails = ({
           )}
         </div>
 
+        <p className="text-sm text-gray-600 mb-4">
+          All fields are optional. Fill in the information you have available.
+        </p>
+
         {applicants.map((applicant, index) => (
-          <div key={index} className="border border-gray-200 rounded-lg p-6 mb-6">
+          <div key={index} className="border border-gray-200 rounded-lg p-6 mb-6 bg-white shadow-sm">
             <div className="flex items-center justify-between mb-4">
               <h4 className="text-lg font-medium text-gray-900">
                 Applicant {index + 1}
@@ -109,64 +109,49 @@ const ApplicantDetails = ({
                 <button
                   type="button"
                   onClick={() => removeApplicant(index)}
-                  className="text-red-600 hover:text-red-800"
+                  className="text-red-600 hover:text-red-800 flex items-center"
                 >
-                  <TrashIcon className="h-5 w-5" />
+                  <TrashIcon className="h-5 w-5 mr-1" />
+                  Remove
                 </button>
               )}
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Name */}
+              {/* Name in Full */}
               <div className="md:col-span-2">
-                <label className="label label-required">
+                <label className="label">
                   Name in Full
                 </label>
                 <input
                   type="text"
-                  value={applicant.name || ''}
-                  onChange={(e) => handleChange(index, 'name', e.target.value)}
+                  value={applicant.name_full || ''}
+                  onChange={(e) => handleChange(index, 'name_full', e.target.value)}
                   className="input-field"
-                  placeholder="Enter full name"
+                  placeholder="Enter full name as it should appear on the patent"
                   maxLength={200}
                 />
-                {errors[`applicants.${index}.name`] && (
-                  <p className="form-error">{errors[`applicants.${index}.name`]}</p>
+                <p className="text-xs text-gray-500 mt-1">
+                  Full legal name of the applicant
+                </p>
+                {errors[`applicants.${index}.name_full`] && (
+                  <p className="form-error">{errors[`applicants.${index}.name_full`]}</p>
                 )}
-              </div>
-
-              {/* Gender */}
-              <div>
-                <label className="label">
-                  Gender
-                </label>
-                <select
-                  value={applicant.gender || ''}
-                  onChange={(e) => handleChange(index, 'gender', e.target.value)}
-                  className="input-field"
-                >
-                  <option value="">Select Gender</option>
-                  {genders.map(gender => (
-                    <option key={gender} value={gender}>{gender}</option>
-                  ))}
-                </select>
               </div>
 
               {/* Nationality */}
               <div>
-                <label className="label label-required">
+                <label className="label">
                   Nationality
                 </label>
-                <select
+                <input
+                  type="text"
                   value={applicant.nationality || ''}
                   onChange={(e) => handleChange(index, 'nationality', e.target.value)}
                   className="input-field"
-                >
-                  <option value="">Select Nationality</option>
-                  {countries.map(country => (
-                    <option key={country} value={country}>{country}</option>
-                  ))}
-                </select>
+                  placeholder="e.g., Indian, American"
+                  maxLength={100}
+                />
                 {errors[`applicants.${index}.nationality`] && (
                   <p className="form-error">{errors[`applicants.${index}.nationality`]}</p>
                 )}
@@ -174,12 +159,12 @@ const ApplicantDetails = ({
 
               {/* Country of Residence */}
               <div>
-                <label className="label label-required">
+                <label className="label">
                   Country of Residence
                 </label>
                 <select
-                  value={applicant.countryOfResidence || ''}
-                  onChange={(e) => handleChange(index, 'countryOfResidence', e.target.value)}
+                  value={applicant.country_of_residence || ''}
+                  onChange={(e) => handleChange(index, 'country_of_residence', e.target.value)}
                   className="input-field"
                 >
                   <option value="">Select Country</option>
@@ -187,52 +172,8 @@ const ApplicantDetails = ({
                     <option key={country} value={country}>{country}</option>
                   ))}
                 </select>
-                {errors[`applicants.${index}.countryOfResidence`] && (
-                  <p className="form-error">{errors[`applicants.${index}.countryOfResidence`]}</p>
-                )}
-              </div>
-
-              {/* Age */}
-              <div>
-                <label className="label">
-                  Age
-                </label>
-                <input
-                  type="number"
-                  value={applicant.age || ''}
-                  onChange={(e) => handleChange(index, 'age', e.target.value)}
-                  className="input-field"
-                  placeholder="Age (optional)"
-                  min="1"
-                  max="99"
-                />
-                <p className="text-xs text-gray-500 mt-1">
-                  Optional for natural persons
-                </p>
-              </div>
-
-              {/* Category */}
-              <div>
-                <label className="label label-required">
-                  Category of Applicant
-                </label>
-                <div className="space-y-2">
-                  {categories.map(category => (
-                    <label key={category} className="flex items-center">
-                      <input
-                        type="radio"
-                        name={`category_${index}`}
-                        value={category}
-                        checked={applicant.category === category}
-                        onChange={(e) => handleChange(index, 'category', e.target.value)}
-                        className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300"
-                      />
-                      <span className="ml-3 text-sm text-gray-700">{category}</span>
-                    </label>
-                  ))}
-                </div>
-                {errors[`applicants.${index}.category`] && (
-                  <p className="form-error mt-2">{errors[`applicants.${index}.category`]}</p>
+                {errors[`applicants.${index}.country_of_residence`] && (
+                  <p className="form-error">{errors[`applicants.${index}.country_of_residence`]}</p>
                 )}
               </div>
             </div>
@@ -240,7 +181,7 @@ const ApplicantDetails = ({
             {/* Address Section */}
             <div className="mt-6 pt-6 border-t border-gray-200">
               <h5 className="text-md font-medium text-gray-900 mb-4">Address Details</h5>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* House No */}
                 <div>
@@ -249,11 +190,41 @@ const ApplicantDetails = ({
                   </label>
                   <input
                     type="text"
-                    value={applicant.address?.houseNo || ''}
-                    onChange={(e) => handleNestedChange(index, 'address', 'houseNo', e.target.value)}
+                    value={applicant.address?.house_no || ''}
+                    onChange={(e) => handleNestedChange(index, 'address', 'house_no', e.target.value)}
                     className="input-field"
-                    placeholder="House/Flat number"
-                    maxLength={50}
+                    placeholder="House/Flat/Building number"
+                    maxLength={100}
+                  />
+                </div>
+
+                {/* Village */}
+                <div>
+                  <label className="label">
+                    Village
+                  </label>
+                  <input
+                    type="text"
+                    value={applicant.address?.village || ''}
+                    onChange={(e) => handleNestedChange(index, 'address', 'village', e.target.value)}
+                    className="input-field"
+                    placeholder="Village name (if applicable)"
+                    maxLength={100}
+                  />
+                </div>
+
+                {/* Post Office */}
+                <div>
+                  <label className="label">
+                    Post Office
+                  </label>
+                  <input
+                    type="text"
+                    value={applicant.address?.post_office || ''}
+                    onChange={(e) => handleNestedChange(index, 'address', 'post_office', e.target.value)}
+                    className="input-field"
+                    placeholder="Post office name"
+                    maxLength={100}
                   />
                 </div>
 
@@ -267,8 +238,8 @@ const ApplicantDetails = ({
                     value={applicant.address?.street || ''}
                     onChange={(e) => handleNestedChange(index, 'address', 'street', e.target.value)}
                     className="input-field"
-                    placeholder="Street name"
-                    maxLength={100}
+                    placeholder="Street name/Road"
+                    maxLength={200}
                   />
                 </div>
 
@@ -282,15 +253,15 @@ const ApplicantDetails = ({
                     value={applicant.address?.city || ''}
                     onChange={(e) => handleNestedChange(index, 'address', 'city', e.target.value)}
                     className="input-field"
-                    placeholder="City name"
-                    maxLength={50}
+                    placeholder="City/Town name"
+                    maxLength={100}
                   />
                 </div>
 
                 {/* State */}
                 <div>
                   <label className="label">
-                    State
+                    State/Province
                   </label>
                   <select
                     value={applicant.address?.state || ''}
@@ -324,58 +295,111 @@ const ApplicantDetails = ({
                 {/* Pin Code */}
                 <div>
                   <label className="label">
-                    Pin Code
+                    Pin Code / Postal Code
                   </label>
                   <input
                     type="text"
-                    value={applicant.address?.pinCode || ''}
-                    onChange={(e) => handleNestedChange(index, 'address', 'pinCode', e.target.value)}
+                    value={applicant.address?.pin_code || ''}
+                    onChange={(e) => handleNestedChange(index, 'address', 'pin_code', e.target.value)}
                     className="input-field"
-                    placeholder="6-digit PIN code"
-                    maxLength={6}
-                    pattern="[0-9]{6}"
+                    placeholder="e.g., 110001"
+                    maxLength={10}
                   />
+                  <p className="text-xs text-gray-500 mt-1">
+                    6 digits for India, varies for other countries
+                  </p>
                 </div>
 
                 {/* Email */}
                 <div>
-                  <label className="label label-required">
+                  <label className="label">
                     Email
                   </label>
                   <input
                     type="email"
-                    value={applicant.address?.email || ''}
-                    onChange={(e) => handleNestedChange(index, 'address', 'email', e.target.value)}
+                    value={applicant.email || ''}
+                    onChange={(e) => handleChange(index, 'email', e.target.value)}
                     className="input-field"
                     placeholder="email@example.com"
+                    maxLength={100}
                   />
-                  {errors[`applicants.${index}.address.email`] && (
-                    <p className="form-error">{errors[`applicants.${index}.address.email`]}</p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    OTP verification will be required if provided
+                  </p>
+                  {errors[`applicants.${index}.email`] && (
+                    <p className="form-error">{errors[`applicants.${index}.email`]}</p>
                   )}
                 </div>
 
                 {/* Contact Number */}
                 <div>
-                  <label className="label label-required">
+                  <label className="label">
                     Contact Number
                   </label>
                   <input
                     type="tel"
-                    value={applicant.address?.contactNumber || ''}
-                    onChange={(e) => handleNestedChange(index, 'address', 'contactNumber', e.target.value)}
+                    value={applicant.contact_no || ''}
+                    onChange={(e) => handleChange(index, 'contact_no', e.target.value)}
                     className="input-field"
                     placeholder="10-digit mobile number"
-                    maxLength={10}
-                    pattern="[6-9][0-9]{9}"
+                    maxLength={15}
                   />
-                  {errors[`applicants.${index}.address.contactNumber`] && (
-                    <p className="form-error">{errors[`applicants.${index}.address.contactNumber`]}</p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    OTP verification will be required if provided
+                  </p>
+                  {errors[`applicants.${index}.contact_no`] && (
+                    <p className="form-error">{errors[`applicants.${index}.contact_no`]}</p>
                   )}
                 </div>
               </div>
             </div>
+
+            {/* Section 3B: Category of Applicant */}
+            <div className="mt-6 pt-6 border-t border-gray-200">
+              <h5 className="text-md font-medium text-gray-900 mb-4">Section 3B: Category of Applicant</h5>
+
+              <div className="space-y-2">
+                {applicantCategories.map(category => (
+                  <label key={category.value} className="flex items-start">
+                    <input
+                      type="radio"
+                      name={`applicant_category_${index}`}
+                      value={category.value}
+                      checked={applicant.category === category.value}
+                      onChange={(e) => handleChange(index, 'category', e.target.value)}
+                      className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 mt-1"
+                    />
+                    <span className="ml-3 text-sm text-gray-700">{category.label}</span>
+                  </label>
+                ))}
+              </div>
+
+              {errors[`applicants.${index}.category`] && (
+                <p className="form-error mt-2">{errors[`applicants.${index}.category`]}</p>
+              )}
+
+              <div className="mt-4 p-3 bg-blue-50 rounded-lg">
+                <p className="text-xs text-blue-700">
+                  <strong>Note:</strong> Category selection helps determine applicable fees and benefits. Select the most appropriate category.
+                </p>
+              </div>
+            </div>
           </div>
         ))}
+
+        {applicants.length === 0 && (
+          <div className="text-center py-8 bg-gray-50 rounded-lg">
+            <p className="text-gray-500 mb-4">No applicants added yet</p>
+            <button
+              type="button"
+              onClick={addApplicant}
+              className="btn-primary flex items-center mx-auto"
+            >
+              <PlusIcon className="h-4 w-4 mr-1" />
+              Add First Applicant
+            </button>
+          </div>
+        )}
       </div>
     </div>
   )

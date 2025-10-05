@@ -398,6 +398,7 @@ app.use('/api/email', require('./src/routes/emailRoutes'));
 app.use('/api/form', require('./src/routes/formRoutes'));
 app.use('/api/admin', require('./src/routes/adminRoutes'));
 app.use('/api/auth', require('./src/routes/authRoutes'));
+app.use('/api/upload', require('./src/routes/uploadRoutes'));
 
 // Serve React static assets from multiple possible paths
 const possiblePaths = [

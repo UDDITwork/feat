@@ -1,91 +1,92 @@
 import React from 'react'
 import { useForm } from '../../contexts/FormContext'
 
-const AgentInformation = ({ 
-  formData, 
-  setFieldValue, 
-  setNestedFieldValue, 
-  setArrayFieldValue, 
-  addArrayItem, 
-  removeArrayItem 
+const AgentInformation = ({
+  formData,
+  setFieldValue,
+  setNestedFieldValue,
+  setArrayFieldValue,
+  addArrayItem,
+  removeArrayItem
 }) => {
   const { errors } = useForm()
 
-  const handleChange = (field, value) => {
-    setFieldValue(field, value)
-  }
-
   const handleNestedChange = (section, field, value) => {
-    const currentSection = formData[section] || {}
     setNestedFieldValue(section, field, value)
   }
 
   return (
     <div className="space-y-6">
+      {/* Section 6: Authorized Registered Patent Agent(s) */}
       <div className="form-section">
-        <h3 className="form-section-title">Patent Agent Information</h3>
-        
+        <h3 className="form-section-title">Section 6: Authorized Registered Patent Agent(s)</h3>
+
+        <p className="text-sm text-gray-600 mb-4">
+          All fields in this section are optional. Fill only if you are appointing a patent agent.
+        </p>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* IN/PA No */}
+          {/* IN/PA Number */}
           <div>
             <label className="label">
-              IN/PA No.
+              IN/PA Number
             </label>
             <input
               type="text"
-              value={formData.patentAgent?.inPaNo || ''}
-              onChange={(e) => handleNestedChange('patentAgent', 'inPaNo', e.target.value)}
+              value={formData.patent_agent?.inpa_no || ''}
+              onChange={(e) => handleNestedChange('patent_agent', 'inpa_no', e.target.value)}
               className="input-field"
-              placeholder="IN/PA-XXXX"
+              placeholder="e.g., IN/PA 1714"
+              maxLength={20}
             />
             <p className="text-xs text-gray-500 mt-1">
-              Patent agent registration number
+              Patent agent registration number format: IN/PA XXXX
             </p>
           </div>
 
-          {/* Agent Name */}
+          {/* Patent Agent Name */}
           <div>
             <label className="label">
-              Agent Name
+              Patent Agent Name
             </label>
             <input
               type="text"
-              value={formData.patentAgent?.agentName || ''}
-              onChange={(e) => handleNestedChange('patentAgent', 'agentName', e.target.value)}
+              value={formData.patent_agent?.name || ''}
+              onChange={(e) => handleNestedChange('patent_agent', 'name', e.target.value)}
               className="input-field"
               placeholder="Full name of patent agent"
-              maxLength={100}
+              maxLength={200}
             />
           </div>
 
-          {/* Mobile No */}
+          {/* Mobile Number */}
           <div>
             <label className="label">
-              Mobile No.
+              Mobile Number
             </label>
             <input
               type="tel"
-              value={formData.patentAgent?.mobileNo || ''}
-              onChange={(e) => handleNestedChange('patentAgent', 'mobileNo', e.target.value)}
+              value={formData.patent_agent?.mobile_no || ''}
+              onChange={(e) => handleNestedChange('patent_agent', 'mobile_no', e.target.value)}
               className="input-field"
               placeholder="10-digit mobile number"
-              maxLength={10}
-              pattern="[6-9][0-9]{9}"
+              maxLength={15}
             />
             <p className="text-xs text-gray-500 mt-1">
-              OTP verification will be required
+              Agent's contact number for correspondence
             </p>
           </div>
         </div>
 
         {/* Help Text */}
         <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-          <h4 className="text-sm font-medium text-blue-800 mb-2">Patent Agent Information:</h4>
+          <h4 className="text-sm font-medium text-blue-800 mb-2">About Patent Agents:</h4>
           <ul className="text-xs text-blue-700 space-y-1">
             <li>• Patent agent must be registered with the Indian Patent Office</li>
-            <li>• IN/PA number format: IN/PA-XXXX (where XXXX is the registration number)</li>
-            <li>• Mobile number will be verified via OTP</li>
-            <li>• This information is required for official correspondence</li>
+            <li>• IN/PA number format: IN/PA XXXX (where XXXX is the registration number)</li>
+            <li>• Authorized agent can file and prosecute patent applications on your behalf</li>
+            <li>• This section is optional - fill only if you are appointing a patent agent</li>
+            <li>• If appointed, a Power of Attorney (POA) document must be submitted</li>
           </ul>
         </div>
       </div>

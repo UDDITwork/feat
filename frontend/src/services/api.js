@@ -136,14 +136,43 @@ export const formAPI = {
 export const adminAPI = {
   getSubmissions: (params = {}) => api.get('/admin/submissions', { params }),
   getSubmission: (id) => api.get(`/admin/submission/${id}`),
-  editSubmission: (id, field, newValue, editedBy) => 
+  editSubmission: (id, field, newValue, editedBy) =>
     api.put(`/admin/submission/${id}/edit`, { field, newValue, editedBy }),
-  bulkEditSubmissions: (submissionIds, field, newValue, editedBy) => 
+  bulkEditSubmissions: (submissionIds, field, newValue, editedBy) =>
     api.put('/admin/submissions/bulk-edit', { submissionIds, field, newValue, editedBy }),
   getEditHistory: (id) => api.get(`/admin/submission/${id}/edit-history`),
   getDashboardStats: () => api.get('/admin/dashboard/stats'),
   getNotifications: (limit = 10) => api.get('/admin/notifications', { params: { limit } }),
   deleteSubmission: (id) => api.delete(`/admin/submission/${id}`),
+  exportSubmission: async (id) => {
+    const token = localStorage.getItem('adminToken')
+    if (!token) {
+      throw new Error('No authentication token found')
+    }
+
+    // Fetch with authentication
+    const response = await fetch(`${API_BASE_URL}/admin/submission/${id}/export`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+
+    if (!response.ok) {
+      throw new Error('Failed to export submission')
+    }
+
+    // Create blob and download
+    const blob = await response.blob()
+    const downloadUrl = window.URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = downloadUrl
+    a.download = `submission_${id}_${Date.now()}.json`
+    document.body.appendChild(a)
+    a.click()
+    window.URL.revokeObjectURL(downloadUrl)
+    document.body.removeChild(a)
+  },
 }
 
 // Utility functions
@@ -172,23 +201,34 @@ export const createFormData = (data) => {
   return formData
 }
 
-// File upload helper
-export const uploadFile = async (file, onProgress = null) => {
-  const formData = new FormData()
-  formData.append('file', file)
-  
-  return api.post('/upload', formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-    onUploadProgress: (progressEvent) => {
-      if (onProgress) {
-        const percentCompleted = Math.round(
-          (progressEvent.loaded * 100) / progressEvent.total
-        )
-        onProgress(percentCompleted)
+// File upload helper - converts to base64 and uploads
+export const uploadFile = async (token, fieldName, file, onProgress = null) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+
+    reader.onload = async () => {
+      try {
+        const base64Data = reader.result
+
+        const response = await api.post('/upload/upload', {
+          token,
+          fieldName,
+          file: {
+            data: base64Data,
+            name: file.name,
+            type: file.type,
+            size: file.size
+          }
+        })
+
+        resolve(response)
+      } catch (error) {
+        reject(error)
       }
-    },
+    }
+
+    reader.onerror = (error) => reject(error)
+    reader.readAsDataURL(file)
   })
 }
 

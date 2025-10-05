@@ -6,7 +6,7 @@ const FormContext = createContext()
 const initialState = {
   formData: {},
   currentStep: 1,
-  totalSteps: 8,
+  totalSteps: 18,  // Updated: Form 1 (7 steps) + Form 2 (1 step) + Forms 3,5,6,7A,8,13,16,26,28 (9 steps) + Review (1 step) = 18 total
   isDirty: false,
   isSubmitting: false,
   isSavingDraft: false,
@@ -217,65 +217,16 @@ export const FormProvider = ({ children }) => {
   }
 
   const validateField = (field, value, rules = {}) => {
-    const errors = []
-
-    if (rules.required && (!value || value.toString().trim() === '')) {
-      errors.push(`${field} is required`)
-    }
-
-    if (rules.email && value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-      errors.push('Please enter a valid email address')
-    }
-
-    if (rules.mobile && value && !/^[6-9]\d{9}$/.test(value)) {
-      errors.push('Please enter a valid 10-digit mobile number starting with 6-9')
-    }
-
-    if (rules.pinCode && value && !/^\d{6}$/.test(value)) {
-      errors.push('Please enter a valid 6-digit PIN code')
-    }
-
-    if (rules.minLength && value && value.length < rules.minLength) {
-      errors.push(`${field} must be at least ${rules.minLength} characters long`)
-    }
-
-    if (rules.maxLength && value && value.length > rules.maxLength) {
-      errors.push(`${field} must not exceed ${rules.maxLength} characters`)
-    }
-
-    if (rules.date && value) {
-      const date = new Date(value)
-      const today = new Date()
-      if (date > today) {
-        errors.push('Date cannot be in the future')
-      }
-    }
-
-    return errors
+    // NO VALIDATION - All fields are completely optional
+    // Client can leave any field blank and proceed
+    return []  // Always return empty errors array
   }
 
   const validateForm = () => {
-    const errors = {}
-    let isValid = true
-
-    // Basic validation rules
-    const validationRules = {
-      'titleOfInvention': { required: true, maxLength: 500 },
-      'applicants.0.name': { required: true, maxLength: 200 },
-      'applicants.0.address.email': { required: true, email: true },
-      'applicants.0.address.contactNumber': { required: true, mobile: true }
-    }
-
-    Object.entries(validationRules).forEach(([field, rules]) => {
-      const fieldErrors = validateField(field, getNestedValue(state.formData, field), rules)
-      if (fieldErrors.length > 0) {
-        errors[field] = fieldErrors[0]
-        isValid = false
-      }
-    })
-
-    dispatch({ type: 'SET_ERRORS', payload: errors })
-    return isValid
+    // NO VALIDATION - All fields are completely optional
+    // Client can skip any field and proceed to next step
+    dispatch({ type: 'SET_ERRORS', payload: {} })
+    return true  // Always return true - no validation blocking
   }
 
   const getNestedValue = (obj, path) => {
