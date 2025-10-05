@@ -33,8 +33,14 @@ const FRONTEND_URL = getFrontendUrl();
 const getAllowedOrigins = () => {
   const origins = [
     'http://localhost:3000',
+    'http://localhost:3001',
+    'http://localhost:5173', // Vite default port
     'http://127.0.0.1:3000',
-    'https://localhost:3000'
+    'http://127.0.0.1:3001',
+    'http://127.0.0.1:5173',
+    'https://localhost:3000',
+    'https://localhost:3001',
+    'https://localhost:5173'
   ];
   
   // Add production frontend URL

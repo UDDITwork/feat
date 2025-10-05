@@ -113,7 +113,7 @@ const PatentDetails = ({
   const AutoFetchBadge = ({ show }) => {
     if (!show) return null
     return (
-      <span className="inline-flex items-center px-2 py-1 text-xs font-medium text-green-700 bg-green-100 rounded-md ml-2">
+      <span className="inline-flex items-center px-2 py-1 text-xs font-medium text-green-700 bg-green-100 -md ml-2">
         📥 From Form 1
       </span>
     )
@@ -122,7 +122,7 @@ const PatentDetails = ({
   return (
     <div className="space-y-6">
       {/* Form 2 Header */}
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-6">
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 -lg p-6">
         <h2 className="text-2xl font-bold text-gray-900 mb-2">
           Form 2: Complete Specification
         </h2>
@@ -278,7 +278,7 @@ const PatentDetails = ({
         </div>
 
         {isFieldAutoFetched('form2_specification_type') && (
-          <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+          <div className="mt-4 p-3 bg-green-50 border border-green-200 -lg">
             <p className="text-xs text-green-700">
               ✅ Auto-selected based on Form 1 Section 13 (claim count indicator)
             </p>
@@ -319,11 +319,11 @@ const PatentDetails = ({
 
       {/* Section 5: Claims (Only if Complete Specification) */}
       {formData.form2_specification_type === 'complete' && (
-        <div className="form-section bg-blue-50 border border-blue-200 rounded-lg p-6">
+        <div className="form-section bg-blue-50 border border-blue-200 -lg p-6">
           <h3 className="form-section-title">Section 5: Claims</h3>
 
           {getHelperTextForClaims() && (
-            <div className="mb-4 p-3 bg-blue-100 border border-blue-300 rounded-lg">
+            <div className="mb-4 p-3 bg-blue-100 border border-blue-300 -lg">
               <p className="text-sm text-blue-800">{getHelperTextForClaims()}</p>
             </div>
           )}
@@ -357,7 +357,7 @@ const PatentDetails = ({
         <h3 className="form-section-title">Section 6: Abstract</h3>
 
         {getHelperTextForAbstract() && (
-          <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+          <div className="mb-4 p-3 bg-blue-50 border border-blue-200 -lg">
             <p className="text-sm text-blue-700">{getHelperTextForAbstract()}</p>
           </div>
         )}
@@ -387,11 +387,11 @@ const PatentDetails = ({
 
       {/* Section 7: Drawings Reference (If Applicable) */}
       {formData.specification_number_of_drawings && parseInt(formData.specification_number_of_drawings) > 0 && (
-        <div className="form-section bg-purple-50 border border-purple-200 rounded-lg p-6">
+        <div className="form-section bg-purple-50 border border-purple-200 -lg p-6">
           <h3 className="form-section-title">Section 7: Drawings Information</h3>
 
           {getHelperTextForDrawings() && (
-            <div className="mb-4 p-3 bg-purple-100 border border-purple-300 rounded-lg">
+            <div className="mb-4 p-3 bg-purple-100 border border-purple-300 -lg">
               <p className="text-sm text-purple-800">{getHelperTextForDrawings()}</p>
             </div>
           )}
@@ -419,7 +419,7 @@ Figure 3: Depicts..."
       )}
 
       {/* Help Section */}
-      <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+      <div className="p-4 bg-blue-50 -lg border border-blue-200">
         <h4 className="text-sm font-medium text-blue-800 mb-2">Form 2 Guidelines:</h4>
         <ul className="text-xs text-blue-700 space-y-1">
           <li>• All fields are optional - you can fill as much or as little as needed</li>

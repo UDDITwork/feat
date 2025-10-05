@@ -110,7 +110,7 @@ const FormView = () => {
 
   const FieldRow = ({ label, value, fieldPath }) => (
     <div
-      className="p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"
+      className="p-3 border border-gray-200 -lg cursor-pointer hover:bg-gray-50 transition-colors"
       onClick={() => handleEditField(fieldPath, value)}
     >
       <p className="text-xs font-medium text-gray-500 mb-1">{label}</p>
@@ -146,7 +146,7 @@ const FormView = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <div className="bg-white -lg shadow-sm border border-gray-200 p-6">
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-2xl font-bold text-gray-900">Form Submission Details</h2>
@@ -163,7 +163,7 @@ const FormView = () => {
             </div>
           </div>
           <div className="flex items-center space-x-4">
-            <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
+            <span className={`inline-flex items-center px-3 py-1 -full text-sm font-medium ${
               submission.status === 'completed' ? 'bg-green-100 text-green-800' :
               submission.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
               'bg-blue-100 text-blue-800'
@@ -172,14 +172,14 @@ const FormView = () => {
             </span>
             <button
               onClick={handleExportPDF}
-              className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+              className="inline-flex items-center px-4 py-2 border border-gray-300 -md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
             >
               <ArrowDownTrayIcon className="h-4 w-4 mr-2" />
               Export PDF
             </button>
             <button
               onClick={() => navigate('/submissions')}
-              className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700"
+              className="inline-flex items-center px-4 py-2 border border-transparent -md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700"
             >
               Back to List
             </button>
@@ -188,7 +188,7 @@ const FormView = () => {
       </div>
 
       {/* Tabs */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+      <div className="bg-white -lg shadow-sm border border-gray-200">
         <div className="border-b border-gray-200">
           <nav className="-mb-px flex space-x-8 px-6" aria-label="Tabs">
             {tabs.map((tab) => {
@@ -260,7 +260,7 @@ const FormView = () => {
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Applicants</h3>
                 {(submission.formData?.applicants || []).length > 0 ? (
                   submission.formData.applicants.map((applicant, index) => (
-                    <div key={index} className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <div key={index} className="mb-6 p-4 bg-gray-50 -lg border border-gray-200">
                       <h5 className="font-medium text-gray-900 mb-3">Applicant {index + 1}</h5>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <FieldRow label="Name" value={applicant.name} fieldPath={`applicants.${index}.name`} />
@@ -285,7 +285,7 @@ const FormView = () => {
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Inventors</h3>
                 {(submission.formData?.inventors || []).length > 0 ? (
                   submission.formData.inventors.map((inventor, index) => (
-                    <div key={index} className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <div key={index} className="mb-6 p-4 bg-gray-50 -lg border border-gray-200">
                       <h5 className="font-medium text-gray-900 mb-3">Inventor {index + 1}</h5>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <FieldRow label="Name" value={inventor.name} fieldPath={`inventors.${index}.name`} />
@@ -353,7 +353,7 @@ const FormView = () => {
                 {(submission.formData?.form5_inventors || []).length > 0 ? (
                   <div className="space-y-4">
                     {submission.formData.form5_inventors.map((inventor, index) => (
-                      <div key={index} className="p-4 bg-gray-50 rounded-lg">
+                      <div key={index} className="p-4 bg-gray-50 -lg">
                         <h5 className="font-medium text-gray-900 mb-3">Inventor {index + 1}</h5>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                           <FieldRow label="Name" value={inventor.name} fieldPath={`form5_inventors.${index}.name`} />
@@ -406,7 +406,7 @@ const FormView = () => {
                   <div className="mt-4 space-y-3">
                     <h5 className="font-medium text-gray-900">Inventors to Mention:</h5>
                     {submission.formData.form8_inventors.map((inventor, index) => (
-                      <div key={index} className="p-3 bg-gray-50 rounded-lg">
+                      <div key={index} className="p-3 bg-gray-50 -lg">
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                           <FieldRow label="Name" value={inventor.name} fieldPath={`form8_inventors.${index}.name`} />
                           <FieldRow label="Nationality" value={inventor.nationality} fieldPath={`form8_inventors.${index}.nationality`} />
@@ -452,7 +452,7 @@ const FormView = () => {
                   <div className="mt-4 space-y-3">
                     <h5 className="font-medium text-gray-900">Authorized Agents:</h5>
                     {submission.formData.form26_agents.map((agent, index) => (
-                      <div key={index} className="p-3 bg-gray-50 rounded-lg">
+                      <div key={index} className="p-3 bg-gray-50 -lg">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                           <FieldRow label="Agent Name" value={agent.name} fieldPath={`form26_agents.${index}.name`} />
                           <FieldRow label="INPA Number" value={agent.inpa_number} fieldPath={`form26_agents.${index}.inpa_number`} />
@@ -481,7 +481,7 @@ const FormView = () => {
       {/* Edit Modal */}
       {isEditing && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md shadow-xl">
+          <div className="bg-white -lg p-6 w-full max-w-md shadow-xl">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-gray-900">Edit Field</h3>
               <button onClick={handleCancelEdit} className="text-gray-400 hover:text-gray-500">
@@ -495,7 +495,7 @@ const FormView = () => {
                 <input
                   type="text"
                   value={editField}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50"
+                  className="w-full px-3 py-2 border border-gray-300 -md bg-gray-50"
                   readOnly
                 />
               </div>
@@ -506,7 +506,7 @@ const FormView = () => {
                   type="text"
                   value={editValue}
                   onChange={(e) => setEditValue(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 -md focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                   placeholder="Enter new value"
                 />
               </div>
@@ -517,7 +517,7 @@ const FormView = () => {
                   type="text"
                   value={editedBy}
                   onChange={(e) => setEditedBy(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 -md focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                   placeholder="Your name"
                 />
               </div>
@@ -526,13 +526,13 @@ const FormView = () => {
             <div className="flex justify-end space-x-3 mt-6">
               <button
                 onClick={handleCancelEdit}
-                className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+                className="inline-flex items-center px-4 py-2 border border-gray-300 -md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
               >
                 Cancel
               </button>
               <button
                 onClick={handleSaveEdit}
-                className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700"
+                className="inline-flex items-center px-4 py-2 border border-transparent -md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700"
               >
                 <CheckCircleIcon className="h-4 w-4 mr-2" />
                 Save Changes

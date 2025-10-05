@@ -102,7 +102,7 @@ const FileUpload = ({
             disabled={uploading}
             className="block w-full text-sm text-gray-500
               file:mr-4 file:py-2 file:px-4
-              file:rounded-lg file:border-0
+              file:-lg file:border-0
               file:text-sm file:font-semibold
               file:bg-indigo-50 file:text-indigo-700
               hover:file:bg-indigo-100
@@ -111,14 +111,14 @@ const FileUpload = ({
           {uploading && (
             <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center">
               <div className="flex items-center space-x-2">
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-indigo-600"></div>
+                <div className="animate-spin -full h-4 w-4 border-b-2 border-indigo-600"></div>
                 <span className="text-sm text-indigo-600">Uploading...</span>
               </div>
             </div>
           )}
         </div>
       ) : (
-        <div className="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg">
+        <div className="flex items-center justify-between p-3 bg-green-50 border border-green-200 -lg">
           <div className="flex items-center space-x-3">
             <CheckCircleIcon className="h-5 w-5 text-green-600" />
             <div>

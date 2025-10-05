@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useForm } from '../../contexts/FormContext'
-import { UploadIcon } from '@heroicons/react/24/outline'
+import { ArrowUpTrayIcon } from '@heroicons/react/24/outline'
 
 const Form16RegistrationTitle = ({
   formData,
@@ -270,7 +270,7 @@ const Form16RegistrationTitle = ({
     const config = badgeConfig[source] || { color: 'gray', text: '📥 Auto' }
 
     return (
-      <span className={`inline-flex items-center px-2 py-1 text-xs font-medium text-${config.color}-700 bg-${config.color}-100 rounded-md ml-2`}>
+      <span className={`inline-flex items-center px-2 py-1 text-xs font-medium text-${config.color}-700 bg-${config.color}-100 ml-2`}>
         {config.text}
       </span>
     )
@@ -279,7 +279,7 @@ const Form16RegistrationTitle = ({
   return (
     <div className="space-y-6">
       {/* Form Header */}
-      <div className="bg-gradient-to-r from-teal-50 to-cyan-50 border border-teal-200 rounded-lg p-6">
+      <div className="bg-gradient-to-r from-teal-50 to-cyan-50 border border-teal-200 -lg p-6">
         <h2 className="text-2xl font-bold text-gray-900 mb-2">
           Form 16: Application for Registration of Title/Interest in a Patent
         </h2>
@@ -295,7 +295,7 @@ const Form16RegistrationTitle = ({
       </div>
 
       {/* Section 1: NEW OWNER/GRANTEE DETAILS */}
-      <div className="form-section bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+      <div className="form-section bg-yellow-50 border border-yellow-200 -lg p-6">
         <h3 className="form-section-title">Section 1: New Owner/Grantee Details</h3>
 
         <p className="text-sm text-gray-600 mb-4">
@@ -479,13 +479,13 @@ const Form16RegistrationTitle = ({
 
         <div className="space-y-4">
           {/* Merger Certificate / Assignment Deed */}
-          <div className="border border-gray-200 rounded-lg p-4">
+          <div className="border border-gray-200 -lg p-4">
             <label className="flex items-start">
               <input
                 type="checkbox"
                 checked={formData.form16_doc_merger_or_assignment || false}
                 onChange={(e) => handleDocumentCheckbox('form16_doc_merger_or_assignment', e.target.checked)}
-                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded mt-1"
+                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300  mt-1"
               />
               <span className="ml-3 text-sm text-gray-700">
                 <strong>Notarized Certificate of Merger / Deed of Assignment</strong>
@@ -520,13 +520,13 @@ const Form16RegistrationTitle = ({
           </div>
 
           {/* Power of Attorney */}
-          <div className="border border-gray-200 rounded-lg p-4">
+          <div className="border border-gray-200 -lg p-4">
             <label className="flex items-start">
               <input
                 type="checkbox"
                 checked={formData.form16_doc_power_of_attorney || false}
                 onChange={(e) => handleDocumentCheckbox('form16_doc_power_of_attorney', e.target.checked)}
-                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded mt-1"
+                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300  mt-1"
               />
               <span className="ml-3 text-sm text-gray-700">
                 <strong>Power of Attorney</strong> signed on behalf of new owner
@@ -551,13 +551,13 @@ const Form16RegistrationTitle = ({
           </div>
 
           {/* Additional Documents */}
-          <div className="border border-gray-200 rounded-lg p-4">
+          <div className="border border-gray-200 -lg p-4">
             <label className="flex items-start">
               <input
                 type="checkbox"
                 checked={formData.form16_doc_additional || false}
                 onChange={(e) => handleDocumentCheckbox('form16_doc_additional', e.target.checked)}
-                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded mt-1"
+                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300  mt-1"
               />
               <span className="ml-3 text-sm text-gray-700">
                 <strong>Additional supporting documents</strong> (certificates, board resolutions, etc.)
@@ -588,15 +588,15 @@ const Form16RegistrationTitle = ({
       </div>
 
       {/* Section 6: REGISTRATION REQUEST */}
-      <div className="form-section bg-indigo-50 border border-indigo-200 rounded-lg p-6">
+      <div className="form-section bg-indigo-50 border border-indigo-200 -lg p-6">
         <h3 className="form-section-title">Section 6: Request for Registration</h3>
 
-        <div className="flex items-start p-4 bg-white border border-gray-300 rounded-lg">
+        <div className="flex items-start p-4 bg-white border border-gray-300 -lg">
           <input
             type="checkbox"
             checked={formData.form16_registration_request || false}
             onChange={(e) => handleDocumentCheckbox('form16_registration_request', e.target.checked)}
-            className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded mt-1"
+            className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300  mt-1"
           />
           <span className="ml-3 text-sm text-gray-800">
             We hereby apply that a notification thereof may be entered into the register of patents.
@@ -809,11 +809,11 @@ const Form16RegistrationTitle = ({
           <label className="label">
             Signature Upload
           </label>
-          <div className="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-primary-400 transition-colors">
+          <div className="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed -lg hover:border-primary-400 transition-colors">
             <div className="space-y-2 text-center">
-              <UploadIcon className="mx-auto h-12 w-12 text-gray-400" />
+              <ArrowUpTrayIcon className="mx-auto h-12 w-12 text-gray-400" />
               <div className="flex text-sm text-gray-600">
-                <label className="relative cursor-pointer bg-white rounded-md font-medium text-primary-600 hover:text-primary-500">
+                <label className="relative cursor-pointer bg-white -md font-medium text-primary-600 hover:text-primary-500">
                   <span>Upload signature</span>
                   <input
                     type="file"
@@ -828,7 +828,7 @@ const Form16RegistrationTitle = ({
                 JPG, PNG, PDF up to 2MB
               </p>
               {formData.form16_signature_filename && (
-                <div className="mt-2 p-2 bg-green-50 border border-green-200 rounded">
+                <div className="mt-2 p-2 bg-green-50 border border-green-200 ">
                   <p className="text-sm text-green-700">
                     ✅ Uploaded: {formData.form16_signature_filename}
                   </p>
@@ -840,7 +840,7 @@ const Form16RegistrationTitle = ({
       </div>
 
       {/* Section 9: ADDRESSEE */}
-      <div className="form-section bg-gray-50 border border-gray-300 rounded-lg p-6">
+      <div className="form-section bg-gray-50 border border-gray-300 -lg p-6">
         <h3 className="form-section-title">Section 9: Addressee</h3>
 
         <div className="space-y-3">
@@ -890,7 +890,7 @@ const Form16RegistrationTitle = ({
       </div>
 
       {/* Help Section */}
-      <div className="p-4 bg-teal-50 rounded-lg border border-teal-200">
+      <div className="p-4 bg-teal-50 -lg border border-teal-200">
         <h4 className="text-sm font-medium text-teal-800 mb-2">Form 16 Important Guidelines:</h4>
         <ul className="text-xs text-teal-700 space-y-1">
           <li>• All fields are optional - fill only the information you have available</li>

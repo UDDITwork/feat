@@ -133,9 +133,9 @@ const Settings = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <div className="bg-white -lg shadow-sm border border-gray-200 p-6">
         <div className="flex items-center space-x-3">
-          <div className="gradient-bg p-3 rounded-lg">
+          <div className="gradient-bg p-3 -lg">
             <Cog6ToothIcon className="h-6 w-6 text-white" />
           </div>
           <div>
@@ -146,7 +146,7 @@ const Settings = () => {
       </div>
 
       {/* Tabs */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+      <div className="bg-white -lg shadow-sm border border-gray-200">
         <div className="border-b border-gray-200">
           <nav className="-mb-px flex space-x-8 px-6">
             {tabs.map((tab) => {
@@ -185,7 +185,7 @@ const Settings = () => {
                         type="text"
                         value={profileForm.name}
                         onChange={(e) => setProfileForm(prev => ({ ...prev, name: e.target.value }))}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                        className="w-full px-3 py-2 border border-gray-300 -md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                         required
                       />
                     </div>
@@ -198,7 +198,7 @@ const Settings = () => {
                         type="email"
                         value={profileForm.email}
                         onChange={(e) => setProfileForm(prev => ({ ...prev, email: e.target.value }))}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                        className="w-full px-3 py-2 border border-gray-300 -md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                         required
                       />
                     </div>
@@ -211,7 +211,7 @@ const Settings = () => {
                         type="tel"
                         value={profileForm.phone}
                         onChange={(e) => setProfileForm(prev => ({ ...prev, phone: e.target.value }))}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                        className="w-full px-3 py-2 border border-gray-300 -md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                       />
                     </div>
                     
@@ -223,7 +223,7 @@ const Settings = () => {
                         type="text"
                         value={profileForm.company}
                         onChange={(e) => setProfileForm(prev => ({ ...prev, company: e.target.value }))}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                        className="w-full px-3 py-2 border border-gray-300 -md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                       />
                     </div>
                   </div>
@@ -232,7 +232,7 @@ const Settings = () => {
                     <button
                       type="submit"
                       disabled={loading}
-                      className="bg-primary-600 text-white px-4 py-2 rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="bg-primary-600 text-white px-4 py-2 -md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {loading ? 'Updating...' : 'Update Profile'}
                     </button>
@@ -256,7 +256,7 @@ const Settings = () => {
                       type="password"
                       value={passwordForm.currentPassword}
                       onChange={(e) => setPasswordForm(prev => ({ ...prev, currentPassword: e.target.value }))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 -md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                       required
                     />
                   </div>
@@ -269,7 +269,7 @@ const Settings = () => {
                       type="password"
                       value={passwordForm.newPassword}
                       onChange={(e) => setPasswordForm(prev => ({ ...prev, newPassword: e.target.value }))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 -md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                       required
                     />
                   </div>
@@ -282,7 +282,7 @@ const Settings = () => {
                       type="password"
                       value={passwordForm.confirmPassword}
                       onChange={(e) => setPasswordForm(prev => ({ ...prev, confirmPassword: e.target.value }))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 -md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                       required
                     />
                   </div>
@@ -291,7 +291,7 @@ const Settings = () => {
                     <button
                       type="submit"
                       disabled={loading}
-                      className="bg-primary-600 text-white px-4 py-2 rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="bg-primary-600 text-white px-4 py-2 -md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {loading ? 'Changing...' : 'Change Password'}
                     </button>
@@ -307,7 +307,7 @@ const Settings = () => {
                       <h4 className="text-sm font-medium text-gray-900">Two-Factor Authentication</h4>
                       <p className="text-sm text-gray-500">Add an extra layer of security to your account</p>
                     </div>
-                    <button className="bg-primary-600 text-white px-4 py-2 rounded-md hover:bg-primary-700 text-sm">
+                    <button className="bg-primary-600 text-white px-4 py-2 -md hover:bg-primary-700 text-sm">
                       Enable 2FA
                     </button>
                   </div>
@@ -317,7 +317,7 @@ const Settings = () => {
                       <h4 className="text-sm font-medium text-gray-900">Session Management</h4>
                       <p className="text-sm text-gray-500">View and manage active sessions</p>
                     </div>
-                    <button className="bg-gray-100 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-200 text-sm">
+                    <button className="bg-gray-100 text-gray-700 px-4 py-2 -md hover:bg-gray-200 text-sm">
                       Manage Sessions
                     </button>
                   </div>
@@ -344,12 +344,12 @@ const Settings = () => {
                       </div>
                       <button
                         onClick={() => handleNotificationToggle(key)}
-                        className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 ${
+                        className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer -full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 ${
                           value ? 'bg-primary-600' : 'bg-gray-200'
                         }`}
                       >
                         <span
-                          className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                          className={`pointer-events-none inline-block h-5 w-5 transform -full bg-white shadow ring-0 transition duration-200 ease-in-out ${
                             value ? 'translate-x-5' : 'translate-x-0'
                           }`}
                         />
@@ -366,7 +366,7 @@ const Settings = () => {
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Notification Frequency
                     </label>
-                    <select className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                    <select className="w-full px-3 py-2 border border-gray-300 -md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
                       <option>Immediate</option>
                       <option>Daily Digest</option>
                       <option>Weekly Summary</option>
@@ -380,12 +380,12 @@ const Settings = () => {
                     <div className="grid grid-cols-2 gap-4">
                       <input
                         type="time"
-                        className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                        className="px-3 py-2 border border-gray-300 -md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                         defaultValue="22:00"
                       />
                       <input
                         type="time"
-                        className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                        className="px-3 py-2 border border-gray-300 -md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                         defaultValue="08:00"
                       />
                     </div>
@@ -408,12 +408,12 @@ const Settings = () => {
                     </div>
                     <button
                       onClick={() => handleSystemSettingChange('autoSave', !systemSettings.autoSave)}
-                      className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 ${
+                      className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer -full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 ${
                         systemSettings.autoSave ? 'bg-primary-600' : 'bg-gray-200'
                       }`}
                     >
                       <span
-                        className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                        className={`pointer-events-none inline-block h-5 w-5 transform -full bg-white shadow ring-0 transition duration-200 ease-in-out ${
                           systemSettings.autoSave ? 'translate-x-5' : 'translate-x-0'
                         }`}
                       />
@@ -431,7 +431,7 @@ const Settings = () => {
                         max="300"
                         value={systemSettings.autoSaveInterval}
                         onChange={(e) => handleSystemSettingChange('autoSaveInterval', parseInt(e.target.value))}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                        className="w-full px-3 py-2 border border-gray-300 -md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                       />
                     </div>
                   )}
@@ -446,7 +446,7 @@ const Settings = () => {
                       max="480"
                       value={systemSettings.sessionTimeout}
                       onChange={(e) => handleSystemSettingChange('sessionTimeout', parseInt(e.target.value))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 -md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                     />
                   </div>
                   
@@ -457,7 +457,7 @@ const Settings = () => {
                     <select
                       value={systemSettings.language}
                       onChange={(e) => handleSystemSettingChange('language', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 -md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                     >
                       <option value="en">English</option>
                       <option value="hi">Hindi</option>
@@ -473,7 +473,7 @@ const Settings = () => {
                     <select
                       value={systemSettings.timezone}
                       onChange={(e) => handleSystemSettingChange('timezone', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 -md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                     >
                       <option value="Asia/Kolkata">India Standard Time (IST)</option>
                       <option value="UTC">UTC</option>
@@ -489,7 +489,7 @@ const Settings = () => {
                   <button
                     onClick={saveSettings}
                     disabled={loading}
-                    className="bg-primary-600 text-white px-4 py-2 rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="bg-primary-600 text-white px-4 py-2 -md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {loading ? 'Saving...' : 'Save Settings'}
                   </button>

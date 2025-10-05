@@ -79,7 +79,7 @@ const Form2CompleteSpecification = ({ formData, setFieldValue, setNestedFieldVal
     const config = badgeConfig[source] || { color: 'gray', text: '📥 Auto' }
 
     return (
-      <span className={`inline-flex items-center px-2 py-1 text-xs font-medium text-${config.color}-700 bg-${config.color}-100 rounded-md ml-2`}>
+      <span className={`inline-flex items-center px-2 py-1 text-xs font-medium text-${config.color}-700 bg-${config.color}-100 -md ml-2`}>
         {config.text}
       </span>
     )
@@ -112,7 +112,7 @@ const Form2CompleteSpecification = ({ formData, setFieldValue, setNestedFieldVal
   }
 
   return (
-    <div className="max-w-5xl mx-auto p-6 bg-white rounded-lg shadow-md">
+    <div className="max-w-5xl mx-auto p-6 bg-white -lg shadow-md">
       {/* Header */}
       <div className="mb-8 border-b pb-6">
         <div className="flex items-center gap-3 mb-4">
@@ -125,7 +125,7 @@ const Form2CompleteSpecification = ({ formData, setFieldValue, setNestedFieldVal
           </div>
         </div>
 
-        <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded">
+        <div className="bg-blue-50 border-l-4 border-blue-400 p-4 ">
           <div className="flex">
             <InformationCircleIcon className="h-5 w-5 text-blue-400 mt-0.5 mr-3" />
             <div>
@@ -141,7 +141,7 @@ const Form2CompleteSpecification = ({ formData, setFieldValue, setNestedFieldVal
       </div>
 
       {/* Section 1: Title of Invention */}
-      <div className="mb-8 border border-gray-200 rounded-lg p-6">
+      <div className="mb-8 border border-gray-200 -lg p-6">
         <div className="flex items-center gap-2 mb-6">
           <DocumentTextIcon className="h-6 w-6 text-indigo-600" />
           <h2 className="text-xl font-semibold text-gray-800">
@@ -159,7 +159,7 @@ const Form2CompleteSpecification = ({ formData, setFieldValue, setNestedFieldVal
             value={formData.form2_invention_title || ''}
             onChange={(e) => setFieldValue('form2_invention_title', e.target.value)}
             maxLength={500}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 -lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
             placeholder="Enter the title of your invention"
           />
           <p className="text-xs text-gray-500 mt-1">
@@ -169,7 +169,7 @@ const Form2CompleteSpecification = ({ formData, setFieldValue, setNestedFieldVal
       </div>
 
       {/* Section 2: Applicant Details */}
-      <div className="mb-8 border border-gray-200 rounded-lg p-6">
+      <div className="mb-8 border border-gray-200 -lg p-6">
         <div className="flex items-center gap-2 mb-6">
           <DocumentTextIcon className="h-6 w-6 text-indigo-600" />
           <h2 className="text-xl font-semibold text-gray-800">
@@ -188,7 +188,7 @@ const Form2CompleteSpecification = ({ formData, setFieldValue, setNestedFieldVal
               value={formData.form2_applicant_name || ''}
               onChange={(e) => setFieldValue('form2_applicant_name', e.target.value)}
               maxLength={200}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 -lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               placeholder="Enter applicant full name"
             />
           </div>
@@ -203,7 +203,7 @@ const Form2CompleteSpecification = ({ formData, setFieldValue, setNestedFieldVal
               value={formData.form2_applicant_nationality || ''}
               onChange={(e) => setFieldValue('form2_applicant_nationality', e.target.value)}
               maxLength={100}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 -lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               placeholder="Enter nationality (e.g., Indian, USA, etc.)"
             />
           </div>
@@ -218,7 +218,7 @@ const Form2CompleteSpecification = ({ formData, setFieldValue, setNestedFieldVal
               onChange={(e) => setFieldValue('form2_applicant_address', e.target.value)}
               maxLength={500}
               rows={4}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 -lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               placeholder="Enter complete address including house no., street, city, state, PIN, country"
             />
             <p className="text-xs text-gray-500 mt-1">
@@ -229,7 +229,7 @@ const Form2CompleteSpecification = ({ formData, setFieldValue, setNestedFieldVal
       </div>
 
       {/* Section 3: Specification Type */}
-      <div className="mb-8 border border-gray-200 rounded-lg p-6">
+      <div className="mb-8 border border-gray-200 -lg p-6">
         <div className="flex items-center gap-2 mb-6">
           <DocumentTextIcon className="h-6 w-6 text-indigo-600" />
           <h2 className="text-xl font-semibold text-gray-800">
@@ -243,7 +243,7 @@ const Form2CompleteSpecification = ({ formData, setFieldValue, setNestedFieldVal
             <AutoFetchBadge source={autoFetched.form2_specification_type} />
           </label>
           <div className="space-y-3">
-            <label className="flex items-start p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+            <label className="flex items-start p-4 border-2 border-gray-200 -lg cursor-pointer hover:bg-gray-50 transition-colors">
               <input
                 type="radio"
                 name="form2_specification_type"
@@ -260,7 +260,7 @@ const Form2CompleteSpecification = ({ formData, setFieldValue, setNestedFieldVal
               </div>
             </label>
 
-            <label className="flex items-start p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+            <label className="flex items-start p-4 border-2 border-gray-200 -lg cursor-pointer hover:bg-gray-50 transition-colors">
               <input
                 type="radio"
                 name="form2_specification_type"
@@ -281,7 +281,7 @@ const Form2CompleteSpecification = ({ formData, setFieldValue, setNestedFieldVal
       </div>
 
       {/* Section 4: Description/Specification Content */}
-      <div className="mb-8 border border-gray-200 rounded-lg p-6">
+      <div className="mb-8 border border-gray-200 -lg p-6">
         <div className="flex items-center gap-2 mb-6">
           <DocumentTextIcon className="h-6 w-6 text-indigo-600" />
           <h2 className="text-xl font-semibold text-gray-800">
@@ -293,7 +293,7 @@ const Form2CompleteSpecification = ({ formData, setFieldValue, setNestedFieldVal
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Complete Technical Description
           </label>
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-3">
+          <div className="bg-yellow-50 border border-yellow-200 -lg p-3 mb-3">
             <p className="text-sm text-yellow-800">
               <strong>Note:</strong> This field should include:
               <br />• Field of invention
@@ -307,7 +307,7 @@ const Form2CompleteSpecification = ({ formData, setFieldValue, setNestedFieldVal
             value={formData.form2_specification_description || ''}
             onChange={(e) => setFieldValue('form2_specification_description', e.target.value)}
             rows={15}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent font-mono text-sm"
+            className="w-full px-4 py-2 border border-gray-300 -lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent font-mono text-sm"
             placeholder="Enter the complete technical description of your invention..."
           />
           <p className="text-xs text-gray-500 mt-1">
@@ -318,7 +318,7 @@ const Form2CompleteSpecification = ({ formData, setFieldValue, setNestedFieldVal
 
       {/* Section 5: Claims (Conditional - only if Complete Specification) */}
       {formData.form2_specification_type === 'complete' && (
-        <div className="mb-8 border border-gray-200 rounded-lg p-6">
+        <div className="mb-8 border border-gray-200 -lg p-6">
           <div className="flex items-center gap-2 mb-6">
             <DocumentTextIcon className="h-6 w-6 text-indigo-600" />
             <h2 className="text-xl font-semibold text-gray-800">
@@ -327,7 +327,7 @@ const Form2CompleteSpecification = ({ formData, setFieldValue, setNestedFieldVal
           </div>
 
           {getClaimsHelperText() && (
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
+            <div className="bg-blue-50 border border-blue-200 -lg p-3 mb-4">
               <p className="text-sm text-blue-800">{getClaimsHelperText()}</p>
             </div>
           )}
@@ -336,7 +336,7 @@ const Form2CompleteSpecification = ({ formData, setFieldValue, setNestedFieldVal
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Patent Claims (Numbered List)
             </label>
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-3">
+            <div className="bg-yellow-50 border border-yellow-200 -lg p-3 mb-3">
               <p className="text-sm text-yellow-800">
                 <strong>Format:</strong> Each claim should start with a number.
                 <br />Example:
@@ -348,7 +348,7 @@ const Form2CompleteSpecification = ({ formData, setFieldValue, setNestedFieldVal
               value={formData.form2_specification_claims || ''}
               onChange={(e) => setFieldValue('form2_specification_claims', e.target.value)}
               rows={12}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent font-mono text-sm"
+              className="w-full px-4 py-2 border border-gray-300 -lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent font-mono text-sm"
               placeholder="1. A [method/apparatus/composition] for [purpose], comprising...&#10;2. The [method/apparatus/composition] of claim 1, wherein...&#10;..."
             />
             <p className="text-xs text-gray-500 mt-1">
@@ -359,7 +359,7 @@ const Form2CompleteSpecification = ({ formData, setFieldValue, setNestedFieldVal
       )}
 
       {/* Section 6: Abstract */}
-      <div className="mb-8 border border-gray-200 rounded-lg p-6">
+      <div className="mb-8 border border-gray-200 -lg p-6">
         <div className="flex items-center gap-2 mb-6">
           <DocumentTextIcon className="h-6 w-6 text-indigo-600" />
           <h2 className="text-xl font-semibold text-gray-800">
@@ -368,7 +368,7 @@ const Form2CompleteSpecification = ({ formData, setFieldValue, setNestedFieldVal
         </div>
 
         {getAbstractHelperText() && (
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
+          <div className="bg-blue-50 border border-blue-200 -lg p-3 mb-4">
             <p className="text-sm text-blue-800">{getAbstractHelperText()}</p>
           </div>
         )}
@@ -377,7 +377,7 @@ const Form2CompleteSpecification = ({ formData, setFieldValue, setNestedFieldVal
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Abstract (Max 150 words / ~1000 characters)
           </label>
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-3">
+          <div className="bg-yellow-50 border border-yellow-200 -lg p-3 mb-3">
             <p className="text-sm text-yellow-800">
               <strong>Abstract should:</strong> Briefly summarize the invention in 150 words or less.
               Include the technical field, problem solved, and key features.
@@ -388,7 +388,7 @@ const Form2CompleteSpecification = ({ formData, setFieldValue, setNestedFieldVal
             onChange={(e) => setFieldValue('form2_specification_abstract', e.target.value)}
             maxLength={1000}
             rows={6}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 -lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
             placeholder="Enter a concise abstract summarizing your invention..."
           />
           <p className="text-xs text-gray-500 mt-1">
@@ -399,7 +399,7 @@ const Form2CompleteSpecification = ({ formData, setFieldValue, setNestedFieldVal
 
       {/* Section 7: Drawings Reference (Info Only) */}
       {getDrawingsHelperText() && (
-        <div className="mb-8 border border-gray-200 rounded-lg p-6">
+        <div className="mb-8 border border-gray-200 -lg p-6">
           <div className="flex items-center gap-2 mb-6">
             <DocumentTextIcon className="h-6 w-6 text-indigo-600" />
             <h2 className="text-xl font-semibold text-gray-800">
@@ -407,7 +407,7 @@ const Form2CompleteSpecification = ({ formData, setFieldValue, setNestedFieldVal
             </h2>
           </div>
 
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <div className="bg-blue-50 border border-blue-200 -lg p-4">
             <p className="text-sm text-blue-800">
               {getDrawingsHelperText()}
               <br /><strong>Note:</strong> Drawing files should be uploaded separately as per Form 1 specifications.
@@ -417,7 +417,7 @@ const Form2CompleteSpecification = ({ formData, setFieldValue, setNestedFieldVal
       )}
 
       {/* Help Section */}
-      <div className="bg-green-50 border border-green-200 rounded-lg p-6">
+      <div className="bg-green-50 border border-green-200 -lg p-6">
         <div className="flex gap-3">
           <InformationCircleIcon className="h-6 w-6 text-green-600 flex-shrink-0" />
           <div>

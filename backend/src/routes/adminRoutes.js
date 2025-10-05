@@ -484,6 +484,111 @@ router.delete('/submission/:id', async (req, res) => {
   }
 });
 
+// Get clients data extracted from form submissions
+router.get('/clients', async (req, res) => {
+  try {
+    const { page = 1, limit = 50, search, status } = req.query;
+
+    // Build filter object
+    const filter = {};
+    if (status && status !== 'all') {
+      filter.status = status;
+    }
+    if (search) {
+      filter.$or = [
+        { email: { $regex: search, $options: 'i' } },
+        { 'formData.applicantDetails.applicants.0.name': { $regex: search, $options: 'i' } },
+        { 'formData.basicInformation.titleOfInvention': { $regex: search, $options: 'i' } }
+      ];
+    }
+
+    // Calculate pagination
+    const skip = (parseInt(page) - 1) * parseInt(limit);
+
+    // Get submissions and extract client data
+    const submissions = await FormSubmission.find(filter)
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(parseInt(limit))
+      .select('email status createdAt submittedAt formData.applicantDetails formData.basicInformation formData.addressForService')
+      .lean();
+
+    // Transform submissions into client data
+    const clients = submissions.map(submission => {
+      const applicant = submission.formData?.applicantDetails?.applicants?.[0];
+      const address = submission.formData?.addressForService;
+      const inventionTitle = submission.formData?.basicInformation?.titleOfInvention;
+      
+      return {
+        id: submission._id.toString(),
+        name: applicant?.name || 'Unknown',
+        email: submission.email,
+        phone: applicant?.address?.contactNumber || '',
+        company: applicant?.category?.type || 'Individual',
+        address: address ? `${address.address || ''} ${address.city || ''} ${address.state || ''} ${address.country || ''}`.trim() : '',
+        status: submission.status === 'completed' ? 'active' : 
+                submission.status === 'draft' ? 'prospect' : 'inactive',
+        submissions: 1, // Each submission represents one client submission
+        lastContact: submission.submittedAt || submission.createdAt,
+        notes: inventionTitle || 'No invention title provided'
+      };
+    });
+
+    // Get total count
+    const total = await FormSubmission.countDocuments(filter);
+
+    // Get status counts for clients
+    const statusCounts = await FormSubmission.aggregate([
+      { $group: { 
+          _id: { 
+            $cond: [
+              { $eq: ['$status', 'completed'] }, 
+              'active',
+              { $cond: [
+                { $eq: ['$status', 'draft'] },
+                'prospect',
+                'inactive'
+              ]}
+            ]
+          }, 
+          count: { $sum: 1 } 
+        } 
+      }
+    ]);
+
+    const statusSummary = statusCounts.reduce((acc, item) => {
+      acc[item._id] = item.count;
+      return acc;
+    }, {});
+
+    res.status(200).json({
+      success: true,
+      data: {
+        clients,
+        pagination: {
+          currentPage: parseInt(page),
+          totalPages: Math.ceil(total / parseInt(limit)),
+          totalItems: total,
+          itemsPerPage: parseInt(limit)
+        },
+        statusSummary,
+        filters: {
+          status,
+          search
+        }
+      }
+    });
+
+  } catch (error) {
+    console.error('Error getting clients:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to retrieve clients',
+      error: error.message
+    });
+  }
+});
+
 // Export submission as JSON (uses authentication middleware)
 router.get('/submission/:id/export', async (req, res) => {
   try {

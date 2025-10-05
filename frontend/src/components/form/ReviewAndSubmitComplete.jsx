@@ -45,7 +45,7 @@ const ReviewAndSubmitComplete = ({ formData }) => {
 
   return (
     <div className="space-y-6">
-      <div className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white p-6 rounded-lg shadow-lg">
+      <div className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white p-6 -lg shadow-lg">
         <h2 className="text-2xl font-bold mb-2">Review Your Complete Application</h2>
         <p className="text-indigo-100">
           Please carefully review ALL information below before final submission. You can go back to any step to make changes.
@@ -53,7 +53,7 @@ const ReviewAndSubmitComplete = ({ formData }) => {
       </div>
 
       {/* FORM 1 - BASIC APPLICATION */}
-      <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+      <div className="bg-white p-6 -lg shadow-sm border border-gray-200">
         <SectionTitle icon={DocumentTextIcon} title="Form 1 - Basic Patent Application" />
 
         <h4 className="font-semibold text-gray-800 mt-4 mb-3">Basic Information</h4>
@@ -64,7 +64,7 @@ const ReviewAndSubmitComplete = ({ formData }) => {
 
         <h4 className="font-semibold text-gray-800 mt-6 mb-3">Applicants</h4>
         {(formData.applicants || []).map((applicant, index) => (
-          <div key={index} className="mb-4 p-4 bg-gray-50 rounded-lg">
+          <div key={index} className="mb-4 p-4 bg-gray-50 -lg">
             <p className="font-medium text-gray-900 mb-2">Applicant {index + 1}</p>
             <FieldRow label="Name" value={applicant.name || 'Not filled'} />
             <FieldRow label="Nationality" value={applicant.nationality || 'Not filled'} />
@@ -75,7 +75,7 @@ const ReviewAndSubmitComplete = ({ formData }) => {
 
         <h4 className="font-semibold text-gray-800 mt-6 mb-3">Inventors</h4>
         {(formData.inventors || []).map((inventor, index) => (
-          <div key={index} className="mb-4 p-4 bg-gray-50 rounded-lg">
+          <div key={index} className="mb-4 p-4 bg-gray-50 -lg">
             <p className="font-medium text-gray-900 mb-2">Inventor {index + 1}</p>
             <FieldRow label="Name" value={inventor.name || 'Not filled'} />
             <FieldRow label="Nationality" value={inventor.nationality || 'Not filled'} />
@@ -89,7 +89,7 @@ const ReviewAndSubmitComplete = ({ formData }) => {
 
       {/* FORM 2 - COMPLETE SPECIFICATION */}
       {formData.form2_invention_title && (
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white p-6 -lg shadow-sm border border-gray-200">
           <SectionTitle icon={DocumentTextIcon} title="Form 2 - Complete Specification" />
           <FieldRow label="Invention Title" value={getFieldValue('form2_invention_title')} />
           <FieldRow label="Applicant Name" value={getFieldValue('form2_applicant_name')} />
@@ -103,7 +103,7 @@ const ReviewAndSubmitComplete = ({ formData }) => {
 
       {/* FORM 3 - STATEMENT & UNDERTAKING */}
       {formData.form3_undertaking_checked && (
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white p-6 -lg shadow-sm border border-gray-200">
           <SectionTitle icon={DocumentTextIcon} title="Form 3 - Statement & Undertaking" />
           <FieldRow label="Undertaking Accepted" value={formData.form3_undertaking_checked ? 'Yes' : 'No'} />
           <FieldRow label="Date" value={formatDate(formData.form3_date)} />
@@ -113,10 +113,10 @@ const ReviewAndSubmitComplete = ({ formData }) => {
 
       {/* FORM 5 - INVENTORSHIP DECLARATION */}
       {formData.form5_inventors && formData.form5_inventors.length > 0 && (
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white p-6 -lg shadow-sm border border-gray-200">
           <SectionTitle icon={DocumentTextIcon} title="Form 5 - Declaration as to Inventorship" />
           {formData.form5_inventors.map((inventor, index) => (
-            <div key={index} className="mb-4 p-4 bg-gray-50 rounded-lg">
+            <div key={index} className="mb-4 p-4 bg-gray-50 -lg">
               <p className="font-medium text-gray-900 mb-2">Inventor {index + 1}</p>
               <FieldRow label="Name" value={inventor.name || 'Not filled'} />
               <FieldRow label="Nationality" value={inventor.nationality || 'Not filled'} />
@@ -129,7 +129,7 @@ const ReviewAndSubmitComplete = ({ formData }) => {
 
       {/* FORM 6 - CHANGE IN APPLICANT */}
       {formData.form6_application_number && (
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white p-6 -lg shadow-sm border border-gray-200">
           <SectionTitle icon={DocumentTextIcon} title="Form 6 - Change in Applicant" />
           <FieldRow label="Application Number" value={getFieldValue('form6_application_number')} />
           <FieldRow label="Change Reason" value={getFieldValue('form6_change_reason')} />
@@ -141,7 +141,7 @@ const ReviewAndSubmitComplete = ({ formData }) => {
 
       {/* FORM 7A - OPPOSITION */}
       {formData.form7A_application_number && (
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white p-6 -lg shadow-sm border border-gray-200">
           <SectionTitle icon={DocumentTextIcon} title="Form 7A - Opposition" />
           <FieldRow label="Application Number" value={getFieldValue('form7A_application_number')} />
           <FieldRow label="Opponent Name" value={getFieldValue('form7A_opponent_name')} />
@@ -152,7 +152,7 @@ const ReviewAndSubmitComplete = ({ formData }) => {
 
       {/* FORM 8 - INVENTOR MENTION */}
       {formData.form8_requestor_name && (
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white p-6 -lg shadow-sm border border-gray-200">
           <SectionTitle icon={DocumentTextIcon} title="Form 8 - Request for Inventor Mention" />
           <FieldRow label="Requestor Name" value={getFieldValue('form8_requestor_name')} />
           <FieldRow label="Requestor Capacity" value={getFieldValue('form8_requestor_capacity')} />
@@ -160,7 +160,7 @@ const ReviewAndSubmitComplete = ({ formData }) => {
             <div className="mt-4">
               <h4 className="font-semibold text-gray-800 mb-3">Inventors to Mention</h4>
               {formData.form8_inventors.map((inv, idx) => (
-                <div key={idx} className="mb-2 p-3 bg-gray-50 rounded">
+                <div key={idx} className="mb-2 p-3 bg-gray-50 ">
                   <FieldRow label="Name" value={inv.name || 'Not filled'} />
                 </div>
               ))}
@@ -171,7 +171,7 @@ const ReviewAndSubmitComplete = ({ formData }) => {
 
       {/* FORM 13 - AMENDMENT */}
       {formData.form13_application_number && (
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white p-6 -lg shadow-sm border border-gray-200">
           <SectionTitle icon={DocumentTextIcon} title="Form 13 - Amendment Request" />
           <FieldRow label="Application Number" value={getFieldValue('form13_application_number')} />
           <FieldRow label="Applicant Name" value={getFieldValue('form13_applicant_name')} />
@@ -182,7 +182,7 @@ const ReviewAndSubmitComplete = ({ formData }) => {
 
       {/* FORM 16 - TITLE REGISTRATION */}
       {formData.form16_patent_number && (
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white p-6 -lg shadow-sm border border-gray-200">
           <SectionTitle icon={DocumentTextIcon} title="Form 16 - Registration of Title" />
           <FieldRow label="Patent Number" value={getFieldValue('form16_patent_number')} />
           <FieldRow label="Transaction Type" value={getFieldValue('form16_transaction_type')} />
@@ -193,7 +193,7 @@ const ReviewAndSubmitComplete = ({ formData }) => {
 
       {/* FORM 26 - AGENT AUTHORIZATION */}
       {formData.form26_principal_name && (
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white p-6 -lg shadow-sm border border-gray-200">
           <SectionTitle icon={DocumentTextIcon} title="Form 26 - Authorization of Patent Agent" />
           <FieldRow label="Principal Name" value={getFieldValue('form26_principal_name')} />
           <FieldRow label="Authorization Mode" value={getFieldValue('form26_authorization_mode')} />
@@ -201,7 +201,7 @@ const ReviewAndSubmitComplete = ({ formData }) => {
             <div className="mt-4">
               <h4 className="font-semibold text-gray-800 mb-3">Authorized Agents</h4>
               {formData.form26_agents.map((agent, idx) => (
-                <div key={idx} className="mb-2 p-3 bg-gray-50 rounded">
+                <div key={idx} className="mb-2 p-3 bg-gray-50 ">
                   <FieldRow label="Agent Name" value={agent.name || 'Not filled'} />
                   <FieldRow label="INPA Number" value={agent.inpa_number || 'Not filled'} />
                 </div>
@@ -213,7 +213,7 @@ const ReviewAndSubmitComplete = ({ formData }) => {
 
       {/* FORM 28 - ENTITY DECLARATION */}
       {formData.form28_entity_type && (
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white p-6 -lg shadow-sm border border-gray-200">
           <SectionTitle icon={DocumentTextIcon} title="Form 28 - Entity Declaration" />
           <FieldRow label="Applicant Name" value={getFieldValue('form28_applicant_name')} />
           <FieldRow label="Entity Type" value={getFieldValue('form28_entity_type')} />
@@ -222,7 +222,7 @@ const ReviewAndSubmitComplete = ({ formData }) => {
       )}
 
       {/* SUBMISSION SUMMARY */}
-      <div className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border-2 border-indigo-200">
+      <div className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 -lg border-2 border-indigo-200">
         <h4 className="text-lg font-semibold text-indigo-900 mb-4 flex items-center gap-2">
           <CheckCircleIcon className="h-6 w-6" />
           Submission Summary

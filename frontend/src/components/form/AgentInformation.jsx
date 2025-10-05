@@ -79,7 +79,7 @@ const AgentInformation = ({
         </div>
 
         {/* Help Text */}
-        <div className="mt-6 p-4 bg-blue-50 rounded-lg">
+        <div className="mt-6 p-4 bg-blue-50 -lg">
           <h4 className="text-sm font-medium text-blue-800 mb-2">About Patent Agents:</h4>
           <ul className="text-xs text-blue-700 space-y-1">
             <li>• Patent agent must be registered with the Indian Patent Office</li>

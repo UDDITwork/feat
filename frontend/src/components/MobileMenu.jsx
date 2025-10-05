@@ -10,7 +10,6 @@ const MobileMenu = ({ isOpen, onClose, currentPath }) => {
     { name: 'Send Invitations', href: '/invitations', icon: '📧' },
     { name: 'Form Submissions', href: '/submissions', icon: '📄' },
     { name: 'Clients', href: '/clients', icon: '👥' },
-    { name: 'Analytics', href: '/analytics', icon: '📊' },
     { name: 'Settings', href: '/settings', icon: '⚙️' },
   ]
 
@@ -52,7 +51,7 @@ const MobileMenu = ({ isOpen, onClose, currentPath }) => {
                 <div className="absolute top-0 right-0 -mr-12 pt-2">
                   <button
                     type="button"
-                    className="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                    className="ml-1 flex items-center justify-center h-10 w-10 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
                     onClick={onClose}
                   >
                     <span className="sr-only">Close sidebar</span>
@@ -64,7 +63,7 @@ const MobileMenu = ({ isOpen, onClose, currentPath }) => {
               {/* Logo */}
               <div className="flex-1 h-0 pt-5 pb-4 overflow-y-auto">
                 <div className="flex-shrink-0 flex items-center px-4">
-                  <div className="gradient-bg w-8 h-8 rounded-lg flex items-center justify-center">
+                  <div className="gradient-bg w-8 h-8 flex items-center justify-center">
                     <span className="text-white font-bold text-sm">SI</span>
                   </div>
                   <div className="ml-3">
@@ -88,7 +87,7 @@ const MobileMenu = ({ isOpen, onClose, currentPath }) => {
                           isActive
                             ? 'bg-primary-50 border-primary-500 text-primary-700'
                             : 'border-transparent text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                        } group flex items-center px-2 py-2 text-base font-medium rounded-md border-l-4 transition-colors duration-200`}
+                        } group flex items-center px-2 py-2 text-base font-medium border-l-4 transition-colors duration-200`}
                       >
                         <span className="mr-3 text-lg">{item.icon}</span>
                         {item.name}

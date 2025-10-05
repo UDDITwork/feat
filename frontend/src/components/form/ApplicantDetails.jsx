@@ -100,7 +100,7 @@ const ApplicantDetails = ({
         </p>
 
         {applicants.map((applicant, index) => (
-          <div key={index} className="border border-gray-200 rounded-lg p-6 mb-6 bg-white shadow-sm">
+          <div key={index} className="border border-gray-200 -lg p-6 mb-6 bg-white shadow-sm">
             <div className="flex items-center justify-between mb-4">
               <h4 className="text-lg font-medium text-gray-900">
                 Applicant {index + 1}
@@ -378,7 +378,7 @@ const ApplicantDetails = ({
                 <p className="form-error mt-2">{errors[`applicants.${index}.category`]}</p>
               )}
 
-              <div className="mt-4 p-3 bg-blue-50 rounded-lg">
+              <div className="mt-4 p-3 bg-blue-50 -lg">
                 <p className="text-xs text-blue-700">
                   <strong>Note:</strong> Category selection helps determine applicable fees and benefits. Select the most appropriate category.
                 </p>
@@ -388,7 +388,7 @@ const ApplicantDetails = ({
         ))}
 
         {applicants.length === 0 && (
-          <div className="text-center py-8 bg-gray-50 rounded-lg">
+          <div className="text-center py-8 bg-gray-50 -lg">
             <p className="text-gray-500 mb-4">No applicants added yet</p>
             <button
               type="button"

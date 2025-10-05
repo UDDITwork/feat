@@ -171,7 +171,7 @@ const FormStep = ({
           type="button"
           onClick={handlePrev}
           disabled={step === 1}
-          className={`px-6 py-2 text-sm font-medium rounded-lg transition-colors ${
+          className={`px-6 py-2 text-sm font-medium -lg transition-colors ${
             step === 1
               ? 'text-gray-400 cursor-not-allowed'
               : 'text-gray-700 bg-gray-100 hover:bg-gray-200'
@@ -188,7 +188,7 @@ const FormStep = ({
           <button
             type="button"
             onClick={handleNext}
-            className="px-6 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 rounded-lg transition-colors"
+            className="px-6 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 -lg transition-colors"
           >
             Next
           </button>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useForm } from '../../contexts/FormContext'
-import { UploadIcon, DocumentTextIcon } from '@heroicons/react/24/outline'
+import { ArrowUpTrayIcon, DocumentTextIcon } from '@heroicons/react/24/outline'
 
 const Form13Amendment = ({
   formData,
@@ -165,7 +165,7 @@ const Form13Amendment = ({
     const config = badgeConfig[source] || { color: 'gray', text: '📥 Auto' }
 
     return (
-      <span className={`inline-flex items-center px-2 py-1 text-xs font-medium text-${config.color}-700 bg-${config.color}-100 rounded-md ml-2`}>
+      <span className={`inline-flex items-center px-2 py-1 text-xs font-medium text-${config.color}-700 bg-${config.color}-100 -md ml-2`}>
         {config.text}
       </span>
     )
@@ -204,7 +204,7 @@ const Form13Amendment = ({
   return (
     <div className="space-y-6">
       {/* Form Header */}
-      <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-lg p-6">
+      <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 -lg p-6">
         <h2 className="text-2xl font-bold text-gray-900 mb-2">
           Form 13: Application for Amendment of Application/Specification
         </h2>
@@ -329,72 +329,72 @@ const Form13Amendment = ({
         </p>
 
         <div className="space-y-3">
-          <label className="flex items-start p-3 border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer">
+          <label className="flex items-start p-3 border border-gray-300 -lg hover:bg-gray-50 cursor-pointer">
             <input
               type="checkbox"
               checked={formData.form13_amend_application || false}
               onChange={(e) => handleDocumentCheckbox('form13_amend_application', e.target.checked)}
-              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded mt-1"
+              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300  mt-1"
             />
             <span className="ml-3 text-sm text-gray-700">
               <strong>Application (Form 1)</strong>
             </span>
           </label>
 
-          <label className="flex items-start p-3 border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer">
+          <label className="flex items-start p-3 border border-gray-300 -lg hover:bg-gray-50 cursor-pointer">
             <input
               type="checkbox"
               checked={formData.form13_amend_description || false}
               onChange={(e) => handleDocumentCheckbox('form13_amend_description', e.target.checked)}
-              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded mt-1"
+              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300  mt-1"
             />
             <span className="ml-3 text-sm text-gray-700">
               <strong>Complete Specification - Description</strong>
             </span>
           </label>
 
-          <label className="flex items-start p-3 border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer">
+          <label className="flex items-start p-3 border border-gray-300 -lg hover:bg-gray-50 cursor-pointer">
             <input
               type="checkbox"
               checked={formData.form13_amend_claims || false}
               onChange={(e) => handleDocumentCheckbox('form13_amend_claims', e.target.checked)}
-              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded mt-1"
+              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300  mt-1"
             />
             <span className="ml-3 text-sm text-gray-700">
               <strong>Complete Specification - Claims</strong> (Most Common)
             </span>
           </label>
 
-          <label className="flex items-start p-3 border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer">
+          <label className="flex items-start p-3 border border-gray-300 -lg hover:bg-gray-50 cursor-pointer">
             <input
               type="checkbox"
               checked={formData.form13_amend_abstract || false}
               onChange={(e) => handleDocumentCheckbox('form13_amend_abstract', e.target.checked)}
-              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded mt-1"
+              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300  mt-1"
             />
             <span className="ml-3 text-sm text-gray-700">
               <strong>Complete Specification - Abstract</strong>
             </span>
           </label>
 
-          <label className="flex items-start p-3 border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer">
+          <label className="flex items-start p-3 border border-gray-300 -lg hover:bg-gray-50 cursor-pointer">
             <input
               type="checkbox"
               checked={formData.form13_amend_drawings || false}
               onChange={(e) => handleDocumentCheckbox('form13_amend_drawings', e.target.checked)}
-              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded mt-1"
+              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300  mt-1"
             />
             <span className="ml-3 text-sm text-gray-700">
               <strong>Complete Specification - Drawings</strong>
             </span>
           </label>
 
-          <label className="flex items-start p-3 border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer">
+          <label className="flex items-start p-3 border border-gray-300 -lg hover:bg-gray-50 cursor-pointer">
             <input
               type="checkbox"
               checked={formData.form13_amend_other || false}
               onChange={(e) => handleDocumentCheckbox('form13_amend_other', e.target.checked)}
-              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded mt-1"
+              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300  mt-1"
             />
             <span className="ml-3 text-sm text-gray-700">
               <strong>Any other document related to the application</strong>
@@ -404,10 +404,10 @@ const Form13Amendment = ({
       </div>
 
       {/* Auto-Generated Request Statement */}
-      <div className="form-section bg-indigo-50 border border-indigo-200 rounded-lg p-6">
+      <div className="form-section bg-indigo-50 border border-indigo-200 -lg p-6">
         <h3 className="form-section-title">Section 4: Auto-Generated Request Statement</h3>
 
-        <div className="bg-white border border-gray-300 rounded-lg p-4">
+        <div className="bg-white border border-gray-300 -lg p-4">
           <p className="text-sm text-gray-800 leading-relaxed whitespace-pre-wrap">
             {requestStatement}
           </p>
@@ -495,13 +495,13 @@ const Form13Amendment = ({
 
         <div className="space-y-4">
           {/* Marked Copy */}
-          <div className="border border-gray-200 rounded-lg p-4">
+          <div className="border border-gray-200 -lg p-4">
             <label className="flex items-start">
               <input
                 type="checkbox"
                 checked={formData.form13_marked_copy || false}
                 onChange={(e) => handleDocumentCheckbox('form13_marked_copy', e.target.checked)}
-                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded mt-1"
+                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300  mt-1"
               />
               <span className="ml-3 text-sm text-gray-700">
                 <strong>Marked Copy</strong> (showing track changes - deletions in strikethrough, additions underlined)
@@ -510,7 +510,7 @@ const Form13Amendment = ({
 
             {formData.form13_marked_copy && (
               <div className="mt-3 ml-7">
-                <div className="p-2 bg-yellow-50 border border-yellow-300 rounded mb-2">
+                <div className="p-2 bg-yellow-50 border border-yellow-300  mb-2">
                   <p className="text-xs text-yellow-800">
                     <DocumentTextIcon className="h-4 w-4 inline mr-1" />
                     Show deletions with strikethrough, additions with underline or highlighting
@@ -532,13 +532,13 @@ const Form13Amendment = ({
           </div>
 
           {/* Clean Copy */}
-          <div className="border border-gray-200 rounded-lg p-4">
+          <div className="border border-gray-200 -lg p-4">
             <label className="flex items-start">
               <input
                 type="checkbox"
                 checked={formData.form13_clean_copy || false}
                 onChange={(e) => handleDocumentCheckbox('form13_clean_copy', e.target.checked)}
-                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded mt-1"
+                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300  mt-1"
               />
               <span className="ml-3 text-sm text-gray-700">
                 <strong>Clean Copy</strong> (final version as it will appear after amendment)
@@ -547,7 +547,7 @@ const Form13Amendment = ({
 
             {formData.form13_clean_copy && (
               <div className="mt-3 ml-7">
-                <div className="p-2 bg-green-50 border border-green-300 rounded mb-2">
+                <div className="p-2 bg-green-50 border border-green-300  mb-2">
                   <p className="text-xs text-green-800">
                     Show the complete document as it will appear - no track changes, clean final version
                   </p>
@@ -568,13 +568,13 @@ const Form13Amendment = ({
           </div>
 
           {/* Supporting Statement */}
-          <div className="border border-gray-200 rounded-lg p-4">
+          <div className="border border-gray-200 -lg p-4">
             <label className="flex items-start">
               <input
                 type="checkbox"
                 checked={formData.form13_supporting_statement || false}
                 onChange={(e) => handleDocumentCheckbox('form13_supporting_statement', e.target.checked)}
-                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded mt-1"
+                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300  mt-1"
               />
               <span className="ml-3 text-sm text-gray-700">
                 <strong>Supporting Statement/Explanation</strong> (optional detailed explanatory document)
@@ -601,7 +601,7 @@ const Form13Amendment = ({
       </div>
 
       {/* Section 7: LEGAL DECLARATIONS */}
-      <div className="form-section bg-red-50 border border-red-200 rounded-lg p-6">
+      <div className="form-section bg-red-50 border border-red-200 -lg p-6">
         <h3 className="form-section-title">Section 8: Legal Declarations</h3>
 
         <p className="text-sm text-gray-600 mb-4">
@@ -609,36 +609,36 @@ const Form13Amendment = ({
         </p>
 
         <div className="space-y-3">
-          <label className="flex items-start p-3 bg-white border border-gray-300 rounded-lg">
+          <label className="flex items-start p-3 bg-white border border-gray-300 -lg">
             <input
               type="checkbox"
               checked={formData.form13_section59_compliance || false}
               onChange={(e) => handleDocumentCheckbox('form13_section59_compliance', e.target.checked)}
-              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded mt-1"
+              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300  mt-1"
             />
             <span className="ml-3 text-sm text-gray-800">
               Amendments made are within the scope of section 59 of the Patents Act and are well supported by the originally filed complete specification.
             </span>
           </label>
 
-          <label className="flex items-start p-3 bg-white border border-gray-300 rounded-lg">
+          <label className="flex items-start p-3 bg-white border border-gray-300 -lg">
             <input
               type="checkbox"
               checked={formData.form13_no_litigation || false}
               onChange={(e) => handleDocumentCheckbox('form13_no_litigation', e.target.checked)}
-              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded mt-1"
+              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300  mt-1"
             />
             <span className="ml-3 text-sm text-gray-800">
               We declare that no action for infringement or for the revocation of the patent in question is pending before any Court.
             </span>
           </label>
 
-          <label className="flex items-start p-3 bg-white border border-gray-300 rounded-lg">
+          <label className="flex items-start p-3 bg-white border border-gray-300 -lg">
             <input
               type="checkbox"
               checked={formData.form13_truth_declaration || false}
               onChange={(e) => handleDocumentCheckbox('form13_truth_declaration', e.target.checked)}
-              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded mt-1"
+              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300  mt-1"
             />
             <span className="ml-3 text-sm text-gray-800">
               We declare that the facts and matters stated herein are true to the best of my/our knowledge information and belief.
@@ -726,11 +726,11 @@ const Form13Amendment = ({
           <label className="label">
             Signature Upload
           </label>
-          <div className="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-primary-400 transition-colors">
+          <div className="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed -lg hover:border-primary-400 transition-colors">
             <div className="space-y-2 text-center">
-              <UploadIcon className="mx-auto h-12 w-12 text-gray-400" />
+              <ArrowUpTrayIcon className="mx-auto h-12 w-12 text-gray-400" />
               <div className="flex text-sm text-gray-600">
-                <label className="relative cursor-pointer bg-white rounded-md font-medium text-primary-600 hover:text-primary-500">
+                <label className="relative cursor-pointer bg-white -md font-medium text-primary-600 hover:text-primary-500">
                   <span>Upload signature</span>
                   <input
                     type="file"
@@ -745,7 +745,7 @@ const Form13Amendment = ({
                 JPG, PNG, PDF up to 2MB
               </p>
               {formData.form13_signature_filename && (
-                <div className="mt-2 p-2 bg-green-50 border border-green-200 rounded">
+                <div className="mt-2 p-2 bg-green-50 border border-green-200 ">
                   <p className="text-sm text-green-700">
                     ✅ Uploaded: {formData.form13_signature_filename}
                   </p>
@@ -757,7 +757,7 @@ const Form13Amendment = ({
       </div>
 
       {/* Help Section */}
-      <div className="p-4 bg-emerald-50 rounded-lg border border-emerald-200">
+      <div className="p-4 bg-emerald-50 -lg border border-emerald-200">
         <h4 className="text-sm font-medium text-emerald-800 mb-2">Form 13 Important Guidelines:</h4>
         <ul className="text-xs text-emerald-700 space-y-1">
           <li>• All fields are optional - fill only the information you have available</li>

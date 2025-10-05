@@ -174,7 +174,7 @@ const Form26Authorization = ({
     const config = badgeConfig[source] || { color: 'gray', text: '📥 Auto' }
 
     return (
-      <span className={`inline-flex items-center px-2 py-1 text-xs font-medium text-${config.color}-700 bg-${config.color}-100 rounded-md ml-2`}>
+      <span className={`inline-flex items-center px-2 py-1 text-xs font-medium text-${config.color}-700 bg-${config.color}-100 -md ml-2`}>
         {config.text}
       </span>
     )
@@ -185,7 +185,7 @@ const Form26Authorization = ({
   return (
     <div className="space-y-6">
       {/* Form Header */}
-      <div className="bg-gradient-to-r from-violet-50 to-purple-50 border border-violet-200 rounded-lg p-6">
+      <div className="bg-gradient-to-r from-violet-50 to-purple-50 border border-violet-200 -lg p-6">
         <h2 className="text-2xl font-bold text-gray-900 mb-2">
           Form 26: Authorization of Patent Agent
         </h2>
@@ -339,7 +339,7 @@ const Form26Authorization = ({
 
         {/* Agent List */}
         {agents.length === 0 ? (
-          <div className="text-center py-8 bg-gray-50 rounded-lg border border-gray-200">
+          <div className="text-center py-8 bg-gray-50 -lg border border-gray-200">
             <p className="text-gray-500 mb-4">No agents added yet</p>
             <button
               type="button"
@@ -353,7 +353,7 @@ const Form26Authorization = ({
         ) : (
           <div className="space-y-4">
             {agents.map((agent, index) => (
-              <div key={index} className={`border border-gray-200 rounded-lg p-4 ${isFieldAutoFetched('form26_agents') ? 'bg-green-50' : 'bg-white'}`}>
+              <div key={index} className={`border border-gray-200 -lg p-4 ${isFieldAutoFetched('form26_agents') ? 'bg-green-50' : 'bg-white'}`}>
                 <div className="flex items-center justify-between mb-3">
                   <h4 className="text-sm font-medium text-gray-900">Agent {index + 1}</h4>
                   {agents.length > 1 && (
@@ -398,7 +398,7 @@ const Form26Authorization = ({
         )}
 
         {isFieldAutoFetched('form26_agents') && (
-          <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+          <div className="mt-4 p-3 bg-green-50 border border-green-200 -lg">
             <p className="text-xs text-green-700">
               ✅ Agent details auto-populated from Form 1. You can edit or add more agents.
             </p>
@@ -489,7 +489,7 @@ const Form26Authorization = ({
         </div>
 
         {/* Comprehensive Powers */}
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <div className="bg-blue-50 border border-blue-200 -lg p-4">
           <h4 className="text-sm font-medium text-blue-900 mb-3">Comprehensive Authorization Powers:</h4>
           <div className="text-xs text-blue-800 space-y-1">
             <p>✅ Securing Letters Patent from Government of India</p>
@@ -506,13 +506,13 @@ const Form26Authorization = ({
         </div>
 
         {/* Communication Request */}
-        <div className="mt-4 p-3 bg-gray-50 border border-gray-300 rounded-lg">
+        <div className="mt-4 p-3 bg-gray-50 border border-gray-300 -lg">
           <label className="flex items-center">
             <input
               type="checkbox"
               checked={formData.form26_communication_to_agent || false}
               onChange={(e) => setFieldValue('form26_communication_to_agent', e.target.checked)}
-              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 "
             />
             <span className="ml-2 text-sm text-gray-700">
               Request that all notices, requisitions and communications be sent to the agent(s) at the above address
@@ -570,13 +570,13 @@ const Form26Authorization = ({
           <label className="label">
             Principal's Signature Upload
           </label>
-          <div className="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-primary-400 transition-colors">
+          <div className="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed -lg hover:border-primary-400 transition-colors">
             <div className="space-y-2 text-center">
               <svg className="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
                 <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
               </svg>
               <div className="flex text-sm text-gray-600">
-                <label className="relative cursor-pointer bg-white rounded-md font-medium text-primary-600 hover:text-primary-500">
+                <label className="relative cursor-pointer bg-white -md font-medium text-primary-600 hover:text-primary-500">
                   <span>Upload signature</span>
                   <input
                     type="file"
@@ -594,7 +594,7 @@ const Form26Authorization = ({
                 ⚠️ PRINCIPAL must sign (not the agent being authorized)
               </p>
               {formData.form26_principal_signature_filename && (
-                <div className="mt-2 p-2 bg-green-50 border border-green-200 rounded">
+                <div className="mt-2 p-2 bg-green-50 border border-green-200 ">
                   <p className="text-sm text-green-700">
                     ✅ Uploaded: {formData.form26_principal_signature_filename}
                   </p>
@@ -605,7 +605,7 @@ const Form26Authorization = ({
         </div>
 
         {/* Company Signatory Details (if applicable) */}
-        <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+        <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 -lg">
           <p className="text-xs text-yellow-800 mb-2">
             <strong>For Companies/Organizations:</strong>
           </p>
@@ -637,7 +637,7 @@ const Form26Authorization = ({
       </div>
 
       {/* Section 5: ADDRESSEE */}
-      <div className="form-section bg-gray-50 border border-gray-300 rounded-lg p-6">
+      <div className="form-section bg-gray-50 border border-gray-300 -lg p-6">
         <h3 className="form-section-title">Section 5: Addressee</h3>
 
         <div className="space-y-3">
@@ -684,7 +684,7 @@ const Form26Authorization = ({
       </div>
 
       {/* Help Section */}
-      <div className="p-4 bg-violet-50 rounded-lg border border-violet-200">
+      <div className="p-4 bg-violet-50 -lg border border-violet-200">
         <h4 className="text-sm font-medium text-violet-800 mb-2">Form 26 Important Guidelines:</h4>
         <ul className="text-xs text-violet-700 space-y-1">
           <li>• All fields are optional - fill only the information you have available</li>

@@ -17,9 +17,9 @@ const ProgressBar = ({ current, total, progress = 0 }) => {
       </div>
 
       {/* Progress Bar */}
-      <div className="w-full bg-gray-200 rounded-full h-2">
+      <div className="w-full bg-gray-200 -full h-2">
         <div
-          className="bg-gradient-to-r from-primary-500 to-primary-600 h-2 rounded-full transition-all duration-300 ease-out"
+          className="bg-gradient-to-r from-primary-500 to-primary-600 h-2 -full transition-all duration-300 ease-out"
           style={{ width: `${progressPercentage}%` }}
         ></div>
       </div>
@@ -29,7 +29,7 @@ const ProgressBar = ({ current, total, progress = 0 }) => {
         {Array.from({ length: total }, (_, index) => (
           <div
             key={index}
-            className={`flex items-center justify-center w-8 h-8 rounded-full text-xs font-medium transition-colors duration-200 ${
+            className={`flex items-center justify-center w-8 h-8 -full text-xs font-medium transition-colors duration-200 ${
               index + 1 < current
                 ? 'bg-primary-500 text-white'
                 : index + 1 === current

@@ -131,11 +131,11 @@ const SendInvitationModal = ({ onClose, onSendInvitation, onSendBulkInvitations 
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
+              <Dialog.Panel className="relative transform overflow-hidden -lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center">
-                    <div className="gradient-bg p-2 rounded-lg mr-3">
+                    <div className="gradient-bg p-2 -lg mr-3">
                       <EnvelopeIcon className="h-6 w-6 text-white" />
                     </div>
                     <div>
@@ -157,11 +157,11 @@ const SendInvitationModal = ({ onClose, onSendInvitation, onSendBulkInvitations 
                 </div>
 
                 {/* Tab Navigation */}
-                <div className="flex space-x-1 mb-6 bg-gray-100 p-1 rounded-lg">
+                <div className="flex space-x-1 mb-6 bg-gray-100 p-1 -lg">
                   <button
                     type="button"
                     onClick={() => setActiveTab('single')}
-                    className={`flex-1 flex items-center justify-center px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+                    className={`flex-1 flex items-center justify-center px-3 py-2 text-sm font-medium -md transition-colors ${
                       activeTab === 'single'
                         ? 'bg-white text-primary-600 shadow-sm'
                         : 'text-gray-500 hover:text-gray-700'
@@ -173,7 +173,7 @@ const SendInvitationModal = ({ onClose, onSendInvitation, onSendBulkInvitations 
                   <button
                     type="button"
                     onClick={() => setActiveTab('bulk')}
-                    className={`flex-1 flex items-center justify-center px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+                    className={`flex-1 flex items-center justify-center px-3 py-2 text-sm font-medium -md transition-colors ${
                       activeTab === 'bulk'
                         ? 'bg-white text-primary-600 shadow-sm'
                         : 'text-gray-500 hover:text-gray-700'
@@ -330,7 +330,7 @@ const SendInvitationModal = ({ onClose, onSendInvitation, onSendBulkInvitations 
                 )}
 
                 {/* Info Box */}
-                <div className="mt-6 p-4 bg-blue-50 rounded-lg">
+                <div className="mt-6 p-4 bg-blue-50 -lg">
                   <h4 className="text-sm font-medium text-blue-800 mb-2">What happens next?</h4>
                   <ul className="text-xs text-blue-700 space-y-1">
                     <li>• Client receives a professional email with form link</li>

@@ -5,6 +5,8 @@ import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline'
 import LoadingSpinner from '../components/LoadingSpinner'
 
 const Login = () => {
+  console.log('🔐 Login component rendering...')
+  
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -91,7 +93,7 @@ const Login = () => {
       <div className="max-w-md w-full space-y-8">
         {/* Header */}
         <div className="text-center">
-          <div className="mx-auto h-20 w-20 bg-gradient-to-br from-teal-500 to-sitabience-500 rounded-2xl flex items-center justify-center shadow-glow">
+          <div className="mx-auto h-20 w-20 bg-gradient-to-br from-teal-500 to-sitabience-500 -2xl flex items-center justify-center shadow-glow">
             <span className="text-white font-bold text-2xl">SI</span>
           </div>
           <h2 className="mt-8 text-4xl font-bold text-gradient">
@@ -189,7 +191,7 @@ const Login = () => {
           </div>
 
           {/* Demo Credentials */}
-          <div className="mt-6 p-5 bg-gradient-to-r from-teal-50 to-sitabience-50 rounded-xl border border-sitabience-200">
+          <div className="mt-6 p-5 bg-gradient-to-r from-teal-50 to-sitabience-50 -xl border border-sitabience-200">
             <h3 className="text-sm font-semibold text-teal-800 mb-3 flex items-center">
               <svg className="w-4 h-4 mr-2 text-sitabience-500" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />

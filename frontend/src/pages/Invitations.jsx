@@ -116,9 +116,9 @@ const Invitations = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <div className="bg-white -lg shadow-sm border border-gray-200 p-6">
         <div className="flex items-center space-x-3">
-          <div className="gradient-bg p-3 rounded-lg">
+          <div className="gradient-bg p-3 -lg">
             <EnvelopeIcon className="h-6 w-6 text-white" />
           </div>
           <div>
@@ -130,7 +130,7 @@ const Invitations = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Single Invitation */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <div className="bg-white -lg shadow-sm border border-gray-200 p-6">
           <div className="flex items-center space-x-2 mb-4">
             <UserIcon className="h-5 w-5 text-primary-600" />
             <h2 className="text-lg font-semibold text-gray-900">Single Invitation</h2>
@@ -146,7 +146,7 @@ const Invitations = () => {
                 id="singleEmail"
                 value={singleEmail}
                 onChange={(e) => setSingleEmail(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 -md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 placeholder="client@example.com"
                 required
               />
@@ -161,7 +161,7 @@ const Invitations = () => {
                 id="adminName"
                 value={adminName}
                 onChange={(e) => setAdminName(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 -md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 placeholder={user?.name || 'Admin'}
               />
             </div>
@@ -169,7 +169,7 @@ const Invitations = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-primary-600 text-white py-2 px-4 rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="w-full bg-primary-600 text-white py-2 px-4 -md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               {isLoading ? 'Sending...' : 'Send Invitation'}
             </button>
@@ -177,7 +177,7 @@ const Invitations = () => {
         </div>
 
         {/* Bulk Invitations */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <div className="bg-white -lg shadow-sm border border-gray-200 p-6">
           <div className="flex items-center space-x-2 mb-4">
             <EnvelopeIcon className="h-5 w-5 text-primary-600" />
             <h2 className="text-lg font-semibold text-gray-900">Bulk Invitations</h2>
@@ -193,7 +193,7 @@ const Invitations = () => {
                 value={bulkEmails}
                 onChange={(e) => setBulkEmails(e.target.value)}
                 rows={4}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 -md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 placeholder="client1@example.com&#10;client2@example.com&#10;client3@example.com"
                 required
               />
@@ -208,7 +208,7 @@ const Invitations = () => {
                 id="bulkAdminName"
                 value={adminName}
                 onChange={(e) => setAdminName(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 -md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 placeholder={user?.name || 'Admin'}
               />
             </div>
@@ -216,7 +216,7 @@ const Invitations = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-primary-600 text-white py-2 px-4 rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="w-full bg-primary-600 text-white py-2 px-4 -md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               {isLoading ? 'Sending...' : 'Send Bulk Invitations'}
             </button>
@@ -226,11 +226,11 @@ const Invitations = () => {
 
       {/* Recent Invitations */}
       {recentInvitations.length > 0 && (
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <div className="bg-white -lg shadow-sm border border-gray-200 p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Recent Invitations</h2>
           <div className="space-y-3">
             {recentInvitations.map((invitation, index) => (
-              <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div key={index} className="flex items-center justify-between p-3 bg-gray-50 -lg">
                 <div className="flex items-center space-x-3">
                   <CheckCircleIcon className="h-5 w-5 text-green-500" />
                   <div>
@@ -243,7 +243,7 @@ const Invitations = () => {
                 {invitation.token !== 'bulk-sent' && (
                   <button
                     onClick={() => copyToClipboard(invitation.token)}
-                    className="text-xs bg-primary-100 text-primary-700 px-2 py-1 rounded hover:bg-primary-200 transition-colors"
+                    className="text-xs bg-primary-100 text-primary-700 px-2 py-1  hover:bg-primary-200 transition-colors"
                   >
                     Copy Token
                   </button>
@@ -255,7 +255,7 @@ const Invitations = () => {
       )}
 
       {/* Instructions */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+      <div className="bg-blue-50 border border-blue-200 -lg p-6">
         <div className="flex items-start space-x-3">
           <ExclamationTriangleIcon className="h-5 w-5 text-blue-600 mt-0.5" />
           <div>

@@ -53,7 +53,7 @@ const InventorDetails = ({
         <h3 className="form-section-title">Section 4: Inventor(s) Details</h3>
 
         {/* Are inventors same as applicants? */}
-        <div className="mb-6 p-4 bg-gray-50 rounded-lg">
+        <div className="mb-6 p-4 bg-gray-50 -lg">
           <label className="label mb-3">
             Are the inventors the same as the applicants?
           </label>
@@ -106,7 +106,7 @@ const InventorDetails = ({
             </div>
 
             {inventors.map((inventor, index) => (
-              <div key={index} className="border border-gray-200 rounded-lg p-6 mb-6 bg-white shadow-sm">
+              <div key={index} className="border border-gray-200 -lg p-6 mb-6 bg-white shadow-sm">
                 <div className="flex items-center justify-between mb-4">
                   <h4 className="text-lg font-medium text-gray-900">
                     Inventor {index + 1}
@@ -222,7 +222,7 @@ const InventorDetails = ({
             ))}
 
             {inventors.length === 0 && (
-              <div className="text-center py-8 bg-gray-50 rounded-lg">
+              <div className="text-center py-8 bg-gray-50 -lg">
                 <p className="text-gray-500 mb-4">No inventors added yet</p>
                 <button
                   type="button"
@@ -238,7 +238,7 @@ const InventorDetails = ({
         )}
 
         {inventorsSameAsApplicants === 'yes' && (
-          <div className="p-6 bg-green-50 border border-green-200 rounded-lg">
+          <div className="p-6 bg-green-50 border border-green-200 -lg">
             <div className="flex items-start">
               <svg className="h-6 w-6 text-green-600 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -256,7 +256,7 @@ const InventorDetails = ({
         )}
 
         {!inventorsSameAsApplicants && (
-          <div className="p-4 bg-blue-50 rounded-lg">
+          <div className="p-4 bg-blue-50 -lg">
             <p className="text-sm text-blue-800">
               <strong>Note:</strong> Please specify whether inventors are the same as applicants, or provide separate inventor details if they are different.
             </p>

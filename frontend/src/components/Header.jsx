@@ -27,7 +27,7 @@ const Header = ({ onMenuClick, user }) => {
           <div className="flex items-center">
             <button
               type="button"
-              className="lg:hidden p-2 rounded-lg text-teal-600 hover:text-teal-700 hover:bg-teal-50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-sitabience-500 transition-all duration-200"
+              className="lg:hidden p-2 text-teal-600 hover:text-teal-700 hover:bg-teal-50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-sitabience-500 transition-all duration-200"
               onClick={onMenuClick}
             >
               <span className="sr-only">Open sidebar</span>
@@ -53,22 +53,22 @@ const Header = ({ onMenuClick, user }) => {
             <div className="relative">
               <button
                 type="button"
-                className="p-3 rounded-lg text-teal-600 hover:text-teal-700 hover:bg-teal-50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-sitabience-500 transition-all duration-200"
+                className="p-3 text-teal-600 hover:text-teal-700 hover:bg-teal-50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-sitabience-500 transition-all duration-200"
                 onClick={() => setShowNotifications(!showNotifications)}
               >
                 <span className="sr-only">View notifications</span>
                 <BellIcon className="h-6 w-6" />
                 {/* Notification badge */}
-                <span className="absolute top-2 right-2 h-3 w-3 bg-sitabience-500 rounded-full border-2 border-white"></span>
+                <span className="absolute top-2 right-2 h-3 w-3 bg-sitabience-500 border-2 border-white"></span>
               </button>
 
               {/* Notifications dropdown */}
               {showNotifications && (
-                <div className="absolute right-0 mt-3 w-80 bg-white rounded-xl shadow-xl border border-gray-100 z-50">
+                <div className="absolute right-0 mt-3 w-80 bg-white shadow-xl border border-gray-100 z-50">
                   <div className="p-6">
                     <h3 className="text-lg font-semibold text-teal-800 mb-4">Notifications</h3>
                     <div className="space-y-3">
-                      <div className="text-sm text-gray-500 p-3 bg-gray-50 rounded-lg">
+                      <div className="text-sm text-gray-500 p-3 bg-gray-50">
                         No new notifications
                       </div>
                     </div>
@@ -79,8 +79,8 @@ const Header = ({ onMenuClick, user }) => {
 
             {/* User menu */}
             <Menu as="div" className="relative">
-              <Menu.Button className="flex items-center space-x-3 p-3 rounded-lg hover:bg-teal-50 focus:outline-none focus:ring-2 focus:ring-sitabience-500 transition-all duration-200">
-                <div className="w-10 h-10 bg-gradient-to-br from-teal-500 to-sitabience-500 rounded-lg flex items-center justify-center">
+              <Menu.Button className="flex items-center space-x-3 p-3 hover:bg-teal-50 focus:outline-none focus:ring-2 focus:ring-sitabience-500 transition-all duration-200">
+                <div className="w-10 h-10 bg-gradient-to-br from-teal-500 to-sitabience-500 flex items-center justify-center">
                   <UserCircleIcon className="h-6 w-6 text-white" />
                 </div>
                 <div className="hidden sm:block text-left">
@@ -99,7 +99,7 @@ const Header = ({ onMenuClick, user }) => {
                 leaveFrom="transform opacity-100 scale-100"
                 leaveTo="transform opacity-0 scale-95"
               >
-                <Menu.Items className="absolute right-0 mt-3 w-56 bg-white rounded-xl shadow-xl border border-gray-100 z-50">
+                <Menu.Items className="absolute right-0 mt-3 w-56 bg-white shadow-xl border border-gray-100 z-50">
                   <div className="py-2">
                     <Menu.Item>
                       {({ active }) => (

@@ -133,7 +133,7 @@ const Dashboard = () => {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
-          <div className="mx-auto h-16 w-16 bg-red-100 rounded-full flex items-center justify-center mb-4">
+          <div className="mx-auto h-16 w-16 bg-red-100 -full flex items-center justify-center mb-4">
             <ExclamationTriangleIcon className="h-8 w-8 text-red-600" />
           </div>
           <h3 className="text-lg font-semibold text-teal-800 mb-2">Error loading dashboard</h3>
@@ -222,7 +222,7 @@ const Dashboard = () => {
           <div key={stat.name} className="card hover:shadow-glow transition-all duration-300">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <div className={`${stat.color} p-4 rounded-xl shadow-lg`}>
+                <div className={`${stat.color} p-4 -xl shadow-lg`}>
                   <stat.icon className="h-7 w-7 text-white" />
                 </div>
               </div>
@@ -261,10 +261,10 @@ const Dashboard = () => {
           <div className="space-y-4">
             {submissions.length > 0 ? (
               submissions.map((submission) => (
-                <div key={submission._id} className="flex items-center justify-between p-4 bg-gradient-to-r from-teal-50 to-sitabience-50 rounded-xl border border-sitabience-100">
+                <div key={submission._id} className="flex items-center justify-between p-4 bg-gradient-to-r from-teal-50 to-sitabience-50 -xl border border-sitabience-100">
                   <div className="flex items-center">
                     <div className="flex-shrink-0">
-                      <div className="w-10 h-10 bg-gradient-to-br from-teal-500 to-sitabience-500 rounded-lg flex items-center justify-center">
+                      <div className="w-10 h-10 bg-gradient-to-br from-teal-500 to-sitabience-500 -lg flex items-center justify-center">
                         <UsersIcon className="h-5 w-5 text-white" />
                       </div>
                     </div>
@@ -290,7 +290,7 @@ const Dashboard = () => {
               ))
             ) : (
               <div className="text-center py-8">
-                <div className="mx-auto h-16 w-16 bg-gradient-to-br from-teal-100 to-sitabience-100 rounded-full flex items-center justify-center mb-4">
+                <div className="mx-auto h-16 w-16 bg-gradient-to-br from-teal-100 to-sitabience-100 -full flex items-center justify-center mb-4">
                   <DocumentTextIcon className="h-8 w-8 text-teal-500" />
                 </div>
                 <h3 className="text-lg font-semibold text-teal-800 mb-2">No submissions yet</h3>
@@ -313,9 +313,9 @@ const Dashboard = () => {
           <div className="space-y-4">
             {notifications.length > 0 ? (
               notifications.map((notification, index) => (
-                <div key={index} className="flex items-start p-4 bg-gradient-to-r from-sitabience-50 to-green-50 rounded-xl border border-sitabience-200">
+                <div key={index} className="flex items-start p-4 bg-gradient-to-r from-sitabience-50 to-green-50 -xl border border-sitabience-200">
                   <div className="flex-shrink-0">
-                    <div className="w-10 h-10 bg-gradient-to-br from-sitabience-500 to-green-500 rounded-lg flex items-center justify-center">
+                    <div className="w-10 h-10 bg-gradient-to-br from-sitabience-500 to-green-500 -lg flex items-center justify-center">
                       <CheckCircleIcon className="h-5 w-5 text-white" />
                     </div>
                   </div>
@@ -334,7 +334,7 @@ const Dashboard = () => {
               ))
             ) : (
               <div className="text-center py-8">
-                <div className="mx-auto h-16 w-16 bg-gradient-to-br from-sitabience-100 to-green-100 rounded-full flex items-center justify-center mb-4">
+                <div className="mx-auto h-16 w-16 bg-gradient-to-br from-sitabience-100 to-green-100 -full flex items-center justify-center mb-4">
                   <BellIcon className="h-8 w-8 text-sitabience-500" />
                 </div>
                 <h3 className="text-lg font-semibold text-teal-800 mb-2">No notifications yet</h3>

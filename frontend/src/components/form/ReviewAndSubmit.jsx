@@ -87,7 +87,7 @@ const ReviewAndSubmit = ({
         <div className="mb-8">
           <h4 className="text-lg font-semibold text-gray-900 mb-4">Applicant Details</h4>
           {(formData.applicants || []).map((applicant, index) => (
-            <div key={index} className="mb-6 p-4 bg-gray-50 rounded-lg">
+            <div key={index} className="mb-6 p-4 bg-gray-50 -lg">
               <h5 className="font-medium text-gray-900 mb-3">Applicant {index + 1}</h5>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex items-center">
@@ -141,7 +141,7 @@ const ReviewAndSubmit = ({
         <div className="mb-8">
           <h4 className="text-lg font-semibold text-gray-900 mb-4">Inventor Details</h4>
           {(formData.inventors || []).map((inventor, index) => (
-            <div key={index} className="mb-4 p-4 bg-gray-50 rounded-lg">
+            <div key={index} className="mb-4 p-4 bg-gray-50 -lg">
               <h5 className="font-medium text-gray-900 mb-3">Inventor {index + 1}</h5>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex items-center">
@@ -167,7 +167,7 @@ const ReviewAndSubmit = ({
         {formData.patentAgent && (
           <div className="mb-8">
             <h4 className="text-lg font-semibold text-gray-900 mb-4">Patent Agent</h4>
-            <div className="p-4 bg-gray-50 rounded-lg">
+            <div className="p-4 bg-gray-50 -lg">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex items-center">
                   {getStatusIcon(formData.patentAgent.agentName)}
@@ -192,7 +192,7 @@ const ReviewAndSubmit = ({
         {formData.addressForService && (
           <div className="mb-8">
             <h4 className="text-lg font-semibold text-gray-900 mb-4">Address for Service</h4>
-            <div className="p-4 bg-gray-50 rounded-lg">
+            <div className="p-4 bg-gray-50 -lg">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex items-center">
                   {getStatusIcon(formData.addressForService.name)}
@@ -218,7 +218,7 @@ const ReviewAndSubmit = ({
           <div className="mb-8">
             <h4 className="text-lg font-semibold text-gray-900 mb-4">Priority Claims</h4>
             {formData.priorityClaims.map((claim, index) => (
-              <div key={index} className="mb-4 p-4 bg-gray-50 rounded-lg">
+              <div key={index} className="mb-4 p-4 bg-gray-50 -lg">
                 <h5 className="font-medium text-gray-900 mb-3">Priority Claim {index + 1}</h5>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="flex items-center">
@@ -242,7 +242,7 @@ const ReviewAndSubmit = ({
         )}
 
         {/* Summary */}
-        <div className="p-6 bg-blue-50 rounded-lg">
+        <div className="p-6 bg-blue-50 -lg">
           <h4 className="text-lg font-semibold text-blue-900 mb-4">Submission Summary</h4>
           <div className="space-y-2 text-sm text-blue-800">
             <p>• All information will be securely stored and encrypted</p>

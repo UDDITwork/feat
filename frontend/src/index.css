@@ -15,24 +15,24 @@
 @layer components {
   /* SITABIENCE IP Brand Button Styles */
   .btn-primary {
-    @apply bg-sitabience-500 hover:bg-sitabience-600 text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-sitabience-400 focus:ring-offset-2 shadow-sm hover:shadow-md;
+    @apply bg-sitabience-500 hover:bg-sitabience-600 text-white font-medium py-3 px-6 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-sitabience-400 focus:ring-offset-2 shadow-sm hover:shadow-md;
   }
   
   .btn-secondary {
-    @apply bg-teal-500 hover:bg-teal-600 text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-offset-2 shadow-sm hover:shadow-md;
+    @apply bg-teal-500 hover:bg-teal-600 text-white font-medium py-3 px-6 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-offset-2 shadow-sm hover:shadow-md;
   }
   
   .btn-outline {
-    @apply border-2 border-sitabience-500 text-sitabience-500 hover:bg-sitabience-500 hover:text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-sitabience-400 focus:ring-offset-2;
+    @apply border-2 border-sitabience-500 text-sitabience-500 hover:bg-sitabience-500 hover:text-white font-medium py-3 px-6 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-sitabience-400 focus:ring-offset-2;
   }
   
   .btn-danger {
-    @apply bg-red-600 hover:bg-red-700 text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 shadow-sm hover:shadow-md;
+    @apply bg-red-600 hover:bg-red-700 text-white font-medium py-3 px-6 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 shadow-sm hover:shadow-md;
   }
   
   /* SITABIENCE IP Form Styles */
   .input-field {
-    @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sitabience-400 focus:border-sitabience-500 transition-all duration-200 bg-white;
+    @apply w-full px-4 py-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-sitabience-400 focus:border-sitabience-500 transition-all duration-200 bg-white;
   }
   
   .input-field:invalid {
@@ -50,7 +50,7 @@
   
   /* SITABIENCE IP Section Styles */
   .form-section {
-    @apply bg-white rounded-xl shadow-lg border border-gray-100 p-8 mb-8;
+    @apply bg-white shadow-lg border border-gray-100 p-8 mb-8;
   }
   
   .form-section-title {
@@ -58,7 +58,7 @@
   }
   
   .card {
-    @apply bg-white rounded-xl shadow-lg border border-gray-100 p-8;
+    @apply bg-white shadow-lg border border-gray-100 p-8;
   }
   
   .card-header {
@@ -71,7 +71,7 @@
   
   /* SITABIENCE IP Status Badges */
   .status-badge {
-    @apply inline-flex items-center px-3 py-1.5 rounded-full text-sm font-semibold;
+    @apply inline-flex items-center px-3 py-1.5 text-sm font-semibold;
   }
   
   .status-pending {
@@ -91,7 +91,7 @@
   }
   
   .loading-spinner {
-    @apply animate-spin rounded-full h-6 w-6 border-b-2 border-sitabience-500;
+    @apply animate-spin h-6 w-6 border-b-2 border-sitabience-500;
   }
   
   /* SITABIENCE IP Gradient Backgrounds */
@@ -113,7 +113,7 @@
   }
   
   .brand-icon {
-    @apply w-10 h-10 bg-sitabience-500 rounded-lg flex items-center justify-center text-white font-bold text-lg;
+    @apply w-10 h-10 bg-sitabience-500 flex items-center justify-center text-white font-bold text-lg;
   }
   
   .brand-text {
@@ -189,7 +189,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-sitabience-300 rounded-full;
+  @apply bg-sitabience-300;
 }
 
 ::-webkit-scrollbar-thumb:hover {

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const applicantSchema = new mongoose.Schema({
   name: { type: String, maxlength: 200 },
-  gender: { type: String, enum: ['Male', 'Female', 'Others', 'Prefer not to disclose'] },
+  gender: { type: String, enum: ['', 'Male', 'Female', 'Others', 'Prefer not to disclose'], default: '' },
   nationality: { type: String },
   countryOfResidence: { type: String },
   age: { type: Number, min: 1, max: 99 },
@@ -18,14 +18,15 @@ const applicantSchema = new mongoose.Schema({
   },
   category: { 
     type: String, 
-    enum: ['Natural Person', 'Other than Natural Person', 'Educational Institution', 'Small Entity', 'Startup', 'Others'] 
+    enum: ['', 'Natural Person', 'Other than Natural Person', 'Educational Institution', 'Small Entity', 'Startup', 'Others'],
+    default: ''
   }
 });
 
 const inventorSchema = new mongoose.Schema({
   sameAsApplicant: { type: Boolean, default: false },
   name: { type: String, maxlength: 200 },
-  gender: { type: String, enum: ['Male', 'Female', 'Others', 'Prefer not to disclose'] },
+  gender: { type: String, enum: ['', 'Male', 'Female', 'Others', 'Prefer not to disclose'], default: '' },
   nationality: { type: String },
   age: { type: Number, min: 1, max: 99 },
   countryOfResidence: { type: String },
@@ -75,7 +76,8 @@ const formDataSchema = new mongoose.Schema({
   // Type of Application
   typeOfApplication: {
     type: String,
-    enum: ['Ordinary', 'Convention', 'PCT-NP', 'PPH', 'Divisional', 'Patent of Addition']
+    enum: ['', 'Ordinary', 'Convention', 'PCT-NP', 'PPH', 'Divisional', 'Patent of Addition'],
+    default: ''
   },
 
   // Applicants
@@ -120,7 +122,7 @@ const formDataSchema = new mongoose.Schema({
   form2_applicant_name: { type: String, maxlength: 200 },
   form2_applicant_nationality: { type: String, maxlength: 100 },
   form2_applicant_address: { type: String, maxlength: 500 },
-  form2_specification_type: { type: String, enum: ['complete', 'provisional'] },
+  form2_specification_type: { type: String, enum: ['', 'complete', 'provisional'], default: '' },
   form2_specification_description: { type: String },
   form2_specification_claims: { type: String },
   form2_specification_abstract: { type: String, maxlength: 1000 },
@@ -249,7 +251,7 @@ const formDataSchema = new mongoose.Schema({
   form28_application_number: { type: String },
   form28_filing_date: { type: Date },
   form28_invention_title: { type: String },
-  form28_entity_type: { type: String, enum: ['small_entity', 'startup', 'educational'] },
+  form28_entity_type: { type: String, enum: ['', 'small_entity', 'startup', 'educational'], default: '' },
   form28_supporting_docs_description: { type: String },
   form28_supporting_documents: { type: String },
   form28_declaration_correctness: { type: Boolean },

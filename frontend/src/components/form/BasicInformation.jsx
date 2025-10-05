@@ -83,7 +83,7 @@ const BasicInformation = ({
         )}
 
         {/* Help text for application types */}
-        <div className="mt-4 p-4 bg-blue-50 rounded-lg">
+        <div className="mt-4 p-4 bg-blue-50 -lg">
           <h4 className="text-sm font-medium text-blue-800 mb-2">Application Types Guide:</h4>
           <ul className="text-xs text-blue-700 space-y-1">
             <li><strong>Ordinary:</strong> Standard patent application with no priority claim</li>
@@ -128,7 +128,7 @@ const BasicInformation = ({
 
       {/* Conditional: Section 10 - Divisional Application */}
       {formData.application_type && (formData.application_type.includes('divisional')) && (
-        <div className="form-section bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+        <div className="form-section bg-yellow-50 border border-yellow-200 -lg p-6">
           <h3 className="form-section-title">Section 10: Divisional Application Details</h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -163,7 +163,7 @@ const BasicInformation = ({
 
       {/* Conditional: Section 11 - Patent of Addition */}
       {formData.application_type && (formData.application_type.includes('patent_of_addition')) && (
-        <div className="form-section bg-purple-50 border border-purple-200 rounded-lg p-6">
+        <div className="form-section bg-purple-50 border border-purple-200 -lg p-6">
           <h3 className="form-section-title">Section 11: Patent of Addition Details</h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -198,7 +198,7 @@ const BasicInformation = ({
 
       {/* Conditional: Section 9 - PCT National Phase Application */}
       {formData.application_type === 'pct_national_phase' && (
-        <div className="form-section bg-green-50 border border-green-200 rounded-lg p-6">
+        <div className="form-section bg-green-50 border border-green-200 -lg p-6">
           <h3 className="form-section-title">Section 9: PCT National Phase Application</h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

@@ -133,7 +133,7 @@ const AddressForService = ({
         </div>
 
         {/* Help Text */}
-        <div className="mt-6 p-4 bg-blue-50 rounded-lg">
+        <div className="mt-6 p-4 bg-blue-50 -lg">
           <h4 className="text-sm font-medium text-blue-800 mb-2">Address for Service Information:</h4>
           <ul className="text-xs text-blue-700 space-y-1">
             <li>• This address will be used for all official correspondence from the Patent Office</li>

@@ -143,6 +143,7 @@ export const adminAPI = {
   getEditHistory: (id) => api.get(`/admin/submission/${id}/edit-history`),
   getDashboardStats: () => api.get('/admin/dashboard/stats'),
   getNotifications: (limit = 10) => api.get('/admin/notifications', { params: { limit } }),
+  getClients: (params = {}) => api.get('/admin/clients', { params }),
   deleteSubmission: (id) => api.delete(`/admin/submission/${id}`),
   exportSubmission: async (id) => {
     const token = localStorage.getItem('adminToken')

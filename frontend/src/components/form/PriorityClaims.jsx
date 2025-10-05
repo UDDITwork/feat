@@ -49,7 +49,7 @@ const PriorityClaims = ({
       <div className="space-y-6">
         <div className="form-section">
           <h3 className="form-section-title">Section 8: Convention Application Details</h3>
-          <div className="p-6 bg-gray-50 border border-gray-200 rounded-lg text-center">
+          <div className="p-6 bg-gray-50 border border-gray-200 -lg text-center">
             <p className="text-gray-600">
               This section is only applicable if you selected "Convention" as the application type.
             </p>
@@ -83,7 +83,7 @@ const PriorityClaims = ({
         </p>
 
         {conventionApplications.length === 0 ? (
-          <div className="text-center py-8 bg-gray-50 rounded-lg border border-gray-200">
+          <div className="text-center py-8 bg-gray-50 -lg border border-gray-200">
             <p className="text-gray-500 mb-4">No convention applications added yet</p>
             <p className="text-sm text-gray-400 mb-4">
               Convention applications allow you to claim priority from earlier applications filed in other countries.
@@ -99,7 +99,7 @@ const PriorityClaims = ({
           </div>
         ) : (
           conventionApplications.map((application, index) => (
-            <div key={index} className="border border-gray-200 rounded-lg p-6 mb-6 bg-white shadow-sm">
+            <div key={index} className="border border-gray-200 -lg p-6 mb-6 bg-white shadow-sm">
               <div className="flex items-center justify-between mb-4">
                 <h4 className="text-lg font-medium text-gray-900">
                   Convention Application {index + 1}
@@ -237,7 +237,7 @@ const PriorityClaims = ({
         )}
 
         {/* Help Text */}
-        <div className="mt-6 p-4 bg-blue-50 rounded-lg">
+        <div className="mt-6 p-4 bg-blue-50 -lg">
           <h4 className="text-sm font-medium text-blue-800 mb-2">Convention Application Information:</h4>
           <ul className="text-xs text-blue-700 space-y-1">
             <li>• Required only for Convention applications claiming priority from foreign applications</li>

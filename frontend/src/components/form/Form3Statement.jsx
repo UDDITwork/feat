@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useForm } from '../../contexts/FormContext'
-import { PlusIcon, TrashIcon, UploadIcon } from '@heroicons/react/24/outline'
+import { PlusIcon, TrashIcon, ArrowUpTrayIcon } from '@heroicons/react/24/outline'
 
 const Form3Statement = ({
   formData,
@@ -214,7 +214,7 @@ const Form3Statement = ({
     const config = badgeConfig[source] || { color: 'gray', text: '📥 Auto' }
 
     return (
-      <span className={`inline-flex items-center px-2 py-1 text-xs font-medium text-${config.color}-700 bg-${config.color}-100 rounded-md ml-2`}>
+      <span className={`inline-flex items-center px-2 py-1 text-xs font-medium text-${config.color}-700 bg-${config.color}-100 -md ml-2`}>
         {config.text}
       </span>
     )
@@ -226,7 +226,7 @@ const Form3Statement = ({
   return (
     <div className="space-y-6">
       {/* Form Header */}
-      <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-lg p-6">
+      <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 -lg p-6">
         <h2 className="text-2xl font-bold text-gray-900 mb-2">
           Form 3: Statement and Undertaking under Section 8
         </h2>
@@ -346,7 +346,7 @@ const Form3Statement = ({
       </div>
 
       {/* Section 3: DECLARATION - FOREIGN APPLICATIONS */}
-      <div className="form-section bg-blue-50 border border-blue-200 rounded-lg p-6">
+      <div className="form-section bg-blue-50 border border-blue-200 -lg p-6">
         <h3 className="form-section-title">Section 3: Declaration Regarding Foreign Applications</h3>
 
         <p className="text-sm text-gray-600 mb-4">
@@ -354,7 +354,7 @@ const Form3Statement = ({
         </p>
 
         <div className="space-y-3">
-          <label className="flex items-start p-3 border border-gray-300 rounded-lg bg-white cursor-pointer hover:bg-gray-50">
+          <label className="flex items-start p-3 border border-gray-300 -lg bg-white cursor-pointer hover:bg-gray-50">
             <input
               type="radio"
               name="form3_foreign_applications_exist"
@@ -368,7 +368,7 @@ const Form3Statement = ({
             </span>
           </label>
 
-          <label className="flex items-start p-3 border border-gray-300 rounded-lg bg-white cursor-pointer hover:bg-gray-50">
+          <label className="flex items-start p-3 border border-gray-300 -lg bg-white cursor-pointer hover:bg-gray-50">
             <input
               type="radio"
               name="form3_foreign_applications_exist"
@@ -384,7 +384,7 @@ const Form3Statement = ({
         </div>
 
         {hasForeignApps === 'no' && (
-          <div className="mt-4 p-3 bg-gray-100 border border-gray-300 rounded-lg">
+          <div className="mt-4 p-3 bg-gray-100 border border-gray-300 -lg">
             <p className="text-sm text-gray-700">
               ℹ️ You will still need to sign the undertaking below to inform the Patent Office if any foreign applications are filed in the future.
             </p>
@@ -417,7 +417,7 @@ const Form3Statement = ({
           </p>
 
           {foreignApplications.length === 0 ? (
-            <div className="text-center py-8 bg-gray-50 rounded-lg border border-gray-200">
+            <div className="text-center py-8 bg-gray-50 -lg border border-gray-200">
               <p className="text-gray-500 mb-4">No foreign applications added yet</p>
               <button
                 type="button"
@@ -544,7 +544,7 @@ const Form3Statement = ({
           )}
 
           {isFieldAutoFetched('form3_foreign_applications') && (
-            <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+            <div className="mt-4 p-3 bg-green-50 border border-green-200 -lg">
               <p className="text-xs text-green-700">
                 ✅ Foreign applications auto-populated from Form 1 Convention applications. You can edit or add more.
               </p>
@@ -585,15 +585,15 @@ const Form3Statement = ({
       </div>
 
       {/* Section 6: UNDERTAKING */}
-      <div className="form-section bg-indigo-50 border border-indigo-200 rounded-lg p-6">
+      <div className="form-section bg-indigo-50 border border-indigo-200 -lg p-6">
         <h3 className="form-section-title">Section 6: Undertaking</h3>
 
-        <div className="flex items-start p-4 bg-white border border-gray-300 rounded-lg">
+        <div className="flex items-start p-4 bg-white border border-gray-300 -lg">
           <input
             type="checkbox"
             checked={formData.form3_undertaking_acknowledged || false}
             onChange={(e) => setFieldValue('form3_undertaking_acknowledged', e.target.checked)}
-            className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded mt-1"
+            className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300  mt-1"
           />
           <span className="ml-3 text-sm text-gray-800">
             That we undertake that up to the date of grant of the Patent by the Controller, we would keep him informed in writing the details of corresponding Applications for Patents filed outside India in accordance with provisions contained in section 8 and rule 12.
@@ -687,11 +687,11 @@ const Form3Statement = ({
           <label className="label">
             Signature Upload
           </label>
-          <div className="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-primary-400 transition-colors">
+          <div className="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed -lg hover:border-primary-400 transition-colors">
             <div className="space-y-2 text-center">
-              <UploadIcon className="mx-auto h-12 w-12 text-gray-400" />
+              <ArrowUpTrayIcon className="mx-auto h-12 w-12 text-gray-400" />
               <div className="flex text-sm text-gray-600">
-                <label className="relative cursor-pointer bg-white rounded-md font-medium text-primary-600 hover:text-primary-500">
+                <label className="relative cursor-pointer bg-white -md font-medium text-primary-600 hover:text-primary-500">
                   <span>Upload signature</span>
                   <input
                     type="file"
@@ -706,7 +706,7 @@ const Form3Statement = ({
                 JPG, PNG, PDF up to 2MB
               </p>
               {formData.form3_signature_filename && (
-                <div className="mt-2 p-2 bg-green-50 border border-green-200 rounded">
+                <div className="mt-2 p-2 bg-green-50 border border-green-200 ">
                   <p className="text-sm text-green-700">
                     ✅ Uploaded: {formData.form3_signature_filename}
                   </p>
@@ -718,7 +718,7 @@ const Form3Statement = ({
       </div>
 
       {/* Section 8: ADDRESSEE */}
-      <div className="form-section bg-gray-50 border border-gray-300 rounded-lg p-6">
+      <div className="form-section bg-gray-50 border border-gray-300 -lg p-6">
         <h3 className="form-section-title">Section 8: Addressee</h3>
 
         <div className="space-y-3">
@@ -750,7 +750,7 @@ const Form3Statement = ({
       </div>
 
       {/* Help Section */}
-      <div className="p-4 bg-amber-50 rounded-lg border border-amber-200">
+      <div className="p-4 bg-amber-50 -lg border border-amber-200">
         <h4 className="text-sm font-medium text-amber-800 mb-2">Form 3 Important Guidelines:</h4>
         <ul className="text-xs text-amber-700 space-y-1">
           <li>• All fields are optional - fill only the information you have available</li>

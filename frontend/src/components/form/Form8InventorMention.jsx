@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useForm } from '../../contexts/FormContext'
-import { PlusIcon, TrashIcon, UploadIcon } from '@heroicons/react/24/outline'
+import { PlusIcon, TrashIcon, ArrowUpTrayIcon } from '@heroicons/react/24/outline'
 
 const Form8InventorMention = ({
   formData,
@@ -227,7 +227,7 @@ const Form8InventorMention = ({
     const config = badgeConfig[source] || { color: 'gray', text: '📥 Auto' }
 
     return (
-      <span className={`inline-flex items-center px-2 py-1 text-xs font-medium text-${config.color}-700 bg-${config.color}-100 rounded-md ml-2`}>
+      <span className={`inline-flex items-center px-2 py-1 text-xs font-medium text-${config.color}-700 bg-${config.color}-100 -md ml-2`}>
         {config.text}
       </span>
     )
@@ -238,7 +238,7 @@ const Form8InventorMention = ({
   return (
     <div className="space-y-6">
       {/* Form Header */}
-      <div className="bg-gradient-to-r from-pink-50 to-rose-50 border border-pink-200 rounded-lg p-6">
+      <div className="bg-gradient-to-r from-pink-50 to-rose-50 border border-pink-200 -lg p-6">
         <h2 className="text-2xl font-bold text-gray-900 mb-2">
           Form 8: Request for Mention of Inventor in Patent
         </h2>
@@ -392,7 +392,7 @@ const Form8InventorMention = ({
         </p>
 
         {inventors.length === 0 ? (
-          <div className="text-center py-8 bg-gray-50 rounded-lg border border-gray-200">
+          <div className="text-center py-8 bg-gray-50 -lg border border-gray-200">
             <p className="text-gray-500 mb-4">No inventors added yet</p>
             <button
               type="button"
@@ -466,7 +466,7 @@ const Form8InventorMention = ({
         )}
 
         {isFieldAutoFetched('form8_inventors') && (
-          <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+          <div className="mt-4 p-3 bg-green-50 border border-green-200 -lg">
             <p className="text-xs text-green-700">
               ✅ Inventors auto-populated from {getAutoFetchSource('form8_inventors') === 'form5' ? 'Form 5' : getAutoFetchSource('form8_inventors') === 'form1' ? 'Form 1' : 'applicant details'}. You can edit or add more inventors.
             </p>
@@ -475,15 +475,15 @@ const Form8InventorMention = ({
       </div>
 
       {/* Section 4: CERTIFICATE REQUEST */}
-      <div className="form-section bg-indigo-50 border border-indigo-200 rounded-lg p-6">
+      <div className="form-section bg-indigo-50 border border-indigo-200 -lg p-6">
         <h3 className="form-section-title">Section 4: Request for Certificate</h3>
 
-        <div className="flex items-start p-4 bg-white border border-gray-300 rounded-lg">
+        <div className="flex items-start p-4 bg-white border border-gray-300 -lg">
           <input
             type="checkbox"
             checked={formData.form8_certificate_request || false}
             onChange={(e) => setFieldValue('form8_certificate_request', e.target.checked)}
-            className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded mt-1"
+            className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300  mt-1"
           />
           <span className="ml-3 text-sm text-gray-800">
             and we hereby apply for a certificate to that effect.
@@ -505,13 +505,13 @@ const Form8InventorMention = ({
 
         <div className="space-y-4">
           {/* Statement Attachment */}
-          <div className="border border-gray-200 rounded-lg p-4">
+          <div className="border border-gray-200 -lg p-4">
             <label className="flex items-start">
               <input
                 type="checkbox"
                 checked={formData.form8_statement_attached || false}
                 onChange={(e) => setFieldValue('form8_statement_attached', e.target.checked)}
-                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded mt-1"
+                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300  mt-1"
               />
               <span className="ml-3 text-sm text-gray-700">
                 <strong>Supporting Statement</strong> setting out circumstances for this request
@@ -543,13 +543,13 @@ const Form8InventorMention = ({
           </div>
 
           {/* NOC from Existing Inventors (if adding new inventors) */}
-          <div className="border border-gray-200 rounded-lg p-4">
+          <div className="border border-gray-200 -lg p-4">
             <label className="flex items-start">
               <input
                 type="checkbox"
                 checked={formData.form8_noc_attached || false}
                 onChange={(e) => setFieldValue('form8_noc_attached', e.target.checked)}
-                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded mt-1"
+                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300  mt-1"
               />
               <span className="ml-3 text-sm text-gray-700">
                 <strong>No Objection Certificate (NOC)</strong> from existing inventors (if adding new inventors)
@@ -574,13 +574,13 @@ const Form8InventorMention = ({
           </div>
 
           {/* Revised Form 1 */}
-          <div className="border border-blue-200 bg-blue-50 rounded-lg p-4">
+          <div className="border border-blue-200 bg-blue-50 -lg p-4">
             <label className="flex items-start">
               <input
                 type="checkbox"
                 checked={formData.form8_revised_form1 || false}
                 onChange={(e) => setFieldValue('form8_revised_form1', e.target.checked)}
-                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded mt-1"
+                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300  mt-1"
               />
               <span className="ml-3 text-sm text-blue-800">
                 <strong>Revised Form 1</strong> with updated inventor details
@@ -589,7 +589,7 @@ const Form8InventorMention = ({
 
             {formData.form8_revised_form1 && (
               <div className="mt-3 ml-7">
-                <div className="p-2 bg-blue-100 border border-blue-300 rounded mb-2">
+                <div className="p-2 bg-blue-100 border border-blue-300  mb-2">
                   <p className="text-xs text-blue-800">
                     Update ONLY Section 4 (Inventor Details). Keep all other sections unchanged.
                   </p>
@@ -610,13 +610,13 @@ const Form8InventorMention = ({
           </div>
 
           {/* Revised Form 5 */}
-          <div className="border border-blue-200 bg-blue-50 rounded-lg p-4">
+          <div className="border border-blue-200 bg-blue-50 -lg p-4">
             <label className="flex items-start">
               <input
                 type="checkbox"
                 checked={formData.form8_revised_form5 || false}
                 onChange={(e) => setFieldValue('form8_revised_form5', e.target.checked)}
-                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded mt-1"
+                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300  mt-1"
               />
               <span className="ml-3 text-sm text-blue-800">
                 <strong>Revised Form 5</strong> with updated inventor details
@@ -625,7 +625,7 @@ const Form8InventorMention = ({
 
             {formData.form8_revised_form5 && (
               <div className="mt-3 ml-7">
-                <div className="p-2 bg-blue-100 border border-blue-300 rounded mb-2">
+                <div className="p-2 bg-blue-100 border border-blue-300  mb-2">
                   <p className="text-xs text-blue-800">
                     Update ONLY Section 2 (Inventor Details). Keep application details unchanged.
                   </p>
@@ -845,11 +845,11 @@ const Form8InventorMention = ({
           <label className="label">
             Signature Upload
           </label>
-          <div className="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-primary-400 transition-colors">
+          <div className="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed -lg hover:border-primary-400 transition-colors">
             <div className="space-y-2 text-center">
-              <UploadIcon className="mx-auto h-12 w-12 text-gray-400" />
+              <ArrowUpTrayIcon className="mx-auto h-12 w-12 text-gray-400" />
               <div className="flex text-sm text-gray-600">
-                <label className="relative cursor-pointer bg-white rounded-md font-medium text-primary-600 hover:text-primary-500">
+                <label className="relative cursor-pointer bg-white -md font-medium text-primary-600 hover:text-primary-500">
                   <span>Upload signature</span>
                   <input
                     type="file"
@@ -864,7 +864,7 @@ const Form8InventorMention = ({
                 JPG, PNG, PDF up to 2MB
               </p>
               {formData.form8_signature_filename && (
-                <div className="mt-2 p-2 bg-green-50 border border-green-200 rounded">
+                <div className="mt-2 p-2 bg-green-50 border border-green-200 ">
                   <p className="text-sm text-green-700">
                     ✅ Uploaded: {formData.form8_signature_filename}
                   </p>
@@ -876,7 +876,7 @@ const Form8InventorMention = ({
       </div>
 
       {/* Help Section */}
-      <div className="p-4 bg-pink-50 rounded-lg border border-pink-200">
+      <div className="p-4 bg-pink-50 -lg border border-pink-200">
         <h4 className="text-sm font-medium text-pink-800 mb-2">Form 8 Important Guidelines:</h4>
         <ul className="text-xs text-pink-700 space-y-1">
           <li>• All fields are optional - fill only the information you have available</li>

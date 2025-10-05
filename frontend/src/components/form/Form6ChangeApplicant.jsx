@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useForm } from '../../contexts/FormContext'
-import { UploadIcon, DocumentTextIcon, CheckCircleIcon } from '@heroicons/react/24/outline'
+import { ArrowUpTrayIcon, DocumentTextIcon, CheckCircleIcon } from '@heroicons/react/24/outline'
 
 const Form6ChangeApplicant = ({
   formData,
@@ -260,7 +260,7 @@ const Form6ChangeApplicant = ({
     const config = badgeConfig[source] || { color: 'gray', text: '📥 Auto' }
 
     return (
-      <span className={`inline-flex items-center px-2 py-1 text-xs font-medium text-${config.color}-700 bg-${config.color}-100 rounded-md ml-2`}>
+      <span className={`inline-flex items-center px-2 py-1 text-xs font-medium text-${config.color}-700 bg-${config.color}-100 -md ml-2`}>
         {config.text}
       </span>
     )
@@ -269,7 +269,7 @@ const Form6ChangeApplicant = ({
   return (
     <div className="space-y-6">
       {/* Form Header */}
-      <div className="bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg p-6">
+      <div className="bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 -lg p-6">
         <h2 className="text-2xl font-bold text-gray-900 mb-2">
           Form 6: Request for Change of Applicant/Transfer of Rights
         </h2>
@@ -285,7 +285,7 @@ const Form6ChangeApplicant = ({
       </div>
 
       {/* Section 1: NEW APPLICANT DETAILS */}
-      <div className="form-section bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+      <div className="form-section bg-yellow-50 border border-yellow-200 -lg p-6">
         <h3 className="form-section-title">Section 1: New Applicant Details (Transferee/Assignee)</h3>
 
         <p className="text-sm text-gray-600 mb-4">
@@ -474,14 +474,14 @@ const Form6ChangeApplicant = ({
       </div>
 
       {/* Section 4: AUTO-GENERATED REQUEST STATEMENT */}
-      <div className="form-section bg-indigo-50 border border-indigo-200 rounded-lg p-6">
+      <div className="form-section bg-indigo-50 border border-indigo-200 -lg p-6">
         <h3 className="form-section-title">Section 4: Formal Request Statement</h3>
 
         <p className="text-sm text-gray-600 mb-4">
           Auto-generated from the information provided above. Review for accuracy.
         </p>
 
-        <div className="bg-white border border-gray-300 rounded-lg p-4">
+        <div className="bg-white border border-gray-300 -lg p-4">
           <p className="text-sm text-gray-800 leading-relaxed whitespace-pre-wrap">
             {requestStatement}
           </p>
@@ -549,13 +549,13 @@ const Form6ChangeApplicant = ({
 
         <div className="space-y-4">
           {/* Document A: Assignment Deed */}
-          <div className="border border-gray-200 rounded-lg p-4">
+          <div className="border border-gray-200 -lg p-4">
             <label className="flex items-start">
               <input
                 type="checkbox"
                 checked={formData.form6_doc_assignment_deed || false}
                 onChange={(e) => handleDocumentCheckbox('form6_doc_assignment_deed', e.target.checked)}
-                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded mt-1"
+                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300  mt-1"
               />
               <span className="ml-3 text-sm text-gray-700">
                 <strong>Duly stamped original Deed of Assignment</strong> executed between original and new applicant
@@ -580,13 +580,13 @@ const Form6ChangeApplicant = ({
           </div>
 
           {/* Document B: Power of Attorney */}
-          <div className="border border-gray-200 rounded-lg p-4">
+          <div className="border border-gray-200 -lg p-4">
             <label className="flex items-start">
               <input
                 type="checkbox"
                 checked={formData.form6_doc_power_of_attorney || false}
                 onChange={(e) => handleDocumentCheckbox('form6_doc_power_of_attorney', e.target.checked)}
-                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded mt-1"
+                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300  mt-1"
               />
               <span className="ml-3 text-sm text-gray-700">
                 <strong>Duly stamped original General Power of Attorney</strong> executed by new applicant
@@ -611,13 +611,13 @@ const Form6ChangeApplicant = ({
           </div>
 
           {/* Document C: Revised Forms */}
-          <div className="border border-blue-200 bg-blue-50 rounded-lg p-4">
+          <div className="border border-blue-200 bg-blue-50 -lg p-4">
             <label className="flex items-start">
               <input
                 type="checkbox"
                 checked={formData.form6_doc_revised_forms || false}
                 onChange={(e) => handleDocumentCheckbox('form6_doc_revised_forms', e.target.checked)}
-                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded mt-1"
+                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300  mt-1"
               />
               <span className="ml-3 text-sm text-blue-800">
                 <strong>Revised Form 1, Form 2, and Form 5</strong> with updated applicant details
@@ -626,7 +626,7 @@ const Form6ChangeApplicant = ({
 
             {formData.form6_doc_revised_forms && (
               <div className="mt-3 ml-7 space-y-2">
-                <div className="p-3 bg-blue-100 border border-blue-300 rounded-lg">
+                <div className="p-3 bg-blue-100 border border-blue-300 -lg">
                   <p className="text-xs text-blue-800 mb-2">
                     <DocumentTextIcon className="h-4 w-4 inline mr-1" />
                     <strong>Instructions for Revised Forms:</strong>
@@ -684,13 +684,13 @@ const Form6ChangeApplicant = ({
           </div>
 
           {/* Document D: Fee Payment */}
-          <div className="border border-gray-200 rounded-lg p-4">
+          <div className="border border-gray-200 -lg p-4">
             <label className="flex items-start">
               <input
                 type="checkbox"
                 checked={formData.form6_doc_fee_payment || false}
                 onChange={(e) => handleDocumentCheckbox('form6_doc_fee_payment', e.target.checked)}
-                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded mt-1"
+                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300  mt-1"
               />
               <span className="ml-3 text-sm text-gray-700">
                 <strong>Prescribed official fee</strong> (amount varies by applicant category)
@@ -720,13 +720,13 @@ const Form6ChangeApplicant = ({
           </div>
 
           {/* Additional Documents */}
-          <div className="border border-gray-200 rounded-lg p-4">
+          <div className="border border-gray-200 -lg p-4">
             <label className="flex items-start">
               <input
                 type="checkbox"
                 checked={formData.form6_doc_additional || false}
                 onChange={(e) => handleDocumentCheckbox('form6_doc_additional', e.target.checked)}
-                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded mt-1"
+                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300  mt-1"
               />
               <span className="ml-3 text-sm text-gray-700">
                 <strong>Additional supporting documents</strong> (certificates, consents, etc.)
@@ -918,11 +918,11 @@ const Form6ChangeApplicant = ({
           <label className="label">
             Signature Upload
           </label>
-          <div className="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-primary-400 transition-colors">
+          <div className="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed -lg hover:border-primary-400 transition-colors">
             <div className="space-y-2 text-center">
-              <UploadIcon className="mx-auto h-12 w-12 text-gray-400" />
+              <ArrowUpTrayIcon className="mx-auto h-12 w-12 text-gray-400" />
               <div className="flex text-sm text-gray-600">
-                <label className="relative cursor-pointer bg-white rounded-md font-medium text-primary-600 hover:text-primary-500">
+                <label className="relative cursor-pointer bg-white -md font-medium text-primary-600 hover:text-primary-500">
                   <span>Upload signature</span>
                   <input
                     type="file"
@@ -937,7 +937,7 @@ const Form6ChangeApplicant = ({
                 JPG, PNG, PDF up to 2MB
               </p>
               {formData.form6_signature_filename && (
-                <div className="mt-2 p-2 bg-green-50 border border-green-200 rounded">
+                <div className="mt-2 p-2 bg-green-50 border border-green-200 ">
                   <p className="text-sm text-green-700">
                     ✅ Uploaded: {formData.form6_signature_filename}
                   </p>
@@ -949,7 +949,7 @@ const Form6ChangeApplicant = ({
       </div>
 
       {/* Section 9: ADDRESSEE (Footer) */}
-      <div className="form-section bg-gray-50 border border-gray-300 rounded-lg p-6">
+      <div className="form-section bg-gray-50 border border-gray-300 -lg p-6">
         <h3 className="form-section-title">Section 9: Addressee</h3>
 
         <div className="space-y-3">
@@ -999,7 +999,7 @@ const Form6ChangeApplicant = ({
       </div>
 
       {/* Help Section */}
-      <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
+      <div className="p-4 bg-purple-50 -lg border border-purple-200">
         <h4 className="text-sm font-medium text-purple-800 mb-2">Form 6 Important Guidelines:</h4>
         <ul className="text-xs text-purple-700 space-y-1">
           <li>• All fields are optional - fill only the information you have available</li>

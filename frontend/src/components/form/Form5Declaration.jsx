@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useForm } from '../../contexts/FormContext'
-import { PlusIcon, TrashIcon, UploadIcon } from '@heroicons/react/24/outline'
+import { PlusIcon, TrashIcon, ArrowUpTrayIcon } from '@heroicons/react/24/outline'
 
 const Form5Declaration = ({
   formData,
@@ -219,7 +219,7 @@ const Form5Declaration = ({
     const config = badgeConfig[source] || { color: 'gray', text: '📥 Auto' }
 
     return (
-      <span className={`inline-flex items-center px-2 py-1 text-xs font-medium text-${config.color}-700 bg-${config.color}-100 rounded-md ml-2`}>
+      <span className={`inline-flex items-center px-2 py-1 text-xs font-medium text-${config.color}-700 bg-${config.color}-100 -md ml-2`}>
         {config.text}
       </span>
     )
@@ -235,7 +235,7 @@ const Form5Declaration = ({
   return (
     <div className="space-y-6">
       {/* Form Header */}
-      <div className="bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg p-6">
+      <div className="bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 -lg p-6">
         <h2 className="text-2xl font-bold text-gray-900 mb-2">
           Form 5: Declaration as to Inventorship
         </h2>
@@ -307,7 +307,7 @@ const Form5Declaration = ({
       </div>
 
       {/* Declaration Text with Auto-Filled Variables */}
-      <div className="form-section bg-gray-50 border border-gray-300 rounded-lg p-6">
+      <div className="form-section bg-gray-50 border border-gray-300 -lg p-6">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Declaration Statement</h3>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
@@ -315,7 +315,7 @@ const Form5Declaration = ({
           <div>
             <label className="label">
               Application Number
-              <span className="inline-flex items-center px-2 py-1 text-xs font-medium text-gray-700 bg-gray-200 rounded-md ml-2">
+              <span className="inline-flex items-center px-2 py-1 text-xs font-medium text-gray-700 bg-gray-200 -md ml-2">
                 🔒 Read-only
               </span>
             </label>
@@ -335,7 +335,7 @@ const Form5Declaration = ({
           <div>
             <label className="label">
               Application Filing Date
-              <span className="inline-flex items-center px-2 py-1 text-xs font-medium text-gray-700 bg-gray-200 rounded-md ml-2">
+              <span className="inline-flex items-center px-2 py-1 text-xs font-medium text-gray-700 bg-gray-200 -md ml-2">
                 🔒 Read-only
               </span>
             </label>
@@ -351,7 +351,7 @@ const Form5Declaration = ({
           </div>
         </div>
 
-        <div className="p-4 bg-white border border-gray-200 rounded-lg">
+        <div className="p-4 bg-white border border-gray-200 -lg">
           <p className="text-sm text-gray-700 leading-relaxed">
             I/We hereby declare that the true and first inventor(s) of the invention disclosed
             in the complete specification filed in pursuance of our application numbered{' '}
@@ -387,7 +387,7 @@ const Form5Declaration = ({
         </div>
 
         {inventorSource === 'applicants' && (
-          <div className="mb-4 p-3 bg-purple-50 border border-purple-200 rounded-lg">
+          <div className="mb-4 p-3 bg-purple-50 border border-purple-200 -lg">
             <p className="text-sm text-purple-800">
               ✅ Inventors auto-populated from applicant details (Form 1 indicated inventors same as applicants)
             </p>
@@ -395,7 +395,7 @@ const Form5Declaration = ({
         )}
 
         {inventorSource === 'inventors' && (
-          <div className="mb-4 p-3 bg-indigo-50 border border-indigo-200 rounded-lg">
+          <div className="mb-4 p-3 bg-indigo-50 border border-indigo-200 -lg">
             <p className="text-sm text-indigo-800">
               ✅ Inventors auto-populated from Form 1 Section 4 inventor details
             </p>
@@ -480,10 +480,10 @@ const Form5Declaration = ({
 
       {/* Section 3: Convention Declaration (Conditional) */}
       {isConventionApplication() && (
-        <div className="form-section bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+        <div className="form-section bg-yellow-50 border border-yellow-200 -lg p-6">
           <h3 className="form-section-title">Section 3: Declaration for Convention Country Application</h3>
 
-          <div className="mb-4 p-3 bg-yellow-100 border border-yellow-300 rounded-lg">
+          <div className="mb-4 p-3 bg-yellow-100 border border-yellow-300 -lg">
             <p className="text-sm text-yellow-800">
               ⚠️ This section is displayed because your application type is "Convention"
             </p>
@@ -506,7 +506,7 @@ const Form5Declaration = ({
       )}
 
       {!isConventionApplication() && (
-        <div className="form-section bg-gray-50 border border-gray-200 rounded-lg p-6">
+        <div className="form-section bg-gray-50 border border-gray-200 -lg p-6">
           <h3 className="form-section-title">Section 3: Declaration for Convention Country Application</h3>
           <div className="text-center py-4">
             <p className="text-gray-500 font-medium">NA</p>
@@ -518,7 +518,7 @@ const Form5Declaration = ({
       )}
 
       {/* Section 4: Additional Inventors (Conditional) */}
-      <div className="form-section bg-gray-50 border border-gray-200 rounded-lg p-6">
+      <div className="form-section bg-gray-50 border border-gray-200 -lg p-6">
         <h3 className="form-section-title">Section 4: Statement by Additional Inventors</h3>
         <div className="text-center py-4">
           <p className="text-gray-500 font-medium">NA</p>
@@ -615,11 +615,11 @@ const Form5Declaration = ({
           <label className="label">
             Signature Upload
           </label>
-          <div className="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-primary-400 transition-colors">
+          <div className="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed -lg hover:border-primary-400 transition-colors">
             <div className="space-y-2 text-center">
-              <UploadIcon className="mx-auto h-12 w-12 text-gray-400" />
+              <ArrowUpTrayIcon className="mx-auto h-12 w-12 text-gray-400" />
               <div className="flex text-sm text-gray-600">
-                <label className="relative cursor-pointer bg-white rounded-md font-medium text-primary-600 hover:text-primary-500">
+                <label className="relative cursor-pointer bg-white -md font-medium text-primary-600 hover:text-primary-500">
                   <span>Upload signature</span>
                   <input
                     type="file"
@@ -634,7 +634,7 @@ const Form5Declaration = ({
                 JPG, PNG, PDF up to 2MB
               </p>
               {formData.form5_signature_filename && (
-                <div className="mt-2 p-2 bg-green-50 border border-green-200 rounded">
+                <div className="mt-2 p-2 bg-green-50 border border-green-200 ">
                   <p className="text-sm text-green-700">
                     ✅ Uploaded: {formData.form5_signature_filename}
                   </p>
@@ -646,7 +646,7 @@ const Form5Declaration = ({
       </div>
 
       {/* Footer: Addressee Section */}
-      <div className="form-section bg-gray-50 border border-gray-300 rounded-lg p-6">
+      <div className="form-section bg-gray-50 border border-gray-300 -lg p-6">
         <h3 className="form-section-title">Addressee</h3>
 
         <div className="space-y-3">
@@ -687,7 +687,7 @@ const Form5Declaration = ({
       </div>
 
       {/* Help Section */}
-      <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
+      <div className="p-4 bg-purple-50 -lg border border-purple-200">
         <h4 className="text-sm font-medium text-purple-800 mb-2">Form 5 Guidelines:</h4>
         <ul className="text-xs text-purple-700 space-y-1">
           <li>• All fields are optional - fill as much information as available</li>

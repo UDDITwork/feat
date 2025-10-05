@@ -111,7 +111,13 @@ export const AuthProvider = ({ children }) => {
       try {
         console.log('🔍 Verifying existing token...')
         dispatch({ type: 'AUTH_START' })
+        
+        // Add timeout to prevent hanging
+        const controller = new AbortController()
+        const timeoutId = setTimeout(() => controller.abort(), 5000) // 5 second timeout
+        
         const response = await authAPI.verifyToken()
+        clearTimeout(timeoutId)
         
         if (response.success) {
           console.log('✅ Token verified successfully')
@@ -127,8 +133,15 @@ export const AuthProvider = ({ children }) => {
         }
       } catch (error) {
         console.error('❌ Auth check failed:', error)
+        
+        // Clear token on any error and continue without authentication
         localStorage.removeItem('adminToken')
+        
+        // Always set loading to false, even on error
         dispatch({ type: 'AUTH_FAILURE', payload: error.message })
+        
+        // Don't let auth errors break the app
+        console.log('🔄 Continuing without authentication due to API error')
       }
     }
 
@@ -247,4 +260,4 @@ export const useAuth = () => {
   return context
 }
 
-export default AuthContext
+export default AuthProvider

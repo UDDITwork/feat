@@ -1,6 +1,7 @@
 {
   "name": "ip-india-patent-frontend",
   "version": "1.0.0",
+  "type": "module",
   "description": "Frontend for IP India Patent Auto-Fill System",
   "private": true,
   "dependencies": {

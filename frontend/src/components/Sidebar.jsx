@@ -5,7 +5,6 @@ import {
   EnvelopeIcon,
   DocumentTextIcon,
   UsersIcon,
-  ChartBarIcon,
   Cog6ToothIcon,
   XMarkIcon
 } from '@heroicons/react/24/outline'
@@ -16,7 +15,6 @@ const Sidebar = ({ isOpen, onClose, currentPath }) => {
     { name: 'Send Invitations', href: '/invitations', icon: EnvelopeIcon },
     { name: 'Form Submissions', href: '/submissions', icon: DocumentTextIcon },
     { name: 'Clients', href: '/clients', icon: UsersIcon },
-    { name: 'Analytics', href: '/analytics', icon: ChartBarIcon },
     { name: 'Settings', href: '/settings', icon: Cog6ToothIcon },
   ]
 
@@ -50,7 +48,7 @@ const Sidebar = ({ isOpen, onClose, currentPath }) => {
                     isActive
                       ? 'bg-sitabience-50 border-sitabience-500 text-sitabience-700 shadow-md'
                       : 'border-transparent text-teal-700 hover:bg-teal-50 hover:text-teal-800 hover:shadow-sm'
-                  } group flex items-center px-4 py-3 text-sm font-semibold rounded-xl border-l-4 transition-all duration-200`}
+                  } group flex items-center px-4 py-3 text-sm font-semibold border-l-4 transition-all duration-200`}
                 >
                   <item.icon
                     className={`${
@@ -65,8 +63,8 @@ const Sidebar = ({ isOpen, onClose, currentPath }) => {
 
           {/* Footer */}
           <div className="flex-shrink-0 px-6 py-6">
-            <div className="text-center p-4 bg-white rounded-xl shadow-sm border border-sitabience-100">
-              <div className="w-8 h-8 bg-gradient-to-br from-teal-500 to-sitabience-500 rounded-lg flex items-center justify-center mx-auto mb-3">
+            <div className="text-center p-4 bg-white shadow-sm border border-sitabience-100">
+              <div className="w-8 h-8 bg-gradient-to-br from-teal-500 to-sitabience-500 flex items-center justify-center mx-auto mb-3">
                 <span className="text-white font-bold text-sm">SI</span>
               </div>
               <p className="text-xs text-teal-700 font-medium">© 2025 SITABIENCE IP</p>
@@ -94,7 +92,7 @@ const Sidebar = ({ isOpen, onClose, currentPath }) => {
               </div>
               <button
                 onClick={onClose}
-                className="p-2 rounded-lg text-teal-600 hover:text-teal-700 hover:bg-teal-50 focus:outline-none focus:ring-2 focus:ring-sitabience-500"
+                className="p-2 text-teal-600 hover:text-teal-700 hover:bg-teal-50 focus:outline-none focus:ring-2 focus:ring-sitabience-500"
               >
                 <XMarkIcon className="h-6 w-6" />
               </button>
@@ -114,7 +112,7 @@ const Sidebar = ({ isOpen, onClose, currentPath }) => {
                       isActive
                         ? 'bg-sitabience-50 border-sitabience-500 text-sitabience-700 shadow-md'
                         : 'border-transparent text-teal-700 hover:bg-teal-50 hover:text-teal-800 hover:shadow-sm'
-                    } group flex items-center px-4 py-3 text-sm font-semibold rounded-xl border-l-4 transition-all duration-200`}
+                    } group flex items-center px-4 py-3 text-sm font-semibold border-l-4 transition-all duration-200`}
                   >
                     <item.icon
                       className={`${

@@ -129,7 +129,7 @@ const Form28EntityDeclaration = () => {
     const config = badgeConfig[source] || { color: 'gray', text: '📥 Auto' }
 
     return (
-      <span className={`inline-flex items-center px-2 py-1 text-xs font-medium text-${config.color}-700 bg-${config.color}-100 rounded-md ml-2`}>
+      <span className={`inline-flex items-center px-2 py-1 text-xs font-medium text-${config.color}-700 bg-${config.color}-100 -md ml-2`}>
         {config.text}
       </span>
     )
@@ -180,7 +180,7 @@ const Form28EntityDeclaration = () => {
   }
 
   return (
-    <div className="max-w-5xl mx-auto p-6 bg-white rounded-lg shadow-md">
+    <div className="max-w-5xl mx-auto p-6 bg-white -lg shadow-md">
       {/* Header */}
       <div className="mb-8 border-b pb-6">
         <div className="flex items-center gap-3 mb-4">
@@ -193,7 +193,7 @@ const Form28EntityDeclaration = () => {
           </div>
         </div>
 
-        <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded">
+        <div className="bg-blue-50 border-l-4 border-blue-400 p-4 ">
           <div className="flex">
             <InformationCircleIcon className="h-5 w-5 text-blue-400 mt-0.5 mr-3" />
             <div>
@@ -209,7 +209,7 @@ const Form28EntityDeclaration = () => {
       </div>
 
       {/* Section 1: Applicant/Declarant Details */}
-      <div className="mb-8 border border-gray-200 rounded-lg p-6">
+      <div className="mb-8 border border-gray-200 -lg p-6">
         <div className="flex items-center gap-2 mb-6">
           <UserIcon className="h-6 w-6 text-indigo-600" />
           <h2 className="text-xl font-semibold text-gray-800">
@@ -227,7 +227,7 @@ const Form28EntityDeclaration = () => {
               type="text"
               value={formData.form28_applicant_name || ''}
               onChange={(e) => setFieldValue('form28_applicant_name', e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 -lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               placeholder="Enter full name of applicant/entity"
             />
           </div>
@@ -241,7 +241,7 @@ const Form28EntityDeclaration = () => {
               value={formData.form28_applicant_address || ''}
               onChange={(e) => setFieldValue('form28_applicant_address', e.target.value)}
               rows={3}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 -lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               placeholder="Street, City, State, PIN Code, Country"
             />
           </div>
@@ -249,7 +249,7 @@ const Form28EntityDeclaration = () => {
       </div>
 
       {/* Section 2: Application Details */}
-      <div className="mb-8 border border-gray-200 rounded-lg p-6">
+      <div className="mb-8 border border-gray-200 -lg p-6">
         <div className="flex items-center gap-2 mb-6">
           <DocumentTextIcon className="h-6 w-6 text-indigo-600" />
           <h2 className="text-xl font-semibold text-gray-800">
@@ -267,7 +267,7 @@ const Form28EntityDeclaration = () => {
               type="text"
               value={formData.form28_application_number || ''}
               onChange={(e) => setFieldValue('form28_application_number', e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 -lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               placeholder="e.g., 202311012345"
             />
             <p className="text-xs text-gray-500 mt-1">Leave blank if filing with Form 1</p>
@@ -282,7 +282,7 @@ const Form28EntityDeclaration = () => {
               type="date"
               value={formData.form28_filing_date || ''}
               onChange={(e) => setFieldValue('form28_filing_date', e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 -lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
             />
           </div>
         </div>
@@ -296,14 +296,14 @@ const Form28EntityDeclaration = () => {
             type="text"
             value={formData.form28_invention_title || ''}
             onChange={(e) => setFieldValue('form28_invention_title', e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 -lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
             placeholder="Enter the title of the invention"
           />
         </div>
       </div>
 
       {/* Section 3: Entity Type Selection */}
-      <div className="mb-8 border border-gray-200 rounded-lg p-6">
+      <div className="mb-8 border border-gray-200 -lg p-6">
         <div className="flex items-center gap-2 mb-6">
           <BuildingOfficeIcon className="h-6 w-6 text-indigo-600" />
           <h2 className="text-xl font-semibold text-gray-800">
@@ -318,7 +318,7 @@ const Form28EntityDeclaration = () => {
 
           <div className="space-y-3">
             {/* Small Entity */}
-            <label className="flex items-start p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+            <label className="flex items-start p-4 border-2 border-gray-200 -lg cursor-pointer hover:bg-gray-50 transition-colors">
               <input
                 type="radio"
                 name="form28_entity_type"
@@ -331,7 +331,7 @@ const Form28EntityDeclaration = () => {
                 <div className="flex items-center gap-2">
                   <UserIcon className="h-5 w-5 text-green-600" />
                   <span className="font-medium text-gray-900">Small Entity</span>
-                  <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">Rule 2(fa)</span>
+                  <span className="text-xs bg-green-100 text-green-800 px-2 py-1 ">Rule 2(fa)</span>
                 </div>
                 <p className="text-sm text-gray-600 mt-1">
                   Natural person(s), start-up(s) (other than those certified by DPIIT), or educational institution(s).
@@ -341,7 +341,7 @@ const Form28EntityDeclaration = () => {
             </label>
 
             {/* Start-up */}
-            <label className="flex items-start p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+            <label className="flex items-start p-4 border-2 border-gray-200 -lg cursor-pointer hover:bg-gray-50 transition-colors">
               <input
                 type="radio"
                 name="form28_entity_type"
@@ -354,8 +354,8 @@ const Form28EntityDeclaration = () => {
                 <div className="flex items-center gap-2">
                   <RocketLaunchIcon className="h-5 w-5 text-purple-600" />
                   <span className="font-medium text-gray-900">Start-up</span>
-                  <span className="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">Rule 2(fb)</span>
-                  <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded font-semibold">80% Fee Reduction</span>
+                  <span className="text-xs bg-purple-100 text-purple-800 px-2 py-1 ">Rule 2(fb)</span>
+                  <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1  font-semibold">80% Fee Reduction</span>
                 </div>
                 <p className="text-sm text-gray-600 mt-1">
                   Start-up certified by the Department for Promotion of Industry and Internal Trade (DPIIT).
@@ -365,7 +365,7 @@ const Form28EntityDeclaration = () => {
             </label>
 
             {/* Educational Institution */}
-            <label className="flex items-start p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+            <label className="flex items-start p-4 border-2 border-gray-200 -lg cursor-pointer hover:bg-gray-50 transition-colors">
               <input
                 type="radio"
                 name="form28_entity_type"
@@ -378,7 +378,7 @@ const Form28EntityDeclaration = () => {
                 <div className="flex items-center gap-2">
                   <AcademicCapIcon className="h-5 w-5 text-blue-600" />
                   <span className="font-medium text-gray-900">Educational Institution</span>
-                  <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">Rule 2(ca)</span>
+                  <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 ">Rule 2(ca)</span>
                 </div>
                 <p className="text-sm text-gray-600 mt-1">
                   Institution established by Act of Parliament/State Legislature, or recognized technical/higher education institution.
@@ -390,12 +390,12 @@ const Form28EntityDeclaration = () => {
 
           {/* Auto-generated Declaration Statement */}
           {declarationStatement && (
-            <div className="mt-6 bg-indigo-50 border border-indigo-200 rounded-lg p-4">
+            <div className="mt-6 bg-indigo-50 border border-indigo-200 -lg p-4">
               <h4 className="text-sm font-semibold text-indigo-900 mb-2 flex items-center gap-2">
                 <CheckCircleIcon className="h-5 w-5 text-indigo-600" />
                 Generated Declaration Statement:
               </h4>
-              <div className="bg-white p-4 rounded border border-indigo-100">
+              <div className="bg-white p-4  border border-indigo-100">
                 <p className="text-sm text-gray-800 leading-relaxed whitespace-pre-wrap">
                   {declarationStatement}
                 </p>
@@ -409,7 +409,7 @@ const Form28EntityDeclaration = () => {
       </div>
 
       {/* Section 4: Supporting Documents */}
-      <div className="mb-8 border border-gray-200 rounded-lg p-6">
+      <div className="mb-8 border border-gray-200 -lg p-6">
         <div className="flex items-center gap-2 mb-6">
           <DocumentTextIcon className="h-6 w-6 text-indigo-600" />
           <h2 className="text-xl font-semibold text-gray-800">
@@ -418,7 +418,7 @@ const Form28EntityDeclaration = () => {
         </div>
 
         <div className="space-y-4">
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+          <div className="bg-yellow-50 border border-yellow-200 -lg p-4">
             <div className="flex gap-2">
               <ExclamationCircleIcon className="h-5 w-5 text-yellow-600 mt-0.5" />
               <div>
@@ -440,7 +440,7 @@ const Form28EntityDeclaration = () => {
               value={formData.form28_supporting_docs_description || ''}
               onChange={(e) => setFieldValue('form28_supporting_docs_description', e.target.value)}
               rows={3}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 -lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               placeholder="Describe the supporting documents you are attaching (e.g., 'DPIIT Recognition Certificate dated 15/01/2023, Certificate No. DIPP12345')"
             />
           </div>
@@ -453,7 +453,7 @@ const Form28EntityDeclaration = () => {
               type="file"
               onChange={(e) => handleFileUpload(e, 'form28_supporting_documents')}
               accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 -lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
             />
             <p className="text-xs text-gray-500 mt-1">
               PDF, JPG, PNG, DOC, DOCX (Max 10MB)
@@ -469,7 +469,7 @@ const Form28EntityDeclaration = () => {
       </div>
 
       {/* Section 5: Declaration of Correctness */}
-      <div className="mb-8 border border-gray-200 rounded-lg p-6">
+      <div className="mb-8 border border-gray-200 -lg p-6">
         <div className="flex items-center gap-2 mb-6">
           <CheckCircleIcon className="h-6 w-6 text-indigo-600" />
           <h2 className="text-xl font-semibold text-gray-800">
@@ -477,13 +477,13 @@ const Form28EntityDeclaration = () => {
           </h2>
         </div>
 
-        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+        <div className="bg-gray-50 border border-gray-200 -lg p-4">
           <label className="flex items-start cursor-pointer">
             <input
               type="checkbox"
               checked={formData.form28_declaration_correctness || false}
               onChange={(e) => setFieldValue('form28_declaration_correctness', e.target.checked)}
-              className="mt-1 mr-3 h-4 w-4 text-indigo-600 rounded"
+              className="mt-1 mr-3 h-4 w-4 text-indigo-600 "
             />
             <span className="text-sm text-gray-800">
               I/We hereby declare that to the best of my/our knowledge and belief, the particulars given in
@@ -495,7 +495,7 @@ const Form28EntityDeclaration = () => {
       </div>
 
       {/* Section 6: Date and Signature */}
-      <div className="mb-8 border border-gray-200 rounded-lg p-6">
+      <div className="mb-8 border border-gray-200 -lg p-6">
         <div className="flex items-center gap-2 mb-6">
           <DocumentTextIcon className="h-6 w-6 text-indigo-600" />
           <h2 className="text-xl font-semibold text-gray-800">
@@ -513,7 +513,7 @@ const Form28EntityDeclaration = () => {
               type="date"
               value={formData.form28_date || ''}
               onChange={(e) => setFieldValue('form28_date', e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 -lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
             />
           </div>
 
@@ -526,7 +526,7 @@ const Form28EntityDeclaration = () => {
               type="text"
               value={formData.form28_signatory_name || ''}
               onChange={(e) => setFieldValue('form28_signatory_name', e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 -lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               placeholder="Full name of the person signing"
             />
           </div>
@@ -539,7 +539,7 @@ const Form28EntityDeclaration = () => {
               type="text"
               value={formData.form28_signatory_designation || ''}
               onChange={(e) => setFieldValue('form28_signatory_designation', e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 -lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               placeholder="e.g., Applicant / Patent Agent / Authorized Representative"
             />
           </div>
@@ -553,7 +553,7 @@ const Form28EntityDeclaration = () => {
               value={formData.form28_signatory_address || ''}
               onChange={(e) => setFieldValue('form28_signatory_address', e.target.value)}
               rows={2}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 -lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               placeholder="Complete address of signatory"
             />
           </div>
@@ -566,7 +566,7 @@ const Form28EntityDeclaration = () => {
               type="file"
               onChange={handleSignatureUpload}
               accept=".jpg,.jpeg,.png"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 -lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
             />
             <p className="text-xs text-gray-500 mt-1">
               JPG or PNG (Max 2MB)
@@ -582,7 +582,7 @@ const Form28EntityDeclaration = () => {
       </div>
 
       {/* Section 7: To (Addressee) */}
-      <div className="mb-8 border border-gray-200 rounded-lg p-6">
+      <div className="mb-8 border border-gray-200 -lg p-6">
         <div className="flex items-center gap-2 mb-6">
           <BuildingOfficeIcon className="h-6 w-6 text-indigo-600" />
           <h2 className="text-xl font-semibold text-gray-800">
@@ -598,7 +598,7 @@ const Form28EntityDeclaration = () => {
           <select
             value={formData.form28_office_location || ''}
             onChange={(e) => setFieldValue('form28_office_location', e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 -lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
           >
             <option value="">Select Patent Office Location</option>
             <option value="kolkata">The Patent Office, Kolkata</option>
@@ -610,7 +610,7 @@ const Form28EntityDeclaration = () => {
       </div>
 
       {/* Help Section */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+      <div className="bg-blue-50 border border-blue-200 -lg p-6">
         <div className="flex gap-3">
           <InformationCircleIcon className="h-6 w-6 text-blue-600 flex-shrink-0" />
           <div>
