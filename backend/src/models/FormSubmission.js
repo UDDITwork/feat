@@ -297,6 +297,7 @@ const formSubmissionSchema = new mongoose.Schema({
   },
   formData: formDataSchema,
   adminEdits: [adminEditSchema],
+  lastInvitationSent: { type: Date },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 });

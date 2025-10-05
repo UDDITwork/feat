@@ -44,37 +44,36 @@ router.post('/send-invitation', validateEmail, async (req, res) => {
 
     const { email, adminName } = req.body;
 
-    // Check if form already exists for this email
-    const existingSubmission = await FormSubmission.findOne({ 
-      email, 
-      status: { $in: ['pending', 'draft'] } 
-    });
-
-    if (existingSubmission) {
-      return res.status(400).json({
-        success: false,
-        message: 'A form invitation has already been sent to this email address',
-        existingToken: existingSubmission.token
-      });
-    }
+    // Allow multiple invitations - just update existing or create new
+    const existingSubmission = await FormSubmission.findOne({ email });
 
     // Send email invitation
     const emailResult = await emailService.sendFormInvitation(email, adminName);
 
-    // Create form submission record
-    const formSubmission = new FormSubmission({
-      token: emailResult.token,
-      email: email,
-      expiresAt: emailResult.expiresAt,
-      formData: {},
-      status: 'pending'
-    });
-
-    await formSubmission.save();
+    // Create or update form submission record
+    if (existingSubmission) {
+      // Update existing submission with new token and expiration
+      existingSubmission.token = emailResult.token;
+      existingSubmission.expiresAt = emailResult.expiresAt;
+      existingSubmission.status = 'pending';
+      existingSubmission.lastInvitationSent = new Date();
+      await existingSubmission.save();
+    } else {
+      // Create new submission
+      const formSubmission = new FormSubmission({
+        token: emailResult.token,
+        email: email,
+        expiresAt: emailResult.expiresAt,
+        formData: {},
+        status: 'pending',
+        lastInvitationSent: new Date()
+      });
+      await formSubmission.save();
+    }
 
     res.status(200).json({
       success: true,
-      message: 'Form invitation sent successfully',
+      message: existingSubmission ? 'Form invitation resent successfully' : 'Form invitation sent successfully',
       data: {
         email: email,
         token: emailResult.token,
