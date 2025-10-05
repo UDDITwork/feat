@@ -435,7 +435,14 @@ const generateFormToken = (email) => {
 
 // Generate form link
 const generateFormLink = (token) => {
-  const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+  // Use production URL in production environment, otherwise use localhost
+  const frontendUrl = process.env.NODE_ENV === 'production' 
+    ? (process.env.FRONTEND_URL_PROD || process.env.FRONTEND_URL || 'https://feat-olive.vercel.app')
+    : (process.env.FRONTEND_URL_LOCAL || process.env.FRONTEND_URL || 'http://localhost:5173');
+  
+  console.log(`🔗 Generating form link for environment: ${process.env.NODE_ENV}`);
+  console.log(`🔗 Using frontend URL: ${frontendUrl}`);
+  
   return `${frontendUrl}/form/${token}`;
 };
 
