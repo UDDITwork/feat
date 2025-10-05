@@ -35,16 +35,22 @@ const isValidJWTFormat = (token) => {
 // Request interceptor to add auth token
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('adminToken')
+    // Skip auth for public endpoints (form endpoints)
+    const publicEndpoints = ['/form/', '/email/verify-token/']
+    const isPublicEndpoint = publicEndpoints.some(endpoint => config.url.includes(endpoint))
     
-    if (token) {
-      // Validate token format before sending
-      if (isValidJWTFormat(token)) {
-        config.headers.Authorization = `Bearer ${token}`
-      } else {
-        console.warn('🔐 Invalid JWT token format detected, clearing token')
-        localStorage.removeItem('adminToken')
-        // Don't add the malformed token to headers
+    if (!isPublicEndpoint) {
+      const token = localStorage.getItem('adminToken')
+      
+      if (token) {
+        // Validate token format before sending
+        if (isValidJWTFormat(token)) {
+          config.headers.Authorization = `Bearer ${token}`
+        } else {
+          console.warn('🔐 Invalid JWT token format detected, clearing token')
+          localStorage.removeItem('adminToken')
+          // Don't add the malformed token to headers
+        }
       }
     }
     
