@@ -32,6 +32,7 @@ const PrimaryInvitations = () => {
   const [isLoadingCompleted, setIsLoadingCompleted] = useState(false)
   const [isLoadingCompletedDetails, setIsLoadingCompletedDetails] = useState(false)
   const [selectedCompletedInvitation, setSelectedCompletedInvitation] = useState(null)
+  const [documentLoadingField, setDocumentLoadingField] = useState(null)
 
   const resolvedAdminName = useMemo(
     () => adminName || user?.name || 'Admin',
@@ -166,6 +167,50 @@ const PrimaryInvitations = () => {
   const closeCompletedDetails = () => {
     console.log('[PrimaryInvitations] Closing completed invitation detail view')
     setSelectedCompletedInvitation(null)
+  }
+
+  const openDocumentWithBlob = async (fieldName, doc) => {
+    if (!doc?.secureUrl) {
+      toast.error('Document link is unavailable')
+      return
+    }
+
+    console.group('[PrimaryInvitations] openDocumentWithBlob')
+    console.info('Opening document', { fieldName, url: doc.secureUrl })
+    setDocumentLoadingField(fieldName)
+
+    try {
+      const response = await fetch(doc.secureUrl, { mode: 'cors' })
+      if (!response.ok) {
+        throw new Error(`Failed to fetch document (${response.status})`)
+      }
+
+      const blob = await response.blob()
+      const blobUrl = window.URL.createObjectURL(blob)
+      const newWindow = window.open(blobUrl, '_blank', 'noopener')
+
+      if (!newWindow) {
+        // Fallback: trigger download if popup blocked
+        const link = document.createElement('a')
+        link.href = blobUrl
+        link.download = doc.originalFilename || `${fieldName}.pdf`
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+      }
+
+      setTimeout(() => {
+        window.URL.revokeObjectURL(blobUrl)
+      }, 60_000)
+
+      console.info('Document opened successfully')
+    } catch (error) {
+      console.error('Error opening document via blob:', error)
+      toast.error(error.message || 'Failed to open document')
+    } finally {
+      console.groupEnd()
+      setDocumentLoadingField(null)
+    }
   }
 
   useEffect(() => {
@@ -658,14 +703,14 @@ const PrimaryInvitations = () => {
                   <p>
                     <span className="font-medium text-gray-900">GST Certificate:</span>{' '}
                     {selectedCompletedInvitation.companyInfo?.gstCertificate?.secureUrl ? (
-                      <a
-                        href={selectedCompletedInvitation.companyInfo.gstCertificate.secureUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-primary-600 hover:text-primary-700 underline"
+                      <button
+                        type="button"
+                        onClick={() => openDocumentWithBlob('gstCertificate', selectedCompletedInvitation.companyInfo.gstCertificate)}
+                        className="text-primary-600 hover:text-primary-700 underline disabled:opacity-50"
+                        disabled={documentLoadingField === 'gstCertificate'}
                       >
-                        View document
-                      </a>
+                        {documentLoadingField === 'gstCertificate' ? 'Opening…' : 'View document'}
+                      </button>
                     ) : (
                       'Not uploaded'
                     )}
@@ -673,14 +718,14 @@ const PrimaryInvitations = () => {
                   <p>
                     <span className="font-medium text-gray-900">Entity Certificate:</span>{' '}
                     {selectedCompletedInvitation.companyInfo?.entityCertificate?.secureUrl ? (
-                      <a
-                        href={selectedCompletedInvitation.companyInfo.entityCertificate.secureUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-primary-600 hover:text-primary-700 underline"
+                      <button
+                        type="button"
+                        onClick={() => openDocumentWithBlob('entityCertificate', selectedCompletedInvitation.companyInfo.entityCertificate)}
+                        className="text-primary-600 hover:text-primary-700 underline disabled:opacity-50"
+                        disabled={documentLoadingField === 'entityCertificate'}
                       >
-                        View document
-                      </a>
+                        {documentLoadingField === 'entityCertificate' ? 'Opening…' : 'View document'}
+                      </button>
                     ) : (
                       'Not uploaded'
                     )}
