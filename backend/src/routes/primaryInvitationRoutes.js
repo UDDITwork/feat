@@ -75,16 +75,27 @@ const resolveCompanyDocument = (invitation, fieldName) => {
   return invitation?.companyInfo?.[fieldName];
 };
 
-const buildDocumentDownloadResponse = (documentRecord) => {
-  const signedUrl = generatePrivateDownloadUrl(documentRecord, { attachment: false });
+const buildDocumentDownloadResponse = async (invitation, fieldName, documentRecord) => {
+  const { url, resourceType, expiresInSeconds } = await generatePrivateDownloadUrl(documentRecord, { attachment: false });
+
+  if (invitation?.companyInfo?.[fieldName] && invitation.companyInfo[fieldName].resourceType !== resourceType) {
+    invitation.companyInfo[fieldName].resourceType = resourceType;
+    invitation.markModified('companyInfo');
+    try {
+      await invitation.save();
+    } catch (saveError) {
+      console.warn('Warning: failed to persist resourceType update on invitation', saveError);
+    }
+  }
 
   return {
     success: true,
     data: {
-      url: signedUrl,
+      url,
       filename: documentRecord.originalFilename,
       format: documentRecord.format,
-      expiresInSeconds: 60,
+      resourceType,
+      expiresInSeconds,
     },
   };
 };
@@ -498,7 +509,7 @@ router.get('/completed/:id/document/:field', authMiddleware, async (req, res) =>
       return res.status(404).json({ success: false, message: 'Document not available' });
     }
 
-    const payload = buildDocumentDownloadResponse(documentRecord);
+    const payload = await buildDocumentDownloadResponse(invitation, field, documentRecord);
     res.status(200).json(payload);
   } catch (error) {
     console.error('Error generating document download link (admin):', error);
@@ -731,7 +742,7 @@ router.get('/token/:token/document/:field', async (req, res) => {
       return res.status(404).json({ success: false, message: 'Document not uploaded yet' });
     }
 
-    const payload = buildDocumentDownloadResponse(documentRecord);
+    const payload = await buildDocumentDownloadResponse(invitation, field, documentRecord);
     res.status(200).json(payload);
   } catch (error) {
     console.error('Error generating document download link (token):', error);
