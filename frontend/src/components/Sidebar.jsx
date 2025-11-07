@@ -1,11 +1,12 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import { 
+import {
   HomeIcon,
   EnvelopeIcon,
   DocumentTextIcon,
   UsersIcon,
   Cog6ToothIcon,
+  ClipboardDocumentListIcon,
   XMarkIcon
 } from '@heroicons/react/24/outline'
 
@@ -13,6 +14,7 @@ const Sidebar = ({ isOpen, onClose, currentPath }) => {
   const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
     { name: 'Send Invitations', href: '/invitations', icon: EnvelopeIcon },
+    { name: 'Primary Invitation', href: '/primary-invitations', icon: ClipboardDocumentListIcon },
     { name: 'Form Submissions', href: '/submissions', icon: DocumentTextIcon },
     { name: 'Clients', href: '/clients', icon: UsersIcon },
     { name: 'Settings', href: '/settings', icon: Cog6ToothIcon },

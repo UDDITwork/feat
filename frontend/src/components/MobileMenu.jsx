@@ -8,6 +8,7 @@ const MobileMenu = ({ isOpen, onClose, currentPath }) => {
   const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: '🏠' },
     { name: 'Send Invitations', href: '/invitations', icon: '📧' },
+    { name: 'Primary Invitation', href: '/primary-invitations', icon: '📝' },
     { name: 'Form Submissions', href: '/submissions', icon: '📄' },
     { name: 'Clients', href: '/clients', icon: '👥' },
     { name: 'Settings', href: '/settings', icon: '⚙️' },

@@ -269,6 +269,40 @@ const getPatentInvitationTemplate = (adminName, clientEmail, formLink) => {
   return getBaseTemplate(content);
 };
 
+const getPrimaryInvitationTemplate = (adminName, formLink) => {
+  const content = `
+    <div class="section">
+        <h2 class="section-title">Primary Invitation - Company Onboarding</h2>
+        <p>Hello Innovator,</p>
+        <p>You have been invited by <strong>${adminName || 'SITABIENCE IP Admin'}</strong> to share your company and inventor information securely through SITABIENCE IP.</p>
+
+        <div class="highlight-box">
+            <h3 style="color: ${BRAND_COLORS.teal}; margin-top: 0;">What you will need</h3>
+            <ul style="margin: 15px 0; padding-left: 20px;">
+                <li>Company name, registered address, and GST number</li>
+                <li>GST certificate and entity proof (LLP/LLC/Startup/Pvt Ltd)</li>
+                <li>Applicant address (auto-filled if same as company)</li>
+                <li>Inventor details with address, pin code, and nationality</li>
+            </ul>
+        </div>
+
+        <p>Simply click the button below to open your secure form. You can save your progress and return at any time within 30 days.</p>
+
+        <div style="text-align: center; margin: 30px 0;">
+            <a href="${formLink}" class="cta-button">
+                Start Primary Invitation Form
+            </a>
+        </div>
+
+        <p style="text-align: center; font-style: italic; color: ${BRAND_COLORS.gray};">
+            "We keep your data protected while you focus on building what matters."
+        </p>
+    </div>
+  `;
+
+  return getBaseTemplate(content);
+};
+
 // Form Submission Confirmation Email Template
 const getFormSubmissionTemplate = (clientName, submissionId, nextSteps) => {
   const content = `
@@ -400,6 +434,12 @@ const sendPatentInvitation = async (to, adminName, formLink) => {
   return await sendEmail(to, subject, htmlContent);
 };
 
+const sendPrimaryInvitationEmail = async (to, adminName, formLink) => {
+  const subject = 'Primary Invitation - SITABIENCE IP';
+  const htmlContent = getPrimaryInvitationTemplate(adminName, formLink);
+  return await sendEmail(to, subject, htmlContent);
+};
+
 // Send form submission confirmation
 const sendFormSubmissionConfirmation = async (to, clientName, submissionId) => {
   const nextSteps = [
@@ -433,17 +473,26 @@ const generateFormToken = (email) => {
   return uuidv4();
 };
 
-// Generate form link
-const generateFormLink = (token) => {
-  // Use production URL in production environment, otherwise use localhost
-  const frontendUrl = process.env.NODE_ENV === 'production' 
+const getFrontendBaseUrl = () => {
+  const frontendUrl = process.env.NODE_ENV === 'production'
     ? (process.env.FRONTEND_URL_PROD || process.env.FRONTEND_URL || 'https://feat-olive.vercel.app')
     : (process.env.FRONTEND_URL_LOCAL || process.env.FRONTEND_URL || 'http://localhost:5173');
-  
-  console.log(`🔗 Generating form link for environment: ${process.env.NODE_ENV}`);
+
   console.log(`🔗 Using frontend URL: ${frontendUrl}`);
-  
+  return frontendUrl;
+};
+
+// Generate form link
+const generateFormLink = (token) => {
+  console.log(`🔗 Generating form link for environment: ${process.env.NODE_ENV}`);
+  const frontendUrl = getFrontendBaseUrl();
   return `${frontendUrl}/form/${token}`;
+};
+
+const generatePrimaryInvitationLink = (token) => {
+  console.log(`🔗 Generating primary invitation link for environment: ${process.env.NODE_ENV}`);
+  const frontendUrl = getFrontendBaseUrl();
+  return `${frontendUrl}/primary-invitation/${token}`;
 };
 
 // Send form invitation (wrapper for sendPatentInvitation)
@@ -521,8 +570,11 @@ module.exports = {
   sendNewsletter,
   generateFormToken,
   generateFormLink,
+  generatePrimaryInvitationLink,
+  sendPrimaryInvitationEmail,
   getBaseTemplate,
   getPatentInvitationTemplate,
+  getPrimaryInvitationTemplate,
   getFormSubmissionTemplate,
   getStatusUpdateTemplate,
   getNewsletterTemplate

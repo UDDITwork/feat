@@ -11,6 +11,8 @@ import FormView from './pages/FormView'
 import FormSubmission from './pages/FormSubmission'
 import Invitations from './pages/Invitations'
 import Submissions from './pages/Submissions'
+import PrimaryInvitations from './pages/PrimaryInvitations'
+import PrimaryInvitationForm from './pages/PrimaryInvitationForm'
 import Clients from './pages/Clients'
 import Settings from './pages/Settings'
 import NotFound from './pages/NotFound'
@@ -28,6 +30,7 @@ function App() {
                 {/* Public routes */}
                 <Route path="/login" element={<Login />} />
                 <Route path="/form/:token" element={<FormSubmission />} />
+                <Route path="/primary-invitation/:token" element={<PrimaryInvitationForm />} />
                 
                 {/* Protected admin routes */}
                 <Route path="/" element={
@@ -39,6 +42,7 @@ function App() {
                   <Route path="dashboard" element={<Dashboard />} />
                   <Route path="submission/:id" element={<FormView />} />
                   <Route path="invitations" element={<Invitations />} />
+                  <Route path="primary-invitations" element={<PrimaryInvitations />} />
                   <Route path="submissions" element={<Submissions />} />
                   <Route path="clients" element={<Clients />} />
                   <Route path="settings" element={<Settings />} />

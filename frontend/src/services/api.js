@@ -126,6 +126,124 @@ export const emailAPI = {
   getInvitationStatus: (email) => api.get(`/email/invitation-status/${email}`),
 }
 
+export const primaryInvitationAPI = {
+  send: async (email, adminName) => {
+    console.groupCollapsed('[primaryInvitationAPI] send invitation');
+    console.info('Payload', { email, adminName });
+    try {
+      const response = await api.post('/primary-invitations/send', { email, adminName });
+      console.info('Response', response);
+      return response;
+    } catch (error) {
+      console.error('Error sending invitation', error);
+      throw error;
+    } finally {
+      console.groupEnd();
+    }
+  },
+  sendBulk: async (emails, adminName) => {
+    console.groupCollapsed('[primaryInvitationAPI] send bulk invitations');
+    console.info('Payload', { emails, adminName });
+    try {
+      const response = await api.post('/primary-invitations/send-bulk', { emails, adminName });
+      console.info('Response', response);
+      return response;
+    } catch (error) {
+      console.error('Error sending bulk invitations', error);
+      throw error;
+    } finally {
+      console.groupEnd();
+    }
+  },
+  resend: async (email, adminName) => {
+    console.groupCollapsed('[primaryInvitationAPI] resend invitation');
+    console.info('Payload', { email, adminName });
+    try {
+      const response = await api.post('/primary-invitations/resend', { email, adminName });
+      console.info('Response', response);
+      return response;
+    } catch (error) {
+      console.error('Error resending invitation', error);
+      throw error;
+    } finally {
+      console.groupEnd();
+    }
+  },
+  list: async (limit = 25) => {
+    console.groupCollapsed('[primaryInvitationAPI] list invitations');
+    console.info('Query params', { limit });
+    try {
+      const response = await api.get('/primary-invitations', { params: { limit } });
+      console.info('Response', response);
+      return response;
+    } catch (error) {
+      console.error('Error fetching invitations', error);
+      throw error;
+    } finally {
+      console.groupEnd();
+    }
+  },
+  getByToken: async (token) => {
+    console.groupCollapsed('[primaryInvitationAPI] get by token');
+    console.info('Token', token);
+    try {
+      const response = await api.get(`/primary-invitations/token/${token}`);
+      console.info('Response', response);
+      return response;
+    } catch (error) {
+      console.error('Error loading invitation by token', error);
+      throw error;
+    } finally {
+      console.groupEnd();
+    }
+  },
+  saveDraft: async (token, payload) => {
+    console.groupCollapsed('[primaryInvitationAPI] save draft');
+    console.info('Token', token);
+    console.info('Payload', payload);
+    try {
+      const response = await api.post(`/primary-invitations/token/${token}/save-draft`, payload);
+      console.info('Response', response);
+      return response;
+    } catch (error) {
+      console.error('Error saving draft', error);
+      throw error;
+    } finally {
+      console.groupEnd();
+    }
+  },
+  submit: async (token, payload) => {
+    console.groupCollapsed('[primaryInvitationAPI] submit');
+    console.info('Token', token);
+    console.info('Payload', payload);
+    try {
+      const response = await api.post(`/primary-invitations/token/${token}/submit`, payload);
+      console.info('Response', response);
+      return response;
+    } catch (error) {
+      console.error('Error submitting form', error);
+      throw error;
+    } finally {
+      console.groupEnd();
+    }
+  },
+  uploadDocument: async (token, fieldName, file) => {
+    console.groupCollapsed('[primaryInvitationAPI] upload document');
+    console.info('Token', token);
+    console.info('Field', fieldName);
+    try {
+      const response = await api.post(`/primary-invitations/token/${token}/upload`, { fieldName, file });
+      console.info('Response', response);
+      return response;
+    } catch (error) {
+      console.error('Error uploading document', error);
+      throw error;
+    } finally {
+      console.groupEnd();
+    }
+  },
+}
+
 // Form API
 export const formAPI = {
   getForm: (token) => api.get(`/form/${token}`),
@@ -230,6 +348,44 @@ export const uploadFile = async (token, fieldName, file, onProgress = null) => {
 
         resolve(response)
       } catch (error) {
+        reject(error)
+      }
+    }
+
+    reader.onerror = (error) => reject(error)
+    reader.readAsDataURL(file)
+  })
+}
+
+export const uploadPrimaryInvitationFile = async (token, fieldName, file) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+
+    reader.onload = async () => {
+      try {
+        const base64Data = reader.result
+        console.groupCollapsed('[primaryInvitationAPI] upload file helper')
+        console.info('Token', token)
+        console.info('Field', fieldName)
+        console.info('File metadata', {
+          name: file.name,
+          type: file.type,
+          size: file.size
+        })
+        const response = await api.post(`/primary-invitations/token/${token}/upload`, {
+          fieldName,
+          file: {
+            data: base64Data,
+            name: file.name,
+            type: file.type,
+            size: file.size,
+          },
+        })
+        console.info('Response', response)
+        console.groupEnd()
+        resolve(response)
+      } catch (error) {
+        console.error('Upload helper error', error)
         reject(error)
       }
     }

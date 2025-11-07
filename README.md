@@ -63,6 +63,13 @@ A comprehensive patent application management system designed for SITABIENCE IP,
 - **Responsive Design**: Optimized for all email clients and devices
 - **Professional Messaging**: Consistent with company voice and expertise
 
+### Primary Invitation Workflow
+- **Dedicated Admin Tab**: Manage single and bulk primary invitations from the new sidebar entry.
+- **Auto Prefill Logic**: Returning clients see company information prefilled and read-only whenever their email already exists in the database.
+- **Cloudinary Document Storage**: GST and entity certificates upload directly to Cloudinary using shared environment credentials.
+- **Client-Facing Form**: `/primary-invitation/:token` captures company, applicant, and inventor details with dynamic inventor management.
+- **Submission Timestamping**: Completion timestamps are recorded server-side and surfaced to clients immediately after submission.
+
 ## 📧 Email Template System
 
 ### Available Templates
@@ -184,6 +191,9 @@ EMAIL_USER=your_email_address
 EMAIL_PASS=your_email_password
 EMAIL_HOST=smtp.gmail.com
 EMAIL_PORT=587
+CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud
+CLOUDINARY_API_KEY=your_cloudinary_key
+CLOUDINARY_API_SECRET=your_cloudinary_secret
 
 # Frontend
 VITE_API_URL=http://localhost:5000/api
@@ -312,6 +322,25 @@ git push heroku main
 - **Prettier**: Code formatting
 - **TypeScript**: Strict type checking
 - **Component Testing**: React Testing Library
+
+## 🧪 Validation Checklist
+
+Use the following flow to validate the primary invitation experience after installing dependencies and updating environment variables:
+
+1. **Install backend dependency**
+   - Location: `backend`
+   - Command: `npm install`
+   - Run from: project root, then `cd backend`
+2. **Configure Cloudinary**
+   - Ensure `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, and `CLOUDINARY_API_SECRET` are present in `backend/.env`.
+3. **Admin Portal Test**
+   - Log in as an admin, open the new `Primary Invitation` tab, send a single invitation, and confirm toast success plus list refresh.
+4. **Client Form Test**
+   - Open the link sent via email (or copy the token link) and complete the form.
+   - Upload GST and entity certificates; verify uploads succeed and preview links render.
+   - Submit the form and confirm the success banner displays the captured timestamp.
+5. **Auto Prefill Regression**
+   - Re-send an invitation to the same email and confirm the company fields are prefilled and read-only on the client form.
 
 ## 📞 Support & Contact
 
