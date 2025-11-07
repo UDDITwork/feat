@@ -75,37 +75,44 @@ const sanitizeDraftPayload = (invitation, payload) => {
   return sanitized;
 };
 
+const buildSubmissionError = (message) => {
+  const error = new Error(message);
+  error.statusCode = 400;
+  error.isSubmissionValidationError = true;
+  return error;
+};
+
 const ensureRequiredForSubmission = (invitation, payload) => {
   const lockedFields = invitation?.autoPrefillMetadata?.lockedFields || [];
   const companyInfoLocked = lockedFields.includes('companyInfo');
   const companyInfo = companyInfoLocked ? invitation.companyInfo : payload.companyInfo;
 
-  if (!companyInfo || !companyInfo.name) {
-    throw new Error('Company name is required.');
+  if (!companyInfo || !companyInfo.name?.trim()) {
+    throw buildSubmissionError('Company name is required.');
   }
 
-  if (!companyInfo.address) {
-    throw new Error('Company address is required.');
+  if (!companyInfo.address?.trim()) {
+    throw buildSubmissionError('Company address is required.');
   }
 
-  if (!companyInfo.pinCode) {
-    throw new Error('Company pin code is required.');
+  if (!companyInfo.pinCode?.trim()) {
+    throw buildSubmissionError('Company pin code is required.');
   }
 
-  if (!companyInfo.gstNumber) {
-    throw new Error('GST number is required.');
+  if (!companyInfo.gstNumber?.trim()) {
+    throw buildSubmissionError('GST number is required.');
   }
 
   if (!companyInfo.gstCertificate?.secureUrl) {
-    throw new Error('GST certificate upload is required.');
+    throw buildSubmissionError('GST certificate upload is required.');
   }
 
-  if (!companyInfo.entityType) {
-    throw new Error('Entity type is required.');
+  if (!companyInfo.entityType?.trim()) {
+    throw buildSubmissionError('Entity type is required.');
   }
 
   if (!companyInfo.entityCertificate?.secureUrl) {
-    throw new Error('Entity certificate upload is required.');
+    throw buildSubmissionError('Entity certificate upload is required.');
   }
 
   const inventors = Array.isArray(payload.inventors) && payload.inventors.length > 0
@@ -113,23 +120,30 @@ const ensureRequiredForSubmission = (invitation, payload) => {
     : invitation.inventors;
 
   if (!inventors || inventors.length === 0) {
-    throw new Error('At least one inventor is required.');
+    throw buildSubmissionError('At least one inventor is required.');
   }
 
   inventors.forEach((inventor, index) => {
-    if (!inventor.name) {
-      throw new Error(`Inventor name is required for inventor #${index + 1}.`);
+    if (!inventor?.name?.trim()) {
+      throw buildSubmissionError(`Inventor name is required for inventor #${index + 1}.`);
     }
-    if (!inventor.address) {
-      throw new Error(`Inventor address is required for inventor #${index + 1}.`);
+    if (!inventor.address?.trim()) {
+      throw buildSubmissionError(`Inventor address is required for inventor #${index + 1}.`);
     }
-    if (!inventor.pinCode) {
-      throw new Error(`Inventor pin code is required for inventor #${index + 1}.`);
+    if (!inventor.pinCode?.trim()) {
+      throw buildSubmissionError(`Inventor pin code is required for inventor #${index + 1}.`);
     }
-    if (!inventor.nationality) {
-      throw new Error(`Inventor nationality is required for inventor #${index + 1}.`);
+    if (!inventor.nationality?.trim()) {
+      throw buildSubmissionError(`Inventor nationality is required for inventor #${index + 1}.`);
     }
   });
+};
+
+const parsePaginationParams = (query) => {
+  const limit = Math.min(Number(query.limit) || 25, 100);
+  const page = Math.max(Number(query.page) || 1, 1);
+  const skip = (page - 1) * limit;
+  return { limit, page, skip };
 };
 
 const deepClone = (value) => {
@@ -346,8 +360,9 @@ router.post('/resend', authMiddleware, singleInvitationValidation, async (req, r
 
 router.get('/', authMiddleware, async (req, res) => {
   try {
-    const limit = Number(req.query.limit) || 25;
-    const invitations = await PrimaryInvitation.find()
+    const { limit } = parsePaginationParams(req.query);
+    const statusFilter = req.query.status ? { status: req.query.status } : {};
+    const invitations = await PrimaryInvitation.find(statusFilter)
       .sort({ invitedAt: -1 })
       .limit(limit);
 
@@ -360,6 +375,78 @@ router.get('/', authMiddleware, async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Failed to fetch primary invitations',
+      error: error.message,
+    });
+  }
+});
+
+router.get('/completed', authMiddleware, async (req, res) => {
+  try {
+    const { limit, page, skip } = parsePaginationParams(req.query);
+    const search = (req.query.search || '').trim();
+
+    const query = { status: 'completed' };
+
+    if (search) {
+      query.$or = [
+        { email: { $regex: search, $options: 'i' } },
+        { 'companyInfo.name': { $regex: search, $options: 'i' } },
+        { 'companyInfo.gstNumber': { $regex: search, $options: 'i' } },
+      ];
+    }
+
+    console.log('Fetching completed primary invitations', { page, limit, search: search || undefined });
+
+    const [total, invitations] = await Promise.all([
+      PrimaryInvitation.countDocuments(query),
+      PrimaryInvitation.find(query)
+        .sort({ submittedAt: -1 })
+        .skip(skip)
+        .limit(limit),
+    ]);
+
+    res.status(200).json({
+      success: true,
+      data: {
+        page,
+        pageSize: invitations.length,
+        total,
+        hasMore: skip + invitations.length < total,
+        results: invitations,
+      },
+    });
+  } catch (error) {
+    console.error('Error fetching completed primary invitations:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch completed invitations',
+      error: error.message,
+    });
+  }
+});
+
+router.get('/completed/:id', authMiddleware, async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log('Fetching completed primary invitation detail', { id });
+    const invitation = await PrimaryInvitation.findOne({ _id: id, status: 'completed' });
+
+    if (!invitation) {
+      return res.status(404).json({
+        success: false,
+        message: 'Completed invitation not found',
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: invitation,
+    });
+  } catch (error) {
+    console.error('Error fetching completed primary invitation detail:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch invitation details',
       error: error.message,
     });
   }
@@ -496,10 +583,15 @@ router.post('/token/:token/submit', clientFormValidation, async (req, res) => {
       },
     });
   } catch (error) {
-    console.error('Error submitting primary invitation:', error);
-    res.status(500).json({
+    console.error('Error submitting primary invitation:', {
+      token: req.params?.token,
+      error: error.message,
+      stack: error.stack,
+    });
+    const statusCode = error.statusCode || (error.isSubmissionValidationError ? 400 : 500);
+    res.status(statusCode).json({
       success: false,
-      message: 'Failed to submit invitation',
+      message: statusCode === 400 ? error.message : 'Failed to submit invitation',
       error: error.message,
     });
   }

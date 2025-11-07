@@ -183,6 +183,34 @@ export const primaryInvitationAPI = {
       console.groupEnd();
     }
   },
+  listCompleted: async ({ page = 1, limit = 25, search = '' } = {}) => {
+    console.groupCollapsed('[primaryInvitationAPI] list completed invitations');
+    console.info('Query params', { page, limit, search });
+    try {
+      const response = await api.get('/primary-invitations/completed', { params: { page, limit, search } });
+      console.info('Response', response);
+      return response;
+    } catch (error) {
+      console.error('Error fetching completed invitations', error);
+      throw error;
+    } finally {
+      console.groupEnd();
+    }
+  },
+  getCompletedById: async (id) => {
+    console.groupCollapsed('[primaryInvitationAPI] get completed invitation by id');
+    console.info('Id', id);
+    try {
+      const response = await api.get(`/primary-invitations/completed/${id}`);
+      console.info('Response', response);
+      return response;
+    } catch (error) {
+      console.error('Error fetching completed invitation detail', error);
+      throw error;
+    } finally {
+      console.groupEnd();
+    }
+  },
   getByToken: async (token) => {
     console.groupCollapsed('[primaryInvitationAPI] get by token');
     console.info('Token', token);

@@ -6,7 +6,10 @@ import {
   UsersIcon,
   ArrowPathIcon,
   CheckCircleIcon,
-  ExclamationTriangleIcon
+  ExclamationTriangleIcon,
+  EyeIcon,
+  MagnifyingGlassIcon,
+  XMarkIcon
 } from '@heroicons/react/24/outline'
 import { useAuth } from '../contexts/AuthContext'
 import { primaryInvitationAPI } from '../services/api'
@@ -21,6 +24,14 @@ const PrimaryInvitations = () => {
   const [isSendingSingle, setIsSendingSingle] = useState(false)
   const [isSendingBulk, setIsSendingBulk] = useState(false)
   const [resendingEmail, setResendingEmail] = useState(null)
+  const [activeTab, setActiveTab] = useState('manage')
+  const [completedInvitations, setCompletedInvitations] = useState([])
+  const [completedMeta, setCompletedMeta] = useState({ page: 1, total: 0, hasMore: false })
+  const [completedSearchInput, setCompletedSearchInput] = useState('')
+  const [completedSearchTerm, setCompletedSearchTerm] = useState('')
+  const [isLoadingCompleted, setIsLoadingCompleted] = useState(false)
+  const [isLoadingCompletedDetails, setIsLoadingCompletedDetails] = useState(false)
+  const [selectedCompletedInvitation, setSelectedCompletedInvitation] = useState(null)
 
   const resolvedAdminName = useMemo(
     () => adminName || user?.name || 'Admin',
@@ -48,10 +59,132 @@ const PrimaryInvitations = () => {
     }
   }
 
+  const loadCompletedInvitations = async (page = 1, searchTerm = completedSearchTerm) => {
+    const limit = 20
+    const trimmedSearch = searchTerm.trim()
+    const timerLabel = `[PrimaryInvitations] loadCompletedInvitations page:${page}`
+    console.time(timerLabel)
+    console.group('[PrimaryInvitations] loadCompletedInvitations')
+    console.info('Params', { page, limit, search: trimmedSearch })
+
+    try {
+      setIsLoadingCompleted(true)
+      const response = await primaryInvitationAPI.listCompleted({ page, limit, search: trimmedSearch })
+      if (response.success) {
+        const results = response.data?.results || []
+        setCompletedInvitations((prev) => {
+          if (page === 1) {
+            return results
+          }
+
+          const existingIds = new Set(prev.map((item) => item._id))
+          const merged = [...prev]
+          results.forEach((item) => {
+            if (!existingIds.has(item._id)) {
+              merged.push(item)
+            }
+          })
+          return merged
+        })
+
+        setCompletedMeta({
+          page: response.data?.page || page,
+          pageSize: response.data?.pageSize || results.length,
+          total: response.data?.total || results.length,
+          hasMore: Boolean(response.data?.hasMore),
+        })
+
+        setCompletedSearchTerm(trimmedSearch)
+        console.info('[PrimaryInvitations] Completed invitations loaded', {
+          count: results.length,
+          total: response.data?.total,
+          hasMore: response.data?.hasMore,
+        })
+      } else {
+        console.warn('[PrimaryInvitations] Completed API success=false', response)
+        toast.error(response.message || 'Failed to load completed invitations')
+      }
+    } catch (error) {
+      console.error('Failed to load completed invitations:', error)
+      toast.error(error.message || 'Failed to load completed invitations')
+    } finally {
+      console.groupEnd()
+      console.timeEnd(timerLabel)
+      setIsLoadingCompleted(false)
+    }
+  }
+
+  const handleCompletedSearch = (event) => {
+    event.preventDefault()
+    console.log('[PrimaryInvitations] Search completed invitations', { term: completedSearchInput })
+    loadCompletedInvitations(1, completedSearchInput)
+  }
+
+  const handleResetCompletedSearch = () => {
+    console.log('[PrimaryInvitations] Reset completed invitations search')
+    setCompletedSearchInput('')
+    loadCompletedInvitations(1, '')
+  }
+
+  const handleLoadMoreCompleted = () => {
+    if (!completedMeta.hasMore) {
+      console.info('[PrimaryInvitations] No more completed invitations to load')
+      return
+    }
+    const nextPage = (completedMeta.page || 1) + 1
+    console.log('[PrimaryInvitations] Loading more completed invitations', { nextPage })
+    loadCompletedInvitations(nextPage)
+  }
+
+  const handleViewCompletedDetails = async (invitationId) => {
+    if (!invitationId) {
+      return
+    }
+
+    console.group('[PrimaryInvitations] handleViewCompletedDetails')
+    console.info('Fetching detail for invitation', { invitationId })
+    setIsLoadingCompletedDetails(true)
+
+    try {
+      const response = await primaryInvitationAPI.getCompletedById(invitationId)
+      if (response.success) {
+        setSelectedCompletedInvitation(response.data)
+        console.info('Completed invitation detail loaded', response.data)
+      } else {
+        console.warn('Completed invitation detail success=false', response)
+        toast.error(response.message || 'Failed to load invitation details')
+      }
+    } catch (error) {
+      console.error('Error loading completed invitation detail:', error)
+      toast.error(error.message || 'Failed to load invitation details')
+    } finally {
+      console.groupEnd()
+      setIsLoadingCompletedDetails(false)
+    }
+  }
+
+  const closeCompletedDetails = () => {
+    console.log('[PrimaryInvitations] Closing completed invitation detail view')
+    setSelectedCompletedInvitation(null)
+  }
+
   useEffect(() => {
     fetchInvitations()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  useEffect(() => {
+    if (activeTab === 'completed') {
+      loadCompletedInvitations(1, completedSearchTerm)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTab])
+
+  useEffect(() => {
+    if (activeTab !== 'completed') {
+      setSelectedCompletedInvitation(null)
+    }
+  }, [activeTab])
 
   const handleSingleInvitation = async (event) => {
     event.preventDefault()
@@ -160,6 +293,26 @@ const PrimaryInvitations = () => {
     }
   }
 
+  const tabButtonClass = (tab) =>
+    `px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
+      activeTab === tab
+        ? 'border-primary-600 text-primary-700 bg-primary-50'
+        : 'border-transparent text-gray-600 hover:text-primary-600 hover:border-primary-300'
+    }`
+
+  const formatDateTime = (value, fallback = 'Not recorded') => {
+    if (!value) {
+      return fallback
+    }
+
+    try {
+      return new Date(value).toLocaleString()
+    } catch (error) {
+      console.warn('[PrimaryInvitations] Failed to format date', { value, error })
+      return fallback
+    }
+  }
+
   return (
     <div className="space-y-6">
       <div className="bg-white -lg shadow-sm border border-gray-200 p-6">
@@ -174,9 +327,27 @@ const PrimaryInvitations = () => {
             </p>
           </div>
         </div>
+        <div className="mt-6 flex space-x-2 border-b border-gray-200">
+          <button
+            type="button"
+            className={tabButtonClass('manage')}
+            onClick={() => setActiveTab('manage')}
+          >
+            Manage Invitations
+          </button>
+          <button
+            type="button"
+            className={tabButtonClass('completed')}
+            onClick={() => setActiveTab('completed')}
+          >
+            Completed Dashboard
+          </button>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      {activeTab === 'manage' && (
+        <>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white -lg shadow-sm border border-gray-200 p-6 space-y-4">
           <div className="flex items-center space-x-2">
             <PaperAirplaneIcon className="h-5 w-5 text-primary-600" />
@@ -254,9 +425,9 @@ const PrimaryInvitations = () => {
             </button>
           </form>
         </div>
-      </div>
+          </div>
 
-      <div className="bg-white -lg shadow-sm border border-gray-200 p-6">
+          <div className="bg-white -lg shadow-sm border border-gray-200 p-6">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-2">
             <ArrowPathIcon className="h-5 w-5 text-primary-600" />
@@ -325,9 +496,9 @@ const PrimaryInvitations = () => {
             })}
           </div>
         )}
-      </div>
+          </div>
 
-      <div className="bg-blue-50 border border-blue-200 -lg p-6">
+          <div className="bg-blue-50 border border-blue-200 -lg p-6">
         <div className="flex items-start space-x-3">
           <ExclamationTriangleIcon className="h-5 w-5 text-blue-600 mt-0.5" />
           <div className="text-sm text-blue-700 space-y-1">
@@ -338,7 +509,237 @@ const PrimaryInvitations = () => {
             <p>• Submission timestamp is captured and visible once the form is completed.</p>
           </div>
         </div>
-      </div>
+          </div>
+        </>
+      )}
+
+      {activeTab === 'completed' && (
+        <div className="space-y-6">
+          <div className="bg-white -lg shadow-sm border border-gray-200 p-6 space-y-4">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+              <div className="flex items-center space-x-2">
+                <MagnifyingGlassIcon className="h-5 w-5 text-primary-600" />
+                <h2 className="text-lg font-semibold text-gray-900">Completed Invitations</h2>
+              </div>
+              <div className="flex flex-wrap items-center gap-3 text-sm text-gray-600">
+                <span>Total: {completedMeta.total}</span>
+                <button
+                  type="button"
+                  onClick={() => loadCompletedInvitations(1, completedSearchTerm)}
+                  className="flex items-center text-primary-600 hover:text-primary-700"
+                >
+                  <ArrowPathIcon className="h-4 w-4 mr-1" /> Refresh
+                </button>
+              </div>
+            </div>
+
+            <form onSubmit={handleCompletedSearch} className="flex flex-col gap-3 md:flex-row md:items-center">
+              <div className="relative flex-1">
+                <MagnifyingGlassIcon className="h-5 w-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <input
+                  type="text"
+                  value={completedSearchInput}
+                  onChange={(event) => setCompletedSearchInput(event.target.value)}
+                  className="w-full pl-10 pr-3 py-2 border border-gray-300 -md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  placeholder="Search by email, company name, or GST number"
+                />
+              </div>
+              <div className="flex gap-2">
+                <button
+                  type="submit"
+                  className="bg-primary-600 text-white px-4 py-2 -md hover:bg-primary-700 transition-colors"
+                >
+                  Search
+                </button>
+                <button
+                  type="button"
+                  onClick={handleResetCompletedSearch}
+                  className="bg-gray-100 text-gray-700 px-4 py-2 -md hover:bg-gray-200 transition-colors disabled:opacity-50"
+                  disabled={!completedSearchTerm && !completedSearchInput}
+                >
+                  Clear
+                </button>
+              </div>
+            </form>
+
+            {isLoadingCompleted ? (
+              <div className="py-8 text-center text-gray-500">Loading completed invitations...</div>
+            ) : completedInvitations.length === 0 ? (
+              <div className="py-8 text-center text-gray-500">No completed invitations found.</div>
+            ) : (
+              <div className="space-y-3">
+                {completedInvitations.map((invitation) => {
+                  const submittedAtDisplay = formatDateTime(invitation.submittedAt, 'Submission pending')
+                  const companyName = invitation.companyInfo?.name || 'Unknown company'
+                  const inventorCount = Array.isArray(invitation.inventors) ? invitation.inventors.length : 0
+
+                  return (
+                    <div
+                      key={invitation._id}
+                      className="flex flex-col md:flex-row md:items-center md:justify-between bg-gray-50 border border-gray-200 -lg p-4 space-y-3 md:space-y-0"
+                    >
+                      <div className="space-y-1">
+                        <p className="text-sm font-semibold text-gray-900">{invitation.email}</p>
+                        <div className="flex flex-wrap gap-3 text-xs text-gray-600">
+                          <span>Company: {companyName}</span>
+                          <span>Submitted: {submittedAtDisplay}</span>
+                          <span>Inventors: {inventorCount}</span>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => copyInviteLink(invitation.token)}
+                          className="text-xs bg-primary-100 text-primary-700 px-3 py-1  hover:bg-primary-200 transition-colors"
+                        >
+                          Copy Link
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleViewCompletedDetails(invitation._id)}
+                          className="flex items-center text-xs bg-white border border-primary-200 text-primary-700 px-3 py-1  hover:bg-primary-50 transition-colors"
+                        >
+                          <EyeIcon className="h-4 w-4 mr-1" />
+                          View Details
+                        </button>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+
+            {completedMeta.hasMore && !isLoadingCompleted && (
+              <div className="pt-4 text-center">
+                <button
+                  type="button"
+                  onClick={handleLoadMoreCompleted}
+                  className="text-sm text-primary-600 hover:text-primary-700"
+                >
+                  Load more
+                </button>
+              </div>
+            )}
+          </div>
+
+          {selectedCompletedInvitation && (
+            <div className="bg-white -lg shadow-sm border border-primary-200 p-6 space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900">Invitation Details</h3>
+                  <p className="text-sm text-gray-600">Review the information submitted by the client.</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={closeCompletedDetails}
+                  className="text-gray-500 hover:text-gray-700"
+                  aria-label="Close details panel"
+                >
+                  <XMarkIcon className="h-5 w-5" />
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="space-y-3 text-sm text-gray-700">
+                  <h4 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">General</h4>
+                  <p><span className="font-medium text-gray-900">Email:</span> {selectedCompletedInvitation.email}</p>
+                  <p><span className="font-medium text-gray-900">Admin:</span> {selectedCompletedInvitation.adminName || '—'}</p>
+                  <p><span className="font-medium text-gray-900">Invited:</span> {formatDateTime(selectedCompletedInvitation.invitedAt)}</p>
+                  <p><span className="font-medium text-gray-900">Submitted:</span> {formatDateTime(selectedCompletedInvitation.submittedAt)}</p>
+                </div>
+
+                <div className="space-y-3 text-sm text-gray-700">
+                  <h4 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">Company Info</h4>
+                  <p><span className="font-medium text-gray-900">Name:</span> {selectedCompletedInvitation.companyInfo?.name || '—'}</p>
+                  <p><span className="font-medium text-gray-900">Address:</span> {selectedCompletedInvitation.companyInfo?.address || '—'}</p>
+                  <p><span className="font-medium text-gray-900">Pin Code:</span> {selectedCompletedInvitation.companyInfo?.pinCode || '—'}</p>
+                  <p><span className="font-medium text-gray-900">GST Number:</span> {selectedCompletedInvitation.companyInfo?.gstNumber || '—'}</p>
+                  <p><span className="font-medium text-gray-900">Entity Type:</span> {selectedCompletedInvitation.companyInfo?.entityType || '—'}</p>
+                  <p>
+                    <span className="font-medium text-gray-900">GST Certificate:</span>{' '}
+                    {selectedCompletedInvitation.companyInfo?.gstCertificate?.secureUrl ? (
+                      <a
+                        href={selectedCompletedInvitation.companyInfo.gstCertificate.secureUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-primary-600 hover:text-primary-700 underline"
+                      >
+                        View document
+                      </a>
+                    ) : (
+                      'Not uploaded'
+                    )}
+                  </p>
+                  <p>
+                    <span className="font-medium text-gray-900">Entity Certificate:</span>{' '}
+                    {selectedCompletedInvitation.companyInfo?.entityCertificate?.secureUrl ? (
+                      <a
+                        href={selectedCompletedInvitation.companyInfo.entityCertificate.secureUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-primary-600 hover:text-primary-700 underline"
+                      >
+                        View document
+                      </a>
+                    ) : (
+                      'Not uploaded'
+                    )}
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="space-y-3 text-sm text-gray-700">
+                  <h4 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">Applicant Info</h4>
+                  <p><span className="font-medium text-gray-900">Name:</span> {selectedCompletedInvitation.applicantInfo?.name || '—'}</p>
+                  <p><span className="font-medium text-gray-900">Address:</span> {selectedCompletedInvitation.applicantInfo?.address || '—'}</p>
+                  <p><span className="font-medium text-gray-900">Pin Code:</span> {selectedCompletedInvitation.applicantInfo?.pinCode || '—'}</p>
+                  <p><span className="font-medium text-gray-900">Same As Company:</span> {selectedCompletedInvitation.applicantInfo?.sameAsCompany ? 'Yes' : 'No'}</p>
+                </div>
+
+                <div className="space-y-3 text-sm text-gray-700">
+                  <h4 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">Comments</h4>
+                  <div className="bg-gray-50 border border-gray-200 -md p-3 min-h-[80px]">
+                    {selectedCompletedInvitation.comments ? (
+                      <span>{selectedCompletedInvitation.comments}</span>
+                    ) : (
+                      <span className="text-gray-400">No comments provided.</span>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <h4 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">Inventors</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {(!selectedCompletedInvitation.inventors || selectedCompletedInvitation.inventors.length === 0) ? (
+                    <div className="border border-gray-200 bg-gray-50 -md p-4 text-sm text-gray-600">
+                      No inventor details submitted.
+                    </div>
+                  ) : (
+                    (selectedCompletedInvitation.inventors || []).map((inventor, index) => (
+                      <div
+                        key={`${inventor?.name || 'inventor'}-${index}`}
+                        className="border border-gray-200 bg-gray-50 -md p-4 space-y-2 text-sm text-gray-700"
+                      >
+                        <p className="font-semibold text-gray-900">Inventor {index + 1}</p>
+                        <p><span className="font-medium text-gray-900">Name:</span> {inventor?.name || '—'}</p>
+                        <p><span className="font-medium text-gray-900">Address:</span> {inventor?.address || '—'}</p>
+                        <p><span className="font-medium text-gray-900">Pin Code:</span> {inventor?.pinCode || '—'}</p>
+                        <p><span className="font-medium text-gray-900">Nationality:</span> {inventor?.nationality || '—'}</p>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+
+              {isLoadingCompletedDetails && (
+                <div className="text-sm text-gray-500">Refreshing details...</div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   )
 }
