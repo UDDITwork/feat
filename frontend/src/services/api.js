@@ -211,6 +211,21 @@ export const primaryInvitationAPI = {
       console.groupEnd();
     }
   },
+  getCompletedDocumentUrl: async (id, fieldName) => {
+    console.groupCollapsed('[primaryInvitationAPI] get completed document url');
+    console.info('Id', id);
+    console.info('Field', fieldName);
+    try {
+      const response = await api.get(`/primary-invitations/completed/${id}/document/${fieldName}`);
+      console.info('Response', response);
+      return response;
+    } catch (error) {
+      console.error('Error fetching completed document url', error);
+      throw error;
+    } finally {
+      console.groupEnd();
+    }
+  },
   getByToken: async (token) => {
     console.groupCollapsed('[primaryInvitationAPI] get by token');
     console.info('Token', token);
@@ -265,6 +280,21 @@ export const primaryInvitationAPI = {
       return response;
     } catch (error) {
       console.error('Error uploading document', error);
+      throw error;
+    } finally {
+      console.groupEnd();
+    }
+  },
+  getDocumentForToken: async (token, fieldName) => {
+    console.groupCollapsed('[primaryInvitationAPI] get document url for token');
+    console.info('Token', token);
+    console.info('Field', fieldName);
+    try {
+      const response = await api.get(`/primary-invitations/token/${token}/document/${fieldName}`);
+      console.info('Response', response);
+      return response;
+    } catch (error) {
+      console.error('Error fetching document url for token', error);
       throw error;
     } finally {
       console.groupEnd();

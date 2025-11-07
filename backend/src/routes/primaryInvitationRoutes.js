@@ -2,7 +2,7 @@ const express = require('express');
 const { body, validationResult } = require('express-validator');
 const PrimaryInvitation = require('../models/PrimaryInvitation');
 const emailService = require('../services/emailService');
-const { uploadBase64Document } = require('../services/cloudinaryService');
+const { uploadBase64Document, generatePrivateDownloadUrl, inferResourceType } = require('../services/cloudinaryService');
 const { authMiddleware } = require('../middleware/authMiddleware');
 
 const router = express.Router();
@@ -61,8 +61,33 @@ const buildDocumentPayload = (uploadResult) => ({
   originalFilename: uploadResult.original_filename,
   bytes: uploadResult.bytes,
   format: uploadResult.format,
+  resourceType: uploadResult.resource_type || inferResourceType(uploadResult),
   uploadedAt: uploadResult.created_at ? new Date(uploadResult.created_at) : new Date(),
 });
+
+const SUPPORTED_COMPANY_DOCUMENT_FIELDS = ['gstCertificate', 'entityCertificate'];
+
+const resolveCompanyDocument = (invitation, fieldName) => {
+  if (!SUPPORTED_COMPANY_DOCUMENT_FIELDS.includes(fieldName)) {
+    throw new Error('Unsupported document field requested');
+  }
+
+  return invitation?.companyInfo?.[fieldName];
+};
+
+const buildDocumentDownloadResponse = (documentRecord) => {
+  const signedUrl = generatePrivateDownloadUrl(documentRecord, { attachment: false });
+
+  return {
+    success: true,
+    data: {
+      url: signedUrl,
+      filename: documentRecord.originalFilename,
+      format: documentRecord.format,
+      expiresInSeconds: 60,
+    },
+  };
+};
 
 const sanitizeDraftPayload = (invitation, payload) => {
   const sanitized = { ...payload };
@@ -452,6 +477,35 @@ router.get('/completed/:id', authMiddleware, async (req, res) => {
   }
 });
 
+router.get('/completed/:id/document/:field', authMiddleware, async (req, res) => {
+  try {
+    const { id, field } = req.params;
+
+    const invitation = await PrimaryInvitation.findOne({ _id: id, status: 'completed' });
+
+    if (!invitation) {
+      return res.status(404).json({ success: false, message: 'Completed invitation not found' });
+    }
+
+    let documentRecord;
+    try {
+      documentRecord = resolveCompanyDocument(invitation, field);
+    } catch (error) {
+      return res.status(400).json({ success: false, message: error.message });
+    }
+
+    if (!documentRecord?.publicId) {
+      return res.status(404).json({ success: false, message: 'Document not available' });
+    }
+
+    const payload = buildDocumentDownloadResponse(documentRecord);
+    res.status(200).json(payload);
+  } catch (error) {
+    console.error('Error generating document download link (admin):', error);
+    res.status(500).json({ success: false, message: 'Failed to generate document link', error: error.message });
+  }
+});
+
 router.get('/token/:token', async (req, res) => {
   try {
     const { token } = req.params;
@@ -650,6 +704,38 @@ router.post('/token/:token/upload', uploadValidation, async (req, res) => {
       message: 'Failed to upload document',
       error: error.message,
     });
+  }
+});
+
+router.get('/token/:token/document/:field', async (req, res) => {
+  try {
+    const { token, field } = req.params;
+    const invitation = await PrimaryInvitation.findOne({ token });
+
+    if (!invitation) {
+      return res.status(404).json({ success: false, message: 'Invitation not found' });
+    }
+
+    if (invitation.isExpired) {
+      return res.status(410).json({ success: false, message: 'Invitation link has expired' });
+    }
+
+    let documentRecord;
+    try {
+      documentRecord = resolveCompanyDocument(invitation, field);
+    } catch (error) {
+      return res.status(400).json({ success: false, message: error.message });
+    }
+
+    if (!documentRecord?.publicId) {
+      return res.status(404).json({ success: false, message: 'Document not uploaded yet' });
+    }
+
+    const payload = buildDocumentDownloadResponse(documentRecord);
+    res.status(200).json(payload);
+  } catch (error) {
+    console.error('Error generating document download link (token):', error);
+    res.status(500).json({ success: false, message: 'Failed to generate document link', error: error.message });
   }
 });
 

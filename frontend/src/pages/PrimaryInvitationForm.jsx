@@ -17,6 +17,7 @@ const PrimaryInvitationForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSavingDraft, setIsSavingDraft] = useState(false)
   const [uploadingField, setUploadingField] = useState(null)
+  const [viewingField, setViewingField] = useState(null)
   const [error, setError] = useState(null)
   const [invitation, setInvitation] = useState(null)
   const [formData, setFormData] = useState({
@@ -407,6 +408,36 @@ const PrimaryInvitationForm = () => {
     }
   }
 
+  const handleViewDocument = async (fieldName) => {
+    const documentRecord = formData.companyInfo?.[fieldName]
+
+    if (!documentRecord?.publicId) {
+      toast.error('Document not uploaded yet')
+      return
+    }
+
+    console.group('[PrimaryInvitationForm] handleViewDocument')
+    console.info('Generating document link', { token, fieldName })
+    setViewingField(fieldName)
+
+    try {
+      const response = await primaryInvitationAPI.getDocumentForToken(token, fieldName)
+
+      if (!response.success || !response.data?.url) {
+        throw new Error(response.message || 'Unable to generate document link')
+      }
+
+      window.open(response.data.url, '_blank', 'noopener')
+      console.info('Document opened with signed URL', response.data)
+    } catch (viewError) {
+      console.error('Error opening document:', viewError)
+      toast.error(viewError.message || 'Failed to open document')
+    } finally {
+      console.groupEnd()
+      setViewingField(null)
+    }
+  }
+
   const buildPayload = () => ({
     companyInfo: formData.companyInfo,
     applicantInfo: formData.applicantInfo,
@@ -636,6 +667,8 @@ const PrimaryInvitationForm = () => {
                 disabled={isCompleted || isCompanyInfoLocked}
                 uploadingField={uploadingField}
                 onUpload={handleDocumentUpload}
+                onView={handleViewDocument}
+                viewingField={viewingField}
                 error={validationErrors.companyInfo?.gstCertificate}
               />
               <DocumentUploadField
@@ -645,6 +678,8 @@ const PrimaryInvitationForm = () => {
                 disabled={isCompleted || isCompanyInfoLocked}
                 uploadingField={uploadingField}
                 onUpload={handleDocumentUpload}
+                onView={handleViewDocument}
+                viewingField={viewingField}
                 error={validationErrors.companyInfo?.entityCertificate}
               />
             </div>
@@ -856,7 +891,17 @@ const PrimaryInvitationForm = () => {
   )
 }
 
-const DocumentUploadField = ({ label, fieldName, value, disabled, uploadingField, onUpload, error }) => {
+const DocumentUploadField = ({
+  label,
+  fieldName,
+  value,
+  disabled,
+  uploadingField,
+  viewingField,
+  onUpload,
+  onView,
+  error,
+}) => {
   const handleFileChange = (event) => {
     const file = event.target.files?.[0]
     if (file) {
@@ -865,22 +910,24 @@ const DocumentUploadField = ({ label, fieldName, value, disabled, uploadingField
   }
 
   const hasError = Boolean(error)
+  const hasDocument = Boolean(value?.publicId)
+  const isViewing = viewingField === fieldName
 
   return (
     <div>
       <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
       <div className={`border border-dashed ${hasError ? 'border-red-400 bg-red-50/40' : 'border-gray-300 bg-white'} -md p-4`}>
-        {value?.secureUrl ? (
+        {hasDocument ? (
           <div className="space-y-2">
             <p className="text-sm text-gray-700">Document uploaded</p>
-            <a
-              href={value.secureUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="text-sm text-primary-600 hover:text-primary-700 underline"
+            <button
+              type="button"
+              onClick={() => onView(fieldName)}
+              disabled={isViewing}
+              className="text-sm text-primary-600 hover:text-primary-700 underline disabled:opacity-50"
             >
-              View document
-            </a>
+              {isViewing ? 'Opening…' : 'View document'}
+            </button>
           </div>
         ) : (
           <p className="text-sm text-gray-500">No document uploaded yet.</p>

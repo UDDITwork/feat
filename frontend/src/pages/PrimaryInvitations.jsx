@@ -169,43 +169,22 @@ const PrimaryInvitations = () => {
     setSelectedCompletedInvitation(null)
   }
 
-  const openDocumentWithBlob = async (fieldName, doc) => {
-    if (!doc?.secureUrl) {
-      toast.error('Document link is unavailable')
-      return
-    }
-
-    console.group('[PrimaryInvitations] openDocumentWithBlob')
-    console.info('Opening document', { fieldName, url: doc.secureUrl })
+  const openCompletedDocument = async (invitationId, fieldName) => {
+    console.group('[PrimaryInvitations] openCompletedDocument')
+    console.info('Opening document via API', { invitationId, fieldName })
     setDocumentLoadingField(fieldName)
 
     try {
-      const response = await fetch(doc.secureUrl, { mode: 'cors' })
-      if (!response.ok) {
-        throw new Error(`Failed to fetch document (${response.status})`)
+      const response = await primaryInvitationAPI.getCompletedDocumentUrl(invitationId, fieldName)
+
+      if (!response.success || !response.data?.url) {
+        throw new Error(response.message || 'Document link unavailable')
       }
 
-      const blob = await response.blob()
-      const blobUrl = window.URL.createObjectURL(blob)
-      const newWindow = window.open(blobUrl, '_blank', 'noopener')
-
-      if (!newWindow) {
-        // Fallback: trigger download if popup blocked
-        const link = document.createElement('a')
-        link.href = blobUrl
-        link.download = doc.originalFilename || `${fieldName}.pdf`
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
-      }
-
-      setTimeout(() => {
-        window.URL.revokeObjectURL(blobUrl)
-      }, 60_000)
-
-      console.info('Document opened successfully')
+      window.open(response.data.url, '_blank', 'noopener')
+      console.info('Document opened with signed URL', response.data)
     } catch (error) {
-      console.error('Error opening document via blob:', error)
+      console.error('Error generating document download url:', error)
       toast.error(error.message || 'Failed to open document')
     } finally {
       console.groupEnd()
@@ -702,10 +681,10 @@ const PrimaryInvitations = () => {
                   <p><span className="font-medium text-gray-900">Entity Type:</span> {selectedCompletedInvitation.companyInfo?.entityType || '—'}</p>
                   <p>
                     <span className="font-medium text-gray-900">GST Certificate:</span>{' '}
-                    {selectedCompletedInvitation.companyInfo?.gstCertificate?.secureUrl ? (
+                    {selectedCompletedInvitation.companyInfo?.gstCertificate?.publicId ? (
                       <button
                         type="button"
-                        onClick={() => openDocumentWithBlob('gstCertificate', selectedCompletedInvitation.companyInfo.gstCertificate)}
+                        onClick={() => openCompletedDocument(selectedCompletedInvitation._id, 'gstCertificate')}
                         className="text-primary-600 hover:text-primary-700 underline disabled:opacity-50"
                         disabled={documentLoadingField === 'gstCertificate'}
                       >
@@ -717,10 +696,10 @@ const PrimaryInvitations = () => {
                   </p>
                   <p>
                     <span className="font-medium text-gray-900">Entity Certificate:</span>{' '}
-                    {selectedCompletedInvitation.companyInfo?.entityCertificate?.secureUrl ? (
+                    {selectedCompletedInvitation.companyInfo?.entityCertificate?.publicId ? (
                       <button
                         type="button"
-                        onClick={() => openDocumentWithBlob('entityCertificate', selectedCompletedInvitation.companyInfo.entityCertificate)}
+                        onClick={() => openCompletedDocument(selectedCompletedInvitation._id, 'entityCertificate')}
                         className="text-primary-600 hover:text-primary-700 underline disabled:opacity-50"
                         disabled={documentLoadingField === 'entityCertificate'}
                       >

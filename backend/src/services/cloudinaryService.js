@@ -62,9 +62,49 @@ const uploadBase64Document = async (base64Data, folder, resourceType = 'auto') =
   });
 };
 
+const DEFAULT_DOWNLOAD_TTL_SECONDS = 60;
+
+const inferResourceType = (document) => {
+  if (document?.resourceType) {
+    return document.resourceType;
+  }
+
+  const format = (document?.format || '').toLowerCase();
+
+  if (['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'zip'].includes(format)) {
+    return 'raw';
+  }
+
+  return 'image';
+};
+
+const generatePrivateDownloadUrl = (document, options = {}) => {
+  if (missingVars.length > 0) {
+    throw new Error('Cloudinary is not configured. Please set the required environment variables.');
+  }
+
+  if (!document?.publicId) {
+    throw new Error('Document is missing a Cloudinary publicId.');
+  }
+
+  const format = document.format || 'pdf';
+  const resourceType = inferResourceType(document);
+  const expiresAtUnix = Math.floor(Date.now() / 1000) + (options.expiresInSeconds || DEFAULT_DOWNLOAD_TTL_SECONDS);
+
+  const signedUrl = cloudinary.utils.private_download_url(document.publicId, format, {
+    resource_type: resourceType,
+    attachment: options.attachment || false,
+    expires_at: expiresAtUnix,
+  });
+
+  return signedUrl;
+};
+
 module.exports = {
   uploadDocument,
   uploadBase64Document,
+  generatePrivateDownloadUrl,
+  inferResourceType,
   cloudinary,
 };
 
