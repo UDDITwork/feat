@@ -42,16 +42,41 @@ const Tracker = () => {
   const [isAddingEmployee, setIsAddingEmployee] = useState(false)
   const [employeeForm, setEmployeeForm] = useState(defaultEmployeeForm)
 
+  const logGroup = (label, fn) => {
+    console.groupCollapsed(label)
+    try {
+      fn()
+    } finally {
+      console.groupEnd()
+    }
+  }
+
   const loadEmployees = async () => {
+    logGroup('[Tracker][loadEmployees] start', () => {
+      console.info('Fetching tracker employees')
+    })
     try {
       const response = await trackerAPI.listEmployees()
-      setEmployees(response.data || [])
+      const payload = response.data || []
+      console.info('[Tracker][loadEmployees] success', {
+        count: payload.length,
+        employees: payload.map((employee) => ({
+          id: employee._id,
+          email: employee.email,
+          status: employee.status
+        }))
+      })
+      setEmployees(payload)
     } catch (error) {
+      console.error('[Tracker][loadEmployees] failed', error)
       toast.error(error.message || 'Failed to load employees')
     }
   }
 
   const loadEntries = async (appliedFilters = filters) => {
+    logGroup('[Tracker][loadEntries] start', () => {
+      console.info('Filters', appliedFilters)
+    })
     try {
       const params = {}
       if (appliedFilters.startDate) params.startDate = appliedFilters.startDate
@@ -61,39 +86,66 @@ const Tracker = () => {
       }
 
       const response = await trackerAPI.getEntries(params)
-      setEntries(response.data || [])
+      const payload = response.data || []
+      console.info('[Tracker][loadEntries] success', {
+        count: payload.length,
+        firstEntry: payload[0]
+      })
+      setEntries(payload)
     } catch (error) {
+      console.error('[Tracker][loadEntries] failed', error)
       toast.error(error.message || 'Failed to load tracker entries')
     }
   }
 
   const loadSummary = async (selectedPeriod = period) => {
+    logGroup('[Tracker][loadSummary] start', () => {
+      console.info('Period', selectedPeriod)
+    })
     try {
       const response = await trackerAPI.getSummary({ period: selectedPeriod })
-      setSummary(response.data || {
+      const payload = response.data || {
         totalHoursByEmployee: [],
         effortTypeBreakdown: [],
         dailyTotals: []
+      }
+      console.info('[Tracker][loadSummary] success', {
+        period: selectedPeriod,
+        totals: {
+          employees: payload.totalHoursByEmployee?.length || 0,
+          effortTypes: payload.effortTypeBreakdown?.length || 0,
+          days: payload.dailyTotals?.length || 0
+        }
       })
+      setSummary(payload)
     } catch (error) {
+      console.error('[Tracker][loadSummary] failed', error)
       toast.error(error.message || 'Failed to load tracker summary')
     }
   }
 
   const loadSettings = async () => {
+    console.groupCollapsed('[Tracker][loadSettings] start')
     try {
       const response = await trackerAPI.getSettings()
       setSettings(response.data)
       setSettingsDraft(response.data)
+      console.info('[Tracker][loadSettings] success', response.data)
     } catch (error) {
+      console.error('[Tracker][loadSettings] failed', error)
       toast.error(error.message || 'Failed to load tracker settings')
+    } finally {
+      console.groupEnd()
     }
   }
 
   const initialize = async () => {
+    console.groupCollapsed('[Tracker][initialize] start')
     setIsLoading(true)
     await Promise.all([loadEmployees(), loadEntries(), loadSummary(), loadSettings()])
     setIsLoading(false)
+    console.info('[Tracker][initialize] completed')
+    console.groupEnd()
   }
 
   useEffect(() => {
@@ -124,11 +176,16 @@ const Tracker = () => {
   }, [summary.totalHoursByEmployee])
 
   const handleRefresh = async () => {
+    console.groupCollapsed('[Tracker][handleRefresh] manual refresh triggered')
     await initialize()
     toast.success('Tracker data refreshed')
+    console.info('[Tracker][handleRefresh] finished refresh')
+    console.groupEnd()
   }
 
   const handleTriggerEmails = async () => {
+    console.groupCollapsed('[Tracker][handleTriggerEmails] start')
+    console.info('Manual email trigger initiated')
     setIsTriggering(true)
     try {
       const response = await trackerAPI.triggerEmails()
@@ -137,15 +194,19 @@ const Tracker = () => {
       if (triggerSummary) {
         const { successful = 0, total = 0 } = triggerSummary
         toast.success(`Emails sent: ${successful}/${total}`)
+        console.info('[Tracker][handleTriggerEmails] summary', triggerSummary)
       }
     } catch (error) {
+      console.error('[Tracker][handleTriggerEmails] failed', error)
       toast.error(error.message || 'Failed to trigger reminders')
     } finally {
       setIsTriggering(false)
+      console.groupEnd()
     }
   }
 
   const handleEmployeeInput = (field, value) => {
+    console.debug('[Tracker][handleEmployeeInput]', { field, value })
     setEmployeeForm((prev) => ({
       ...prev,
       [field]: value
@@ -153,21 +214,26 @@ const Tracker = () => {
   }
 
   const handleAddEmployee = async (event) => {
+    console.groupCollapsed('[Tracker][handleAddEmployee] start')
     event.preventDefault()
     setIsAddingEmployee(true)
     try {
+      console.info('Submitting employee form', employeeForm)
       await trackerAPI.addEmployee(employeeForm)
       toast.success('Employee added to tracker')
       setEmployeeForm(defaultEmployeeForm)
       await loadEmployees()
     } catch (error) {
+      console.error('[Tracker][handleAddEmployee] failed', error)
       toast.error(error.message || 'Failed to add employee')
     } finally {
       setIsAddingEmployee(false)
+      console.groupEnd()
     }
   }
 
   const handleToggleDay = (day) => {
+    console.debug('[Tracker][handleToggleDay]', day)
     setSettingsDraft((prev) => {
       if (!prev) return prev
       const days = new Set(prev.daysActive || [])
@@ -186,10 +252,12 @@ const Tracker = () => {
   }
 
   const handleSettingsChange = (field, value) => {
+    console.debug('[Tracker][handleSettingsChange]', { field, value })
     setSettingsDraft((prev) => (prev ? { ...prev, [field]: value } : prev))
   }
 
   const handleSaveSettings = async () => {
+    console.groupCollapsed('[Tracker][handleSaveSettings] start')
     if (!settingsDraft) return
     setIsSavingSettings(true)
     try {
@@ -197,14 +265,19 @@ const Tracker = () => {
       setSettings(response.data)
       setSettingsDraft(response.data)
       toast.success('Tracker settings updated')
+      console.info('[Tracker][handleSaveSettings] success', response.data)
     } catch (error) {
+      console.error('[Tracker][handleSaveSettings] failed', error)
       toast.error(error.message || 'Failed to update settings')
     } finally {
       setIsSavingSettings(false)
+      console.groupEnd()
     }
   }
 
   const handleExport = async () => {
+    console.groupCollapsed('[Tracker][handleExport] start')
+    console.info('Export filters', filters)
     try {
       await trackerAPI.exportEntries({
         startDate: filters.startDate,
@@ -212,8 +285,12 @@ const Tracker = () => {
         employeeId: filters.employeeId !== 'all' ? filters.employeeId : undefined
       })
       toast.success('Export started')
+      console.info('[Tracker][handleExport] success')
     } catch (error) {
+      console.error('[Tracker][handleExport] failed', error)
       toast.error(error.message || 'Failed to export tracker data')
+    } finally {
+      console.groupEnd()
     }
   }
 

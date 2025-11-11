@@ -29,10 +29,13 @@ const TrackerForm = () => {
   const [entries, setEntries] = useState([createEmptyEntry()])
 
   useEffect(() => {
+    console.groupCollapsed('[TrackerForm][fetchForm] start')
     const fetchForm = async () => {
       try {
+        console.info('Fetching tracker form for token', token)
         const response = await trackerFormAPI.getForm(token)
         if (!response.success) {
+          console.warn('[TrackerForm][fetchForm] non-success response', response)
           throw new Error(response.message || 'Unable to load tracker form')
         }
         setFormData(response.data)
@@ -40,10 +43,13 @@ const TrackerForm = () => {
           hour: '2-digit',
           minute: '2-digit'
         }))
+        console.info('[TrackerForm][fetchForm] success', response.data)
       } catch (error) {
+        console.error('[TrackerForm][fetchForm] failed', error)
         toast.error(error.message || 'Failed to load tracker form')
       } finally {
         setLoading(false)
+        console.groupEnd()
       }
     }
 
@@ -55,6 +61,7 @@ const TrackerForm = () => {
   }, [entries])
 
   const handleEntryChange = (index, field, value) => {
+    console.debug('[TrackerForm][handleEntryChange]', { index, field, value })
     setEntries((prev) =>
       prev.map((entry, idx) =>
         idx === index
@@ -68,24 +75,33 @@ const TrackerForm = () => {
   }
 
   const handleAddEntry = () => {
+    console.info('[TrackerForm][handleAddEntry] adding new effort row')
     setEntries((prev) => [...prev, createEmptyEntry()])
   }
 
   const handleRemoveEntry = (index) => {
     if (entries.length === 1) return
+    console.warn('[TrackerForm][handleRemoveEntry] removing entry', index)
     setEntries((prev) => prev.filter((_, idx) => idx !== index))
   }
 
   const validateEntries = () => {
+    console.groupCollapsed('[TrackerForm][validateEntries] start')
     for (const entry of entries) {
       if (!entry.projectName.trim()) {
+        console.error('[TrackerForm][validateEntries] project name missing', entry)
         throw new Error('Project name is required for every entry.')
       }
       if (!entry.hours) {
+        console.error('[TrackerForm][validateEntries] hours missing', entry)
         throw new Error('Hours are required for every entry.')
       }
       const hoursValue = parseFloat(entry.hours)
       if (Number.isNaN(hoursValue) || hoursValue <= 0 || hoursValue > 24) {
+        console.error('[TrackerForm][validateEntries] invalid hours', {
+          entry,
+          hoursValue
+        })
         throw new Error('Hours must be between 0 and 24 for every entry.')
       }
     }
@@ -94,24 +110,35 @@ const TrackerForm = () => {
     entries.forEach((entry) => {
       const key = `${entry.projectName.trim().toLowerCase()}|${entry.docketNumber.trim().toLowerCase()}|${entry.effortType}`
       if (combinationSet.has(key)) {
+        console.error('[TrackerForm][validateEntries] duplicate effort detected', {
+          key,
+          entry
+        })
         throw new Error('The same effort type cannot be repeated for the same project/docket number.')
       }
       combinationSet.add(key)
     })
+    console.info('[TrackerForm][validateEntries] success', { entries: entries.length })
+    console.groupEnd()
   }
 
   const handleSubmit = async (event) => {
+    console.groupCollapsed('[TrackerForm][handleSubmit] start')
     event.preventDefault()
 
     if (!formData) {
+      console.error('[TrackerForm][handleSubmit] missing form metadata')
       toast.error('Tracker form metadata is missing.')
+      console.groupEnd()
       return
     }
 
     try {
       validateEntries()
     } catch (error) {
+      console.error('[TrackerForm][handleSubmit] validation failed', error)
       toast.error(error.message)
+      console.groupEnd()
       return
     }
 
@@ -129,17 +156,22 @@ const TrackerForm = () => {
         }))
       }
 
+      console.info('[TrackerForm][handleSubmit] prepared payload', payload)
       const response = await trackerFormAPI.submit(token, payload)
       if (!response.success) {
+        console.warn('[TrackerForm][handleSubmit] non-success response', response)
         throw new Error(response.message || 'Failed to submit tracker entry')
       }
 
       toast.success('Work entry submitted successfully. Thank you!')
       navigate('/form-submitted', { replace: true })
+      console.info('[TrackerForm][handleSubmit] submission success')
     } catch (error) {
+      console.error('[TrackerForm][handleSubmit] failed', error)
       toast.error(error.message || 'Submission failed. Please try again.')
     } finally {
       setSubmitting(false)
+      console.groupEnd()
     }
   }
 
