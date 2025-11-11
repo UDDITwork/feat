@@ -360,6 +360,7 @@ export const adminAPI = {
 
 export const trackerAPI = {
   listEmployees: (params = {}) => api.get('/tracker/employees', { params }),
+  getEmployee: (id, params = {}) => api.get(`/tracker/employees/${id}`, { params }),
   addEmployee: (payload) => api.post('/tracker/employees', payload),
   updateEmployee: (id, payload) => api.patch(`/tracker/employees/${id}`, payload),
   deleteEmployee: (id) => api.delete(`/tracker/employees/${id}`),

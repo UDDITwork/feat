@@ -12,7 +12,8 @@ const {
   getWorkEntries,
   aggregateMetrics,
   getTrackerSettings,
-  updateTrackerSettings
+  updateTrackerSettings,
+  getEmployeeById
 } = require('../services/trackerService');
 const { refreshTrackerScheduler } = require('../services/trackerScheduler');
 
@@ -159,6 +160,38 @@ router.get('/employees', async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Failed to fetch employees',
+      error: error.message
+    });
+  }
+});
+
+router.get('/employees/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { period = 'month' } = req.query;
+
+    const employee = await getEmployeeById(id);
+    if (!employee) {
+      return res.status(404).json({
+        success: false,
+        message: 'Employee not found'
+      });
+    }
+
+    const summary = await aggregateMetrics({ period, employeeId: id });
+
+    res.status(200).json({
+      success: true,
+      data: {
+        employee,
+        summary
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching employee detail:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch employee detail',
       error: error.message
     });
   }

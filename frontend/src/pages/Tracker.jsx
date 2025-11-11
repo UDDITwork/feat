@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import {
   ChartBarIcon,
@@ -36,12 +37,12 @@ const Tracker = () => {
     endDate: '',
     employeeId: 'all'
   })
-  const [selectedEmployeeId, setSelectedEmployeeId] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isTriggering, setIsTriggering] = useState(false)
   const [isSavingSettings, setIsSavingSettings] = useState(false)
   const [isAddingEmployee, setIsAddingEmployee] = useState(false)
   const [employeeForm, setEmployeeForm] = useState(defaultEmployeeForm)
+  const navigate = useNavigate()
 
   const logGroup = (label, fn) => {
     console.groupCollapsed(label)
@@ -238,8 +239,7 @@ const Tracker = () => {
     logGroup('[Tracker][handleEmployeeCardClick]', () => {
       console.info('Card clicked', {
         employeeId,
-        email: employee.email,
-        currentSelection: selectedEmployeeId
+        email: employee.email
       })
     })
     if (!employeeId) {
@@ -247,27 +247,7 @@ const Tracker = () => {
       return
     }
 
-    const nextId = selectedEmployeeId === employeeId ? null : employeeId
-    setSelectedEmployeeId(nextId)
-    setFilters((prev) => {
-      if (!nextId) {
-        return { ...prev, employeeId: 'all' }
-      }
-      return {
-        ...prev,
-        employeeId: nextId,
-        startDate: '',
-        endDate: ''
-      }
-    })
-  }
-
-  const handleClearSelectedEmployee = () => {
-    logGroup('[Tracker][handleClearSelectedEmployee]', () => {
-      console.info('Clearing employee selection')
-    })
-    setSelectedEmployeeId(null)
-    setFilters((prev) => ({ ...prev, employeeId: 'all' }))
+    navigate(`/tracker/employee/${employeeId}`)
   }
 
   const handleEmployeeFilterChange = (event) => {
@@ -276,7 +256,6 @@ const Tracker = () => {
       console.info('Dropdown change', { value })
     })
     setFilters((prev) => ({ ...prev, employeeId: value }))
-    setSelectedEmployeeId(value === 'all' ? null : value)
   }
 
   const handleToggleDay = (day) => {
@@ -367,63 +346,7 @@ const Tracker = () => {
     })
   }, [entries])
 
-  const selectedEmployee = useMemo(() => {
-    if (!selectedEmployeeId) return null
-    return employees.find(
-      (employee) => (employee._id?.toString?.() ?? employee._id) === selectedEmployeeId
-    ) || null
-  }, [employees, selectedEmployeeId])
-
-  const selectedEmployeeEntries = useMemo(() => {
-    if (!selectedEmployeeId) return []
-    return sortedEntries.filter((entry) => {
-      const entryId =
-        entry.employee?._id?.toString?.() ??
-        (typeof entry.employee === 'string' ? entry.employee : null)
-      return entryId === selectedEmployeeId
-    })
-  }, [sortedEntries, selectedEmployeeId])
-
-  const selectedEmployeeSummary = useMemo(() => {
-    if (!selectedEmployeeEntries.length) return null
-    const totalHours = selectedEmployeeEntries.reduce(
-      (acc, entry) => acc + (entry.totalHours || 0),
-      0
-    )
-    const daysLogged = new Set(
-      selectedEmployeeEntries.map((entry) => new Date(entry.date).toDateString())
-    ).size
-    const lastSubmission = selectedEmployeeEntries.reduce((latest, entry) => {
-      const timestamp = entry.submittedAt
-        ? new Date(entry.submittedAt)
-        : entry.updatedAt
-        ? new Date(entry.updatedAt)
-        : new Date(entry.date)
-      if (!latest || timestamp > latest) {
-        return timestamp
-      }
-      return latest
-    }, null)
-
-    return {
-      totalHours,
-      daysLogged,
-      entriesCount: selectedEmployeeEntries.length,
-      lastSubmission
-    }
-  }, [selectedEmployeeEntries])
-
-  const displayEntries = selectedEmployeeId
-    ? selectedEmployeeEntries
-    : sortedEntries.slice(0, 10)
-
-  const activityHeading = selectedEmployee
-    ? `${selectedEmployee.name || selectedEmployee.email} — Activity Log`
-    : 'Recent Entries'
-
-  const activityDescription = selectedEmployee
-    ? 'Showing the complete activity history for this employee.'
-    : 'Latest submissions from employees. Use filters to narrow down the list.'
+  const recentEntries = useMemo(() => sortedEntries.slice(0, 10), [sortedEntries])
 
   return (
     <div className="space-y-6">
@@ -664,14 +587,11 @@ const Tracker = () => {
               employees.map((employee) => {
                 const employeeId = employee._id?.toString?.() ?? employee._id
                 const stats = hoursByEmployee.get(employeeId) || {}
-                const isSelected = selectedEmployeeId === employeeId
                 return (
                   <div
                     key={employeeId}
                     onClick={() => handleEmployeeCardClick(employee)}
-                    className={`border border-gray-200 rounded-lg p-3 cursor-pointer transition-all duration-150 ${
-                      isSelected ? 'border-emerald-400 ring-2 ring-emerald-200 bg-emerald-50/60' : ''
-                    }`}
+                    className="border border-gray-200 rounded-lg p-3 cursor-pointer transition-all duration-150 hover:border-emerald-400 hover:shadow-sm"
                   >
                     <div className="flex items-center justify-between">
                       <div>
@@ -716,69 +636,15 @@ const Tracker = () => {
               })
             )}
           </div>
-
-          {selectedEmployee && (
-            <div className="mt-4 border border-emerald-200 bg-emerald-50 rounded-lg p-4 space-y-3">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-semibold text-emerald-800">
-                    Focused on {selectedEmployee.name || selectedEmployee.email}
-                  </p>
-                  <p className="text-xs text-emerald-700">
-                    Viewing detailed activity metrics across all logged days.
-                  </p>
-                </div>
-                <button
-                  onClick={handleClearSelectedEmployee}
-                  className="text-xs font-semibold text-emerald-700 hover:text-emerald-800 underline"
-                >
-                  Clear selection
-                </button>
-              </div>
-
-              {selectedEmployeeSummary ? (
-                <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 text-sm text-emerald-800">
-                  <div className="bg-white border border-emerald-100 rounded-lg p-3">
-                    <p className="text-xs uppercase tracking-wide text-emerald-600">Total Hours</p>
-                    <p className="text-lg font-semibold">{selectedEmployeeSummary.totalHours.toFixed(1)}h</p>
-                  </div>
-                  <div className="bg-white border border-emerald-100 rounded-lg p-3">
-                    <p className="text-xs uppercase tracking-wide text-emerald-600">Days Logged</p>
-                    <p className="text-lg font-semibold">{selectedEmployeeSummary.daysLogged}</p>
-                  </div>
-                  <div className="bg-white border border-emerald-100 rounded-lg p-3">
-                    <p className="text-xs uppercase tracking-wide text-emerald-600">Entries</p>
-                    <p className="text-lg font-semibold">{selectedEmployeeSummary.entriesCount}</p>
-                  </div>
-                  <div className="bg-white border border-emerald-100 rounded-lg p-3">
-                    <p className="text-xs uppercase tracking-wide text-emerald-600">Last Submission</p>
-                    <p className="text-lg font-semibold">
-                      {selectedEmployeeSummary.lastSubmission
-                        ? selectedEmployeeSummary.lastSubmission.toLocaleString('en-IN', {
-                            month: 'short',
-                            day: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit'
-                          })
-                        : '—'}
-                    </p>
-                  </div>
-                </div>
-              ) : (
-                <p className="text-xs text-emerald-700">
-                  This employee has not logged any activity yet. Once they submit their effort log,
-                  their summary will appear here.
-                </p>
-              )}
-            </div>
-          )}
         </div>
 
         <div className="bg-white border border-gray-200 rounded-xl p-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
             <div>
-              <h2 className="text-lg font-semibold text-gray-900">{activityHeading}</h2>
-              <p className="text-sm text-gray-500">{activityDescription}</p>
+              <h2 className="text-lg font-semibold text-gray-900">Recent Entries</h2>
+              <p className="text-sm text-gray-500">
+                Latest submissions from employees. Use filters to narrow down the list or click an employee to view detailed logs.
+              </p>
             </div>
             <div className="flex items-center gap-2 text-sm text-gray-500">
               <Cog6ToothIcon className="h-5 w-5" />
@@ -825,10 +691,10 @@ const Tracker = () => {
           </div>
 
           <div className="space-y-4 max-h-96 overflow-y-auto pr-2">
-            {displayEntries.length === 0 ? (
+            {recentEntries.length === 0 ? (
               <div className="text-sm text-gray-500">No entries available for the selected filters.</div>
             ) : (
-              displayEntries.map((entry) => (
+              recentEntries.map((entry) => (
                 <div key={entry._id} className="border border-gray-200 rounded-lg p-4">
                   <div className="flex items-center justify-between">
                     <div>

@@ -20,9 +20,11 @@ const normalizeDate = (value) => {
   return startOfDay(parseISO(value));
 };
 
-const ensureTrackerToken = async (employee, expiresInHours = 48) => {
+const ensureTrackerToken = async (employee, expiresInHours = 48, options = {}) => {
   const now = new Date();
-  if (employee.trackerToken && employee.trackerToken.expiresAt > now) {
+  const forceNew = options.forceNew === true;
+
+  if (!forceNew && employee.trackerToken && employee.trackerToken.expiresAt > now) {
     return employee.trackerToken;
   }
 
@@ -121,7 +123,7 @@ const sendManualReminders = async ({ triggeredByAdminId }) => {
 
   for (const employee of employees) {
     try {
-      const tokenData = await ensureTrackerToken(employee);
+      const tokenData = await ensureTrackerToken(employee, 48, { forceNew: true });
       const formLink = generateTrackerLink(tokenData.token);
 
       await sendTrackerReminderEmail(
@@ -203,7 +205,10 @@ const getWorkEntries = async ({ startDate, endDate, employeeId }) => {
   }
 
   if (employeeId) {
-    filter.employee = employeeId;
+    if (!mongoose.Types.ObjectId.isValid(employeeId)) {
+      return [];
+    }
+    filter.employee = new mongoose.Types.ObjectId(employeeId);
   }
 
   return WorkEntry.find(filter)
@@ -330,6 +335,13 @@ const updateTrackerSettings = async (payload = {}, updatedBy) => {
   return settings;
 };
 
+const getEmployeeById = async (employeeId) => {
+  if (!mongoose.Types.ObjectId.isValid(employeeId)) {
+    return null;
+  }
+  return Employee.findById(employeeId).lean();
+};
+
 module.exports = {
   listEmployees,
   createEmployee,
@@ -341,6 +353,7 @@ module.exports = {
   getWorkEntries,
   aggregateMetrics,
   getTrackerSettings,
-  updateTrackerSettings
+  updateTrackerSettings,
+  getEmployeeById
 };
 

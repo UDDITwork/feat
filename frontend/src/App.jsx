@@ -17,6 +17,7 @@ import Clients from './pages/Clients'
 import Settings from './pages/Settings'
 import Tracker from './pages/Tracker'
 import TrackerForm from './pages/TrackerForm'
+import TrackerEmployeeDetail from './pages/TrackerEmployeeDetail'
 import NotFound from './pages/NotFound'
 
 function App() {
@@ -48,6 +49,7 @@ function App() {
                   <Route path="primary-invitations" element={<PrimaryInvitations />} />
                   <Route path="submissions" element={<Submissions />} />
                   <Route path="tracker" element={<Tracker />} />
+                  <Route path="tracker/employee/:id" element={<TrackerEmployeeDetail />} />
                   <Route path="clients" element={<Clients />} />
                   <Route path="settings" element={<Settings />} />
                 </Route>
