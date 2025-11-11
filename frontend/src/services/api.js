@@ -36,7 +36,7 @@ const isValidJWTFormat = (token) => {
 api.interceptors.request.use(
   (config) => {
     // Skip auth for public endpoints (form endpoints)
-    const publicEndpoints = ['/form/', '/email/verify-token/']
+    const publicEndpoints = ['/form/', '/tracker/form/', '/email/verify-token/']
     const isPublicEndpoint = publicEndpoints.some(endpoint => config.url.includes(endpoint))
     
     if (!isPublicEndpoint) {
@@ -356,6 +356,58 @@ export const adminAPI = {
     window.URL.revokeObjectURL(downloadUrl)
     document.body.removeChild(a)
   },
+}
+
+export const trackerAPI = {
+  listEmployees: (params = {}) => api.get('/tracker/employees', { params }),
+  addEmployee: (payload) => api.post('/tracker/employees', payload),
+  updateEmployee: (id, payload) => api.patch(`/tracker/employees/${id}`, payload),
+  deleteEmployee: (id) => api.delete(`/tracker/employees/${id}`),
+  triggerEmails: () => api.post('/tracker/trigger'),
+  getEntries: (params = {}) => api.get('/tracker/entries', { params }),
+  getSummary: (params = {}) => api.get('/tracker/metrics/summary', { params }),
+  getSettings: () => api.get('/tracker/settings'),
+  updateSettings: (payload) => api.patch('/tracker/settings', payload),
+  exportEntries: async (params = {}) => {
+    const token = localStorage.getItem('adminToken')
+    if (!token) {
+      throw new Error('No authentication token found')
+    }
+
+    const searchParams = new URLSearchParams()
+    Object.entries(params).forEach(([key, value]) => {
+      if (value) {
+        searchParams.append(key, value)
+      }
+    })
+
+    const query = searchParams.toString()
+    const response = await fetch(`${API_BASE_URL}/tracker/entries/export${query ? `?${query}` : ''}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+
+    if (!response.ok) {
+      throw new Error('Failed to export tracker data')
+    }
+
+    const blob = await response.blob()
+    const downloadUrl = window.URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = downloadUrl
+    a.download = `tracker_export_${Date.now()}.csv`
+    document.body.appendChild(a)
+    a.click()
+    window.URL.revokeObjectURL(downloadUrl)
+    document.body.removeChild(a)
+  }
+}
+
+export const trackerFormAPI = {
+  getForm: (token) => api.get(`/tracker/form/${token}`),
+  submit: (token, payload) => api.post(`/tracker/form/${token}`, payload)
 }
 
 // Utility functions

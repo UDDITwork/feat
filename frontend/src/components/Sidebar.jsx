@@ -7,6 +7,7 @@ import {
   UsersIcon,
   Cog6ToothIcon,
   ClipboardDocumentListIcon,
+  ChartBarIcon,
   XMarkIcon
 } from '@heroicons/react/24/outline'
 
@@ -15,6 +16,7 @@ const Sidebar = ({ isOpen, onClose, currentPath }) => {
     { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
     { name: 'Send Invitations', href: '/invitations', icon: EnvelopeIcon },
     { name: 'Primary Invitation', href: '/primary-invitations', icon: ClipboardDocumentListIcon },
+    { name: 'Tracker', href: '/tracker', icon: ChartBarIcon },
     { name: 'Form Submissions', href: '/submissions', icon: DocumentTextIcon },
     { name: 'Clients', href: '/clients', icon: UsersIcon },
     { name: 'Settings', href: '/settings', icon: Cog6ToothIcon },

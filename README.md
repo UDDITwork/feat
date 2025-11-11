@@ -70,6 +70,13 @@ A comprehensive patent application management system designed for SITABIENCE IP,
 - **Client-Facing Form**: `/primary-invitation/:token` captures company, applicant, and inventor details with dynamic inventor management.
 - **Submission Timestamping**: Completion timestamps are recorded server-side and surfaced to clients immediately after submission.
 
+### Employee Work Tracker
+- **Daily Cron Automation**: Weekday reminders are dispatched at 6:00 PM IST via `node-cron`, with manual triggers available from the admin Tracker tab.
+- **Tracker Tab Dashboard**: Real-time tables, filters, and CSV exports provide visibility into attendance, project allocations, and logged hours.
+- **Effort Analytics**: Bar charts and breakdown metrics surface total hours, effort type distribution, and daily productivity trends.
+- **Self-Service Form**: Secure `/tracker/:token` page lets employees log arrival time plus multiple project efforts with validation against duplicate effort types.
+- **Scheduler Controls**: Admins can pause/resume the cron job, adjust weekdays and time, and manage the employee recipient list directly in-app.
+
 ## 📧 Email Template System
 
 ### Available Templates
@@ -198,6 +205,17 @@ CLOUDINARY_API_SECRET=your_cloudinary_secret
 # Frontend
 VITE_API_URL=http://localhost:5000/api
 ```
+
+## ✅ Tracker Feature QA Checklist
+
+Use the following manual checks after deploying the tracker feature:
+
+1. **Add Employee** – Navigate to `Tracker` tab, add a new employee email, confirm it appears in the employee list and receives future reminders.
+2. **Manual Trigger** – Click `Trigger Reminder`, confirm toast shows success and review backend logs or email inbox for delivery.
+3. **Daily Form Submission** – Open `/tracker/:token` from a reminder email, log multiple project efforts, and verify the entry appears in the admin tracker view.
+4. **Analytics Refresh** – Adjust the period chips (Day/Week/Month) and ensure charts + totals update with the expected numbers.
+5. **CSV Export** – Apply date filters and click `Export CSV`; open the downloaded file to confirm presence of employee, project, effort type, and hours columns.
+6. **Scheduler Controls** – Pause the cron via settings, refresh the page to confirm status badge, then resume and verify the scheduler restarts (check server logs).
 
 ## 🎨 Customization
 

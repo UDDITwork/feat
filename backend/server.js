@@ -33,6 +33,7 @@ try {
   // Load app module
   console.log('Loading app module...');
   const { app, server, io } = require('./app');
+  const { initTrackerScheduler } = require('./src/services/trackerScheduler');
   console.log('✅ App module loaded successfully');
 
   // Use the server from app.js
@@ -89,6 +90,8 @@ try {
 📊 Monitoring: READY
 ===============================`);
       }
+
+      initTrackerScheduler();
     })
     .catch((error) => {
       console.error('❌ FAILED TO START SERVER:');

@@ -281,7 +281,6 @@ const getPrimaryInvitationTemplate = (adminName, formLink) => {
             <ul style="margin: 15px 0; padding-left: 20px;">
                 <li>Company name, registered address, and GST number</li>
                 <li>GST certificate and entity proof (LLP/LLC/Startup/Pvt Ltd)</li>
-                <li>Applicant address (auto-filled if same as company)</li>
                 <li>Inventor details with address, pin code, and nationality</li>
             </ul>
         </div>
@@ -296,6 +295,41 @@ const getPrimaryInvitationTemplate = (adminName, formLink) => {
 
         <p style="text-align: center; font-style: italic; color: ${BRAND_COLORS.gray};">
             "We keep your data protected while you focus on building what matters."
+        </p>
+    </div>
+  `;
+
+  return getBaseTemplate(content);
+};
+
+const getTrackerReminderTemplate = (employeeName, dateLabel, formLink, summary = {}) => {
+  const { totalHours = 0, outstandingEntries = 0 } = summary;
+
+  const content = `
+    <div class="section">
+        <h2 class="section-title">Daily Work Tracker Reminder</h2>
+        <p>Hello ${employeeName || 'Team Member'},</p>
+        <p>This is a friendly reminder to log your efforts for <strong>${dateLabel}</strong>. Your submission helps us track project progress and plan workloads effectively.</p>
+
+        <div class="highlight-box">
+            <h3 style="color: ${BRAND_COLORS.teal}; margin-top: 0;">Today's Snapshot</h3>
+            <ul style="margin: 15px 0; padding-left: 20px;">
+                <li><strong>Total hours logged this week:</strong> ${totalHours || 0}</li>
+                <li><strong>Entries pending submission:</strong> ${outstandingEntries || 0}</li>
+                <li><strong>Due by:</strong> 9:00 PM today</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin: 30px 0;">
+            <a href="${formLink}" class="cta-button">
+                Log Today’s Effort
+            </a>
+        </div>
+
+        <p>If you have already submitted today's entry, you can ignore this reminder.</p>
+
+        <p style="text-align: center; font-style: italic; color: ${BRAND_COLORS.gray};">
+            “Consistent logging helps us celebrate the real work that powers our projects.”
         </p>
     </div>
   `;
@@ -495,6 +529,12 @@ const generatePrimaryInvitationLink = (token) => {
   return `${frontendUrl}/primary-invitation/${token}`;
 };
 
+const generateTrackerLink = (token) => {
+  console.log(`🔗 Generating tracker form link for environment: ${process.env.NODE_ENV}`);
+  const frontendUrl = getFrontendBaseUrl();
+  return `${frontendUrl}/tracker/${token}`;
+};
+
 // Send form invitation (wrapper for sendPatentInvitation)
 const sendFormInvitation = async (email, adminName) => {
   try {
@@ -519,6 +559,18 @@ const sendFormInvitation = async (email, adminName) => {
     console.error('Error in sendFormInvitation:', error);
     throw error;
   }
+};
+
+const sendTrackerReminderEmail = async (to, employeeName, formLink, summary = {}) => {
+  const subject = 'Daily Work Tracker Reminder - SITABIENCE IP';
+  const dateLabel = new Date().toLocaleDateString('en-IN', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+  const htmlContent = getTrackerReminderTemplate(employeeName, dateLabel, formLink, summary);
+  return await sendEmail(to, subject, htmlContent);
 };
 
 // Send bulk invitations
@@ -571,10 +623,13 @@ module.exports = {
   generateFormToken,
   generateFormLink,
   generatePrimaryInvitationLink,
+  generateTrackerLink,
   sendPrimaryInvitationEmail,
+  sendTrackerReminderEmail,
   getBaseTemplate,
   getPatentInvitationTemplate,
   getPrimaryInvitationTemplate,
+  getTrackerReminderTemplate,
   getFormSubmissionTemplate,
   getStatusUpdateTemplate,
   getNewsletterTemplate

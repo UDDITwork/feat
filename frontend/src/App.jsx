@@ -15,6 +15,8 @@ import PrimaryInvitations from './pages/PrimaryInvitations'
 import PrimaryInvitationForm from './pages/PrimaryInvitationForm'
 import Clients from './pages/Clients'
 import Settings from './pages/Settings'
+import Tracker from './pages/Tracker'
+import TrackerForm from './pages/TrackerForm'
 import NotFound from './pages/NotFound'
 
 function App() {
@@ -31,6 +33,7 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/form/:token" element={<FormSubmission />} />
                 <Route path="/primary-invitation/:token" element={<PrimaryInvitationForm />} />
+                <Route path="/tracker/:token" element={<TrackerForm />} />
                 
                 {/* Protected admin routes */}
                 <Route path="/" element={
@@ -44,6 +47,7 @@ function App() {
                   <Route path="invitations" element={<Invitations />} />
                   <Route path="primary-invitations" element={<PrimaryInvitations />} />
                   <Route path="submissions" element={<Submissions />} />
+                  <Route path="tracker" element={<Tracker />} />
                   <Route path="clients" element={<Clients />} />
                   <Route path="settings" element={<Settings />} />
                 </Route>
