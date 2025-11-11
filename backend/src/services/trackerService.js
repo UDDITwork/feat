@@ -1,5 +1,6 @@
 const { v4: uuidv4 } = require('uuid');
 const { parseISO, startOfDay, endOfDay, subDays } = require('date-fns');
+const mongoose = require('mongoose');
 const Employee = require('../models/Employee');
 const WorkEntry = require('../models/WorkEntry');
 const TrackerSettings = require('../models/TrackerSettings');
@@ -147,16 +148,36 @@ const sendManualReminders = async ({ triggeredByAdminId }) => {
 
 const upsertWorkEntry = async ({ employeeId, date, arrivalTime, weekday, entries, metadata }) => {
   const normalizedDate = normalizeDate(date);
+  const submissionTimestamp = new Date();
+  const totalHours = entries.reduce((acc, entry) => acc + Number(entry.hours || 0), 0);
+  const computedWeekday =
+    weekday ||
+    normalizedDate.toLocaleDateString('en-IN', {
+      weekday: 'long'
+    });
+
+  const updatePayload = {
+    arrivalTime,
+    weekday: computedWeekday,
+    entries,
+    totalHours,
+    submittedAt: submissionTimestamp,
+    updatedAt: submissionTimestamp
+  };
+
+  if (metadata) {
+    updatePayload.metadata = metadata;
+  }
 
   const workEntry = await WorkEntry.findOneAndUpdate(
     { employee: employeeId, date: normalizedDate },
     {
       $set: {
-        arrivalTime,
-        weekday,
-        entries,
-        metadata,
-        submittedAt: new Date()
+        ...updatePayload
+      },
+      $setOnInsert: {
+        employee: employeeId,
+        date: normalizedDate
       }
     },
     {
@@ -166,7 +187,7 @@ const upsertWorkEntry = async ({ employeeId, date, arrivalTime, weekday, entries
     }
   );
 
-  await Employee.findByIdAndUpdate(employeeId, { lastSubmissionAt: new Date() });
+  await Employee.findByIdAndUpdate(employeeId, { lastSubmissionAt: submissionTimestamp });
   return workEntry;
 };
 
@@ -191,7 +212,7 @@ const getWorkEntries = async ({ startDate, endDate, employeeId }) => {
     .lean();
 };
 
-const aggregateMetrics = async ({ period = 'week' } = {}) => {
+const aggregateMetrics = async ({ period = 'week', employeeId } = {}) => {
   const today = startOfDay(new Date());
   let startRange;
 
@@ -209,6 +230,10 @@ const aggregateMetrics = async ({ period = 'week' } = {}) => {
   }
 
   const matchStage = { date: { $gte: startRange, $lte: endOfDay(today) } };
+
+  if (employeeId && mongoose.Types.ObjectId.isValid(employeeId)) {
+    matchStage.employee = new mongoose.Types.ObjectId(employeeId);
+  }
 
   const [summary] = await WorkEntry.aggregate([
     { $match: matchStage },

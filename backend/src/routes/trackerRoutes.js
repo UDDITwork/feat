@@ -122,7 +122,15 @@ router.post('/form/:token', validateEffortEntries, async (req, res) => {
       message: 'Work entry submitted successfully',
       data: {
         entryId: workEntry._id,
-        totalHours: workEntry.totalHours
+        totalHours: workEntry.totalHours,
+        submittedAt: workEntry.submittedAt,
+        date: workEntry.date,
+        weekday: workEntry.weekday,
+        employee: {
+          id: employee._id,
+          name: employee.name,
+          email: employee.email
+        }
       }
     });
   } catch (error) {
@@ -259,8 +267,8 @@ router.get('/entries', async (req, res) => {
 
 router.get('/metrics/summary', async (req, res) => {
   try {
-    const { period } = req.query;
-    const summary = await aggregateMetrics({ period });
+    const { period, employeeId } = req.query;
+    const summary = await aggregateMetrics({ period, employeeId });
     res.status(200).json({
       success: true,
       data: summary

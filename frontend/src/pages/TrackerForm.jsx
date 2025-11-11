@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import {
   ClockIcon,
@@ -10,7 +10,7 @@ import {
 } from '@heroicons/react/24/outline'
 import { trackerFormAPI } from '../services/api'
 
-const effortTypes = ['Search Report', 'Drafting', 'Drawing', 'Review']
+const effortTypes = ['Search Report', 'Drafting', 'Drawing', 'Review', 'Internal Meeting', 'Client Meeting']
 
 const createEmptyEntry = () => ({
   projectName: '',
@@ -21,12 +21,12 @@ const createEmptyEntry = () => ({
 
 const TrackerForm = () => {
   const { token } = useParams()
-  const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
   const [formData, setFormData] = useState(null)
   const [arrivalTime, setArrivalTime] = useState('')
   const [entries, setEntries] = useState([createEmptyEntry()])
+  const [submissionInfo, setSubmissionInfo] = useState(null)
 
   useEffect(() => {
     console.groupCollapsed('[TrackerForm][fetchForm] start')
@@ -83,6 +83,20 @@ const TrackerForm = () => {
     if (entries.length === 1) return
     console.warn('[TrackerForm][handleRemoveEntry] removing entry', index)
     setEntries((prev) => prev.filter((_, idx) => idx !== index))
+  }
+
+  const handleNewEntry = () => {
+    console.groupCollapsed('[TrackerForm][handleNewEntry] start')
+    setSubmissionInfo(null)
+    setEntries([createEmptyEntry()])
+    setArrivalTime(
+      new Date().toLocaleTimeString('en-GB', {
+        hour: '2-digit',
+        minute: '2-digit'
+      })
+    )
+    console.info('[TrackerForm][handleNewEntry] form reset for new submission')
+    console.groupEnd()
   }
 
   const validateEntries = () => {
@@ -144,16 +158,18 @@ const TrackerForm = () => {
 
     setSubmitting(true)
     try {
+      const entriesSnapshot = entries.map((entry) => ({
+        projectName: entry.projectName.trim(),
+        docketNumber: entry.docketNumber.trim(),
+        effortType: entry.effortType,
+        hours: parseFloat(entry.hours)
+      }))
+
       const payload = {
         arrivalTime,
         weekday: formData.weekday,
         date: formData.currentDate,
-        entries: entries.map((entry) => ({
-          projectName: entry.projectName.trim(),
-          docketNumber: entry.docketNumber.trim(),
-          effortType: entry.effortType,
-          hours: parseFloat(entry.hours)
-        }))
+        entries: entriesSnapshot
       }
 
       console.info('[TrackerForm][handleSubmit] prepared payload', payload)
@@ -163,9 +179,36 @@ const TrackerForm = () => {
         throw new Error(response.message || 'Failed to submit tracker entry')
       }
 
-      toast.success('Work entry submitted successfully. Thank you!')
-      navigate('/form-submitted', { replace: true })
-      console.info('[TrackerForm][handleSubmit] submission success')
+      const responseData = response.data || {}
+      const submissionTimestamp = responseData.submittedAt ? new Date(responseData.submittedAt) : new Date()
+      const submissionDate = new Date(responseData.date || formData.currentDate || new Date())
+      const formattedDate = submissionDate.toLocaleDateString('en-IN', {
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric'
+      })
+      const formattedTime = submissionTimestamp.toLocaleTimeString('en-IN', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      })
+
+      setSubmissionInfo({
+        date: submissionDate.toISOString(),
+        submittedAt: submissionTimestamp.toISOString(),
+        totalHours: responseData.totalHours ?? totalHours,
+        entries: entriesSnapshot,
+        employeeName: responseData.employee?.name || formData.name,
+        employeeEmail: responseData.employee?.email || formData.email
+      })
+
+      toast.success(`Thank you for filling the activity tracker for ${formattedDate}. Submitted at ${formattedTime}.`)
+      console.info('[TrackerForm][handleSubmit] submission success', {
+        formattedDate,
+        formattedTime,
+        totalHours: responseData.totalHours ?? totalHours
+      })
     } catch (error) {
       console.error('[TrackerForm][handleSubmit] failed', error)
       toast.error(error.message || 'Submission failed. Please try again.')
@@ -196,6 +239,110 @@ const TrackerForm = () => {
           <p className="text-sm text-gray-600">
             Please reach out to your admin so they can share a fresh tracker link.
           </p>
+        </div>
+      </div>
+    )
+  }
+
+  if (submissionInfo) {
+    const submissionDate = submissionInfo.date ? new Date(submissionInfo.date) : null
+    const submissionTime = submissionInfo.submittedAt ? new Date(submissionInfo.submittedAt) : null
+    const formattedDate = submissionDate && !Number.isNaN(submissionDate.getTime())
+      ? submissionDate.toLocaleDateString('en-IN', {
+          weekday: 'long',
+          month: 'long',
+          day: 'numeric',
+          year: 'numeric'
+        })
+      : new Date().toLocaleDateString('en-IN', {
+          weekday: 'long',
+          month: 'long',
+          day: 'numeric',
+          year: 'numeric'
+        })
+    const formattedTime = submissionTime && !Number.isNaN(submissionTime.getTime())
+      ? submissionTime.toLocaleTimeString('en-IN', {
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit'
+        })
+      : new Date().toLocaleTimeString('en-IN', {
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit'
+        })
+
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 py-12 px-4">
+        <div className="max-w-3xl mx-auto bg-white shadow-xl border border-emerald-100 rounded-2xl p-8 space-y-8">
+          <header className="space-y-2 text-center">
+            <p className="text-sm uppercase tracking-[0.2em] text-emerald-600 font-semibold">
+              SITABIENCE IP • Daily Work Tracker
+            </p>
+            <h1 className="text-3xl font-bold text-gray-900">
+              Thank you, {submissionInfo.employeeName || formData.name || 'there'}!
+            </h1>
+            <p className="text-sm text-gray-600">
+              Your activity tracker for <span className="font-semibold text-emerald-700">{formattedDate}</span> was
+              recorded at <span className="font-semibold text-emerald-700">{formattedTime}</span>.
+            </p>
+          </header>
+
+          <section className="bg-emerald-50 border border-emerald-100 rounded-xl p-6 space-y-4 text-emerald-800">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+              <div>
+                <p className="text-xs uppercase tracking-wide text-emerald-600">Total Hours</p>
+                <p className="text-xl font-semibold">{(submissionInfo.totalHours || 0).toFixed(1)}h</p>
+              </div>
+              <div>
+                <p className="text-xs uppercase tracking-wide text-emerald-600">Effort Items Logged</p>
+                <p className="text-xl font-semibold">{submissionInfo.entries?.length || 0}</p>
+              </div>
+              <div>
+                <p className="text-xs uppercase tracking-wide text-emerald-600">Submitted By</p>
+                <p className="text-sm font-medium">
+                  {submissionInfo.employeeName || formData.name || '—'}
+                  <br />
+                  <span className="text-xs text-emerald-700">{submissionInfo.employeeEmail || formData.email}</span>
+                </p>
+              </div>
+            </div>
+
+            {submissionInfo.entries?.length ? (
+              <div className="space-y-2">
+                <p className="text-xs uppercase tracking-wide text-emerald-600">Effort Breakdown</p>
+                <div className="space-y-2">
+                  {submissionInfo.entries.map((entry, index) => (
+                    <div
+                      key={`${entry.projectName}-${index}`}
+                      className="bg-white border border-emerald-100 rounded-lg px-4 py-3 text-sm text-emerald-900 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2"
+                    >
+                      <div>
+                        <p className="font-semibold">{entry.projectName}</p>
+                        <p className="text-xs text-emerald-700 uppercase tracking-wide">{entry.effortType}</p>
+                        {entry.docketNumber && (
+                          <p className="text-xs text-emerald-600">Docket: {entry.docketNumber}</p>
+                        )}
+                      </div>
+                      <span className="text-sm font-semibold text-emerald-800">{entry.hours}h</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+          </section>
+
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <p className="text-xs text-gray-500">
+              Need to update your entry? You can submit the tracker again to overwrite today’s log.
+            </p>
+            <button
+              onClick={handleNewEntry}
+              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-emerald-600 text-white rounded-lg text-sm font-semibold hover:bg-emerald-700 transition"
+            >
+              Log another activity
+            </button>
+          </div>
         </div>
       </div>
     )
